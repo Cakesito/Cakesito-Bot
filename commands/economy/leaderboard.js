@@ -47,9 +47,9 @@ module.exports = {
 
         let rank;
         let desc = num.map((e, i) => {
-            let name = message.guild.members.resolve(lb[e].substring(2));git 
-            if(name.user.tag  == message.author.tag) rank = i + 1;
-            return `**${i + 1}.** ${name.user.tag} **·** <:star:991110840780599336> ${e}`;
+            let name = message.guild.members.resolve(lb[e].substring(2));
+            if(name && name.user.tag  == message.author.tag) rank = i + 1;
+            return `**${i + 1}.** ${name? name.user.tag : '`unkown`'} **·** <:star:991110840780599336> ${e}`;
         });
 
         let count = 0;
