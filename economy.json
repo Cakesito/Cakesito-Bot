@@ -1,0 +1,124 @@
+{
+    "descriptions": {
+        "leche": "Un material esencial para la creación de Quesos Canjeables",
+        "polvo": "Un polvito mágico usado para la creación de Quesos Canjeables",
+        "quesoken": "Quesos Canjeables"
+    },
+
+    "shop": {
+        "test": {
+            "description": "obvio",
+            "price-qk": 1000,
+            "reward": {
+                "type": "qc",
+                "amount": 10000
+            },
+            "txt": "Has obtenido {reward}"
+        },
+        
+        "test2": {
+            "description": "axd",
+            "price-qc": 50,
+            "reward": {
+                "type": "role",
+                "role": "804743888857727016"
+            },
+            "txt": "Rol: {reward}"
+        }
+    },
+
+    "craft": {
+        "pr": 80,
+        "items": {
+            "quesoken": {
+                "leche": 10,
+                "polvo": 5
+            }
+        },
+        "txt": [
+            "**🧱 Crafteaste un item correctamente**\n`» | Item crafteado:` {obj}",
+            "**🧱 Algo salió mal en el proceso...**\n`◽ | Item:` Nada :("
+        ]
+    },
+ 
+    "claim": {
+        "cooldown": 3600000,
+        "amount": 5,
+        "oam": {
+            "leche": [5, 5],
+            "polvo": [3, 3]
+        },
+        "txt": "**🎁 Has recogido tu suministro de materiales!**\n`◽ | Materiales:` **{obj}**\n\n*Vuelve en **⏳ 1 hora** para recibir otro suministro.*"
+    },
+ 
+    "daily": {
+        "cooldown": 43200000,
+        "amount": 3000,
+        "txt": "**🌞 Reclamaste tu recompensa diaria!**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 12 horas** para reclamar otra recompensa.*"
+    },
+ 
+    "work": {
+        "cooldown": 300000,
+        "pr": 100,
+        "min": 100,
+        "max": 250,
+        "txt": [
+            "**💼 Trabajaste en QuesosCorp.**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 5 minutos** para trabajar como esclavo.*"
+        ]
+    },
+ 
+    "crime": {
+        "cooldown": 600000,
+        "pr": 75,
+        "win": {
+            "txt": [
+                "**🔪 Has cometido un delito!**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para cometer otro crimen de odio.*"
+            ],
+            "min": 250,
+            "max": 500
+        },
+ 
+        "loose": {
+            "txt": [
+                "**🔪 Intentaste cometer un delito...**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para intentar otro crimen de odio.*"
+            ],
+            "min": -100,
+            "max": -250
+        }
+    },
+ 
+    "explore": {
+        "pr": 100,
+        "cooldown": 600000,
+        "opr": {
+            "leche": 70,
+            "polvo": 30
+        },
+ 
+        "win": {
+            "txt": [
+                "**🔍 Has explorado la zona.**\n`◽ | Materiales:` **{obj}**\n\n*Vuelve en **⏳ 10 minutos** para explorar la hermosa fauna que te pierdes en la vida real.*"
+            ]
+        }
+    },
+
+    "mine": {
+        "pr": 75,
+        "opr": {
+            "leche": 70,
+            "polvo": 30
+        },
+
+        "win": {
+            "txt": [
+                "aqui"
+            ]
+        },
+
+        "loose": {
+            "txt": [
+                "aqui"
+            ]
+        }
+    }
+}
