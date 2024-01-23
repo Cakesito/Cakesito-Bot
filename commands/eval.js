@@ -24,7 +24,8 @@ module.exports = {
 
             message.reply(`\`\`\`js\n${cleaned}\n\`\`\``);
         } catch (err) {
-            message.reply(`\`ERROR\` \`\`\`xl\n${cleaned}\n\`\`\``);
+            // message.reply(`\`ERROR\` \`\`\`xl\n${cleaned}\n\`\`\``);
+            console.error(err)
         }
     }
 }
