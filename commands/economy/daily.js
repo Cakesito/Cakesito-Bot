@@ -6,7 +6,7 @@ module.exports = {
     run: async (client, message) => {
         const db = client.db.get('db');
         
-        await db.add(`e_${message.author.id}.cash`, daily.amount);
+        await db.add(`e_${member.guild.id}_${message.author.id}.cash`, daily.amount);
 
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })

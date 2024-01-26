@@ -17,7 +17,7 @@ module.exports = {
         .setDescription(randomText.replace('{money}', randomMoney))
         .setTimestamp();
 
-        await db.add(`e_${message.author.id}.cash`, randomMoney);
+        await db.add(`e_${member.guild.id}_${message.author.id}.cash`, randomMoney);
 
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
 

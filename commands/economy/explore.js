@@ -8,7 +8,7 @@ module.exports = {
         const db = client.db.get('db');
         let exploreCommand = new Economy().obj('Explore', explore, message.author);
         
-        await db.add(`e_${message.author.id}.inv.obj.${exploreCommand.obj.obj}`, exploreCommand.obj.amount);
+        await db.add(`e_${member.guild.id}_${message.author.id}.inv.obj.${exploreCommand.obj.obj}`, exploreCommand.obj.amount);
         
         return message.reply({ embeds: [exploreCommand.embed], allowedMentions: { repliedUser: false } });
 

@@ -29,8 +29,8 @@ module.exports = {
             return `${e} (x${obj[e]})`;
         });
 
-        await db.add(`e_${message.author.id}.inv.obj.leche`, obj['leche']); // no fufa en un loop :c
-        await db.add(`e_${message.author.id}.inv.obj.polvo`, obj['polvo']);
+        await db.add(`e_${member.guild.id}_${message.author.id}.inv.obj.leche`, obj['leche']); // no fufa en un loop :c
+        await db.add(`e_${member.guild.id}_${message.author.id}.inv.obj.polvo`, obj['polvo']);
 
         embed.setDescription(bonito(claim.txt.replace('{obj}', desc.join(' '))));
         

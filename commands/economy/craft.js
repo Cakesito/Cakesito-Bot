@@ -25,7 +25,7 @@ module.exports = {
             if(!Object.keys(craft.items).includes(item.toLowerCase())) return message.reply(`No encontré la receta de "${item}".` );
     
             recipe = craft.items[item.toLowerCase()];
-            current = await db.get(`e_${message.author.id}.inv.obj`) || { leche: 0, polvo: 0 };
+            current = await db.get(`e_${member.guild.id}_${message.author.id}.inv.obj`) || { leche: 0, polvo: 0 };
             amount = null;
             
         } else if(amount && isNaN(amount)) return message.reply('Señala una cantidad válida.');
@@ -60,13 +60,13 @@ module.exports = {
 
             return message.reply({ embeds: [embed] });
         }
-        await db.sub(`e_${message.author.id}.inv.obj.leche`, recipe['leche']);//no fufa en loop
-        await db.sub(`e_${message.author.id}.inv.obj.polvo`, recipe['polvo']);
+        await db.sub(`e_${member.guild.id}_${message.author.id}.inv.obj.leche`, recipe['leche']);//no fufa en loop
+        await db.sub(`e_${member.guild.id}_${message.author.id}.inv.obj.polvo`, recipe['polvo']);
         
         let n = Math.floor(Math.random() * 100);
         let w = 0;
         if(n <= craft.pr) {
-            await db.add(`e_${message.author.id}.inv.obj.${item.toLowerCase()}`, amount || 1);
+            await db.add(`e_${member.guild.id}_${message.author.id}.inv.obj.${item.toLowerCase()}`, amount || 1);
             w = 1;
         }
         

@@ -3,14 +3,12 @@ const { crime } = require('../../economy.json');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    // cooldown: crime.cooldown || 0,
+    cooldown: crime.cooldown || 0,
     tCooldown: crime.tCooldown || null,
     run: async (client, message) => {
 
         const db = client.db.get('db');
         let randomMoney = 0;
-        // let crimeCommand = new Economy().mixed('Crime', crime, message.author);
-
         let embed = new EmbedBuilder().setAuthor({ name: message.author.displayName || message.author.username, iconURL: message.author.displayAvatarURL() });
 
         if ((Math.random() * 100) <= crime.pr) {
@@ -28,7 +26,7 @@ module.exports = {
             embed.setColor(0xec5454);
         }
 
-        await db.add(`e_${message.author.id}.cash`, randomMoney);
+        await db.add(`e_${member.guild.id}_${message.author.id}.cash`, randomMoney);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
 
         

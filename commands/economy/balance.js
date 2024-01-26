@@ -68,7 +68,7 @@ module.exports = {
         }
 
         
-        let bal = await db.get(`e_${member.user.id}`)
+        let bal = await db.get(`e_${member.guild.id}_${member.user.id}`);
         if (!bal) bal = { cash: 0, bank: 0 };
 
         bal.cash = bal.cash ? bal.cash : 0;

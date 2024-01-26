@@ -76,7 +76,7 @@ module.exports = {
         }
 
         
-        let inv = await db.get(`e_${member.user.id}.inv`);
+        let inv = await db.get(`e_${member.guild.id}_${member.user.id}.inv`);
 
         let invEmbed = new EmbedBuilder()
         .setColor(0x0099FF)

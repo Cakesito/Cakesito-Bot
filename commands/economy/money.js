@@ -32,7 +32,7 @@ module.exports = {
 
         type.startsWith('<@') ? type = 'cash' : type = args[0];
 
-        await db.add(`e_${member.user.id}.${type}`, amount);
+        await db.add(`e_${member.guild.id}_${member.user.id}.${type}`, amount);
 
         let embed = new EmbedBuilder()
         .setDescription(`${amount} a ${member.user.tag}`);

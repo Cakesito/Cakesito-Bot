@@ -38,7 +38,7 @@ module.exports = {
             if(c[e.substring(6)]) price = { type: c[e.substring(6)], price: shop[item][e], f: e.substring(6) }
         });
 
-        current = await db.get(`e_${message.author.id}.${price.type}`) || 0;
+        current = await db.get(`e_${member.guild.id}_${message.author.id}.${price.type}`) || 0;
         
         if(amount) price.price = price.price * amount;
         
@@ -59,20 +59,19 @@ module.exports = {
         if(reward.type == 'qc' || reward.type == 'qk') {
             let type = c[reward.type];
 
-            await db.add(`e_${message.author.id}.${type}`, reward.amount);
-            await db.sub(`e_${message.author.id}.${price.type}`, price.price);
+            await db.add(`e_${member.guild.id}_${message.author.id}.${type}`, reward.amount);
+            await db.sub(`e_${member.guild.id}_${message.author.id}.${price.type}`, price.price);
             
             rewardText = `${bonito(reward.type)} (x${reward.amount})`;
         }
         
         if(reward.type == 'role') {
-            await db.sub(`e_${message.author.id}.${price.type}`, price.price);
+            await db.sub(`e_${member.guild.id}_${message.author.id}.${price.type}`, price.price);
             
             let role = message.guild.roles.cache.filter(x => x.id == reward.role);
             if(!role) return message.reply('Ouups');
 
             message.member.roles.add(role);
-            
             rewardText = `<@&${reward.role}>`;
         }
 
@@ -90,7 +89,6 @@ module.exports = {
 function bonito (str) {
     let nstr = str;
     Object.keys(b).forEach(e => { 
-        
         nstr = nstr.replace(e, b[e]) 
     });
     return nstr;

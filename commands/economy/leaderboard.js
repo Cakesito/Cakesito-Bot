@@ -11,7 +11,7 @@ module.exports = {
         if(args[0]) {
             if(args[0] == 'cash') {
                 let pre = await db.all();
-                pre = pre.filter(x => x.id.startsWith('e_'));
+                pre = pre.filter(x => x.id.startsWith(`e_${member.guild.id}_`));
 
                 pre.forEach(e => {
                     let help = `{ "${e.value.cash}": "${e.id}" }`;
@@ -22,7 +22,7 @@ module.exports = {
 
             if(args[0] == 'bank') {
                 let pre = await db.all();
-                pre = pre.filter(x => x.id.startsWith('e_'));
+                pre = pre.filter(x => x.id.startsWith(`e_${member.guild.id}_`));
 
                 pre.forEach(e => {
                     let help = `{ "${e.value.bank}": "${e.id}" }`;
@@ -34,7 +34,7 @@ module.exports = {
 
         if(!args[0] || args[0] == 'total') {
             let pre = await db.all();
-            pre = pre.filter(x => x.id.startsWith('e_'));
+            pre = pre.filter(x => x.id.startsWith(`e_${member.guild.id}_`));
 
             pre.forEach(e => {
                 let help = `{ "${(e.value.bank || 0) + (e.value.cash || 0)}": "${e.id}" }`;
@@ -49,7 +49,7 @@ module.exports = {
         let desc = num.map((e, i) => {
             let name = message.guild.members.resolve(lb[e].substring(2));
             if(name && name.user.tag  == message.author.tag) rank = i + 1;
-            return `**${i + 1}.** ${name? name.user.tag : '`unkown`'} **·** <:star:991110840780599336> ${e}`;
+            return `**${i + 1}.** ${name? name.user.tag : '`unknown`'} **·** <:star:991110840780599336> ${e}`;
         });
 
         let count = 0;

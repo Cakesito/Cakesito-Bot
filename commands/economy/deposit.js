@@ -16,8 +16,8 @@ module.exports = {
         
         amount = Number(amount);
 
-        await db.add(`e_${message.author.id}.bank`, amount);
-        await db.sub(`e_${message.author.id}.cash`, amount);
+        await db.add(`e_${member.guild.id}_${message.author.id}.bank`, amount);
+        await db.sub(`e_${member.guild.id}_${message.author.id}.cash`, amount);
 
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL()})
