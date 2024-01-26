@@ -1,21 +1,23 @@
+<%- include("partials/nav.ejs", { bot, user, path, title: "Cake - Selecccionar servidor" }) %>
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+<head>
+  <link rel="stylesheet" href="/select.css">
+</head>
+
+<div class="main-con">
   <% user.guilds.forEach(guild => {
       const permsOnGuild = new perms(guild.permissions_new);
       if(!permsOnGuild.has(perms.Flags.ManageGuild)) return;
   %>
-
-    <div class="card" style="max-width: 18rem; margin: 2rem; min-width: 10em;">
-    <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}" class="card-img-top" style="max-width: 18rem;">` : `<img src="https://cdn.discordapp.com/attachments/765919453766352916/877787616974622770/wCfHtuoejLIbAAAAABJRU5ErkJggg.png" class="card-img-top" style="max-width: 18rem;">` %>
+    <div class="card">
       <div class="card-body">
+        <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}" class="card-img-top">` : `<img src="https://cdn.discordapp.com/attachments/765919453766352916/877787616974622770/wCfHtuoejLIbAAAAABJRU5ErkJggg.png" class="card-img-top">` %>
         <h5 class="card-title"><%= guild.name %></h5>
         <% if (bot.guilds.cache.get(guild.id)) { %>
-          <p class="card-text">Edit <%= guild.name %>'s settings via the dashboard by clicking the button below.</p>
-          <a href="/dashboard/<%- guild.id %>" class="btn btn-success text-white">Edit Settings</a>
-        <% } else { %>
-          <p class="card-text">Invite the bot to <%= guild.name %> in order to view their guild's settings via the dashboard by clicking the button below.</p>
-          <a href="<%= `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent('http://localhost:53134/callback')}`  %>" class="btn btn-primary text-white">Invite Bot</a>
-        <% } %>
+          <a href="/dashboard/<%- guild.id %>" class="button">Ajustes</a>
+          <% } else { %>
+            <a href="<%= `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent('http://localhost:53134/callback')}`  %>" class="button invite">Invitar Bot</a>
+            <% } %>
       </div>
     </div>
   <%

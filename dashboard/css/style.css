@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar {
+    font-family: "Nunito", sans-serif;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.navbar {
+    max-width: 100%;
+    height: 8vh;
+    display: flex;
+    justify-content: space-around;
+    margin: .5em;
+    padding-bottom: .55rem;
+    border-bottom: 3px solid #3a3b3c;
+}
+
+.left {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.right {
+    font-size: 1.2rem;
+    display: grid;
+    justify-content: end;
+    align-items: center;
+    grid-template-columns: 3.3rem 1fr 1rem;
+    grid-template-rows: auto;
+    border: 3px solid #3a3b3c;
+    border-radius: 5px;
+    padding: 0.7rem;
+    padding-top: 0.4rem;
+    padding-right: 1rem;
+}
+
+.login-arrow {
+    width: 1.6rem;
+    height: 1.6rem;
+    position: absolute;
+}
+
+.avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    clip-path: circle();
+    align-self: center;
+    display: block;
+}
+
+.dropdown {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    display: none;
+}
+
+.right:hover .dropdown {
+    visibility: visible;
+    opacity: 1;
+    display: block;
+    top: 4rem;
+}
+
+.dropdown {
+    align-self: center;
+    justify-self: center;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    border: 3px solid #3a3b3c;
+    background-color: #242526;
+    border-radius: 5px;
+}
+
+.dropdown-content {
+    display: flex;
+    margin: 0.5rem;
+    margin-right: 0;
+    margin-left: 0;
+    flex-direction: column;
+}
+
+.logout {
+    color: red;
+}
+
+.username {
+    /* font-size: 1.2rem; */
+    display: block;
+    border-radius: 5px;
+    padding: .35rem;
+    font-size: 1.1rem;
+    color: #fff;
+    cursor: default;
+}

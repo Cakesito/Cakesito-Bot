@@ -5,9 +5,10 @@ const Strategy = require('passport-discord').Strategy;
 const passport = require('passport');
 const session = require('express-session');
 const bodyParser = require("body-parser");
-const { PermissionsBitField } = require('discord.js');
 const path = require('path');
 const url = require("url");
+const { PermissionsBitField } = require('discord.js');
+const { clientSecret, discordInvite } = require('../config.json');
 
 const app = express();
 const MemoryStore = require("memorystore")(session);
@@ -25,7 +26,7 @@ module.exports = async (client) => {
         new Strategy(
             {
                 clientID: '869683237776162908',
-                clientSecret: 'TXqH0bv-qIWqrQrfGSIFpjG5PHvLLR6d',
+                clientSecret: clientSecret,
                 callbackURL: 'http://localhost:53134/callback',
                 scope: ['identify', 'guilds']
             },
@@ -43,6 +44,8 @@ module.exports = async (client) => {
     }));
 
     // app.set('views', path.resolve(`${process.cwd()}${path.sep}dashboard${path.sep}templates`));
+
+    app.use("/", express.static(path.resolve(`${process.cwd()}${path.sep}dashboard${path.sep}css`)));
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -101,13 +104,13 @@ module.exports = async (client) => {
 
     app.get('/logout', (req, res) => {
         req.session.destroy(() => {
-            req.logout();
+            req.logout(() => {});
             res.redirect('/');
         });
     });
 
     app.get('/', (req, res) => {
-        renderTemplate(res, req, 'index.ejs', { discordInvite: 'xd' });
+        renderTemplate(res, req, 'index.ejs', { discordInvite: discordInvite });
     });
 
     app.get('/dashboard', checkAuth, (req, res) => {
