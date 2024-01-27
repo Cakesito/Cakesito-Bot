@@ -11,7 +11,7 @@ module.exports = {
         if(args[0]) {
             if(args[0] == 'cash') {
                 let pre = await db.all();
-                pre = pre.filter(x => x.id.startsWith(`e_${member.guild.id}_`));
+                pre = pre.filter(x => x.id.startsWith(`e_${message.guild.id}_`));
 
                 pre.forEach(e => {
                     let help = `{ "${e.value.cash}": "${e.id}" }`;
@@ -22,7 +22,7 @@ module.exports = {
 
             if(args[0] == 'bank') {
                 let pre = await db.all();
-                pre = pre.filter(x => x.id.startsWith(`e_${member.guild.id}_`));
+                pre = pre.filter(x => x.id.startsWith(`e_${message.guild.id}_`));
 
                 pre.forEach(e => {
                     let help = `{ "${e.value.bank}": "${e.id}" }`;
@@ -34,7 +34,7 @@ module.exports = {
 
         if(!args[0] || args[0] == 'total') {
             let pre = await db.all();
-            pre = pre.filter(x => x.id.startsWith(`e_${member.guild.id}_`));
+            pre = pre.filter(x => x.id.startsWith(`e_${message.guild.id}_`));
 
             pre.forEach(e => {
                 let help = `{ "${(e.value.bank || 0) + (e.value.cash || 0)}": "${e.id}" }`;
@@ -47,7 +47,9 @@ module.exports = {
 
         let rank;
         let desc = num.map((e, i) => {
-            let name = message.guild.members.resolve(lb[e].substring(2));
+            var sub = message.guild.id.length + 3;
+            let name = message.guild.members.resolve(lb[e].substring(sub));
+            
             if(name && name.user.tag  == message.author.tag) rank = i + 1;
             return `**${i + 1}.** ${name? name.user.tag : '`unknown`'} **·** <:star:991110840780599336> ${e}`;
         });
@@ -55,16 +57,19 @@ module.exports = {
         let count = 0;
         let pages = [];
         let txt = [];
-        desc.forEach((e, i, a) => {
-            count++
-            txt.push(e);
+        var maxPerPage = 10;
 
-            if(count == 10) {
+        desc.forEach((item, i) => {
+            if(desc.length < maxPerPage && desc.length == count) pages.push(txt);
+            
+            count++
+            txt.push(item);
+
+            if (count == maxPerPage) {
                 pages.push(txt);
+                txt = [];
                 count = 0;
             }
-
-            if(a.length < 10 && a.length == count) pages.push(txt);
 
         });
 
@@ -75,47 +80,42 @@ module.exports = {
         .setDescription(pages[current].join('\n'))
         .setFooter({ text: `Página 1/${pages.length} · Tu posición: ${rank}` });
 
-        let row = new ActionRowBuilder()
-        .addComponents(
-            new ButtonBuilder()
-            .setCustomId('lb-p')
-            .setLabel('<<')
-            .setStyle('Primary')
-            .setDisabled(pages[current - 1] ? false : true),
+        var id = client.collectors.get('active') || 0;
+        client.collectors.set('active', n + 1);
 
-            new ButtonBuilder()
-            .setCustomId('lb-n')
-            .setLabel('>>')
-            .setStyle('Primary')
-            .setDisabled(pages[current + 1] ? false : true)
-        );
-
+        let previousBtn = new ButtonBuilder()
+        .setCustomId(id)
+        .setLabel('<<')
+        .setStyle('Primary')
+        .setDisabled(pages[current - 1] ? false : true);
+        
+        let nextBtn = new ButtonBuilder()
+        .setCustomId('n' + id)
+        .setLabel('>>')
+        .setStyle('Primary')
+        .setDisabled(pages[current + 1] ? false : true);
+        
         if(pages.length > 1) {
-            let filter = (i) => i.customId.startsWith('lb-') && i.user.id == message.author.id;
-            let collector = message.channel.createMessageComponentCollector({ filter, time: 20000 });
+            let filter = (i) => (i.customId == id || i.customId == `n${id}`) && i.user.id == message.author.id;
+            let collector = message.channel.createMessageComponentCollector({ filter, time: 300_000 });
     
             collector.on('collect', async i => {
-                if(i.user.id == message.author.id) {
-                    let isnext = i.customId == 'lb-n' ? true : false;
-                    isnext ? current++ : current--;
-    
-                    embed.setDescription(pages[current].join('\n'));
-                    embed.setFooter({ text: `Página ${current + 1}/${pages.length} · Tu posición: ${rank}` });
-        
-                    await i.update({ embeds: [embed], components: [row] });
-                }
+                i.customId == id ? current-- : current++;
+
+                embed.setFields([]);
+                previousBtn.setDisabled(pages[current - 1] ? false : true);
+                nextBtn.setDisabled(pages[current + 1] ? false : true);
+
+                embed.setDescription(pages[current].join('\n'));
+                embed.setFooter({ text: `Página 1/${pages.length} · Tu posición: ${rank}` })
+                
+                await i.update({ embeds: [embed], components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+
             });
-        }   
 
-        // let inf = {
-        //     current: 0,
-        //     total: pages.length,
-        //     pages: pages
-        // }
+            collector.on('end', () => client.collectors.set('active', id - 1));
+        }
 
-        // client.lb.set('pages', inf);
-        
-        return message.reply({ embeds: [embed], components: [row] });
-
+        return message.reply({ embeds: [embed], components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
     } 
 }

@@ -1,5 +1,5 @@
 // const Economy = require('../../things/economy');
-const { crime } = require('../../economy.json');
+const { crime } = require('../../../economy.json');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
@@ -9,28 +9,27 @@ module.exports = {
 
         const db = client.db.get('db');
         let randomMoney = 0;
-        let embed = new EmbedBuilder().setAuthor({ name: message.author.displayName || message.author.username, iconURL: message.author.displayAvatarURL() });
+        let embed = new EmbedBuilder()
+        .setAuthor({ name: message.author.displayName || message.author.username, iconURL: message.author.displayAvatarURL() })
+        .setTimestamp();
 
         if ((Math.random() * 100) <= crime.pr) {
-            randomMoney = random(crime['win']['min'], crime['win']['max']);
+            randomMoney = random(crime.success.min, crime.success.max);
 
-            let randomText = crime['win']['txt'][Math.floor(Math.random() * crime['win']['txt'].length)];
+            let randomText = crime.success.txt[Math.floor(Math.random() * crime.success.txt.length)];
             embed.setDescription(randomText.replace('{money}', randomMoney));
             embed.setColor(0x56bb74);
 
         } else {
-            randomMoney = random(crime['loose']['min'], crime['loose']['max']);
+            randomMoney = random(crime.fail.min, crime.fail.max);
 
-            let randomText = crime['loose']['txt'][Math.floor(Math.random() * crime['loose']['txt'].length)];
+            let randomText = crime.fail.txt[Math.floor(Math.random() * crime.fail.txt.length)];
             embed.setDescription(randomText.replace('{money}', randomMoney));
             embed.setColor(0xec5454);
         }
 
-        await db.add(`e_${member.guild.id}_${message.author.id}.cash`, randomMoney);
+        await db.add(`e_${message.guild.id}_${message.author.id}.cash`, randomMoney);
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
-
-        
-        // await db.add(`e_${message.author.id}.inv.obj.${crimeCommand.obj.obj}`, crimeCommand.obj.amount);
 
     }
 }

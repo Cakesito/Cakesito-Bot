@@ -35,9 +35,9 @@ module.exports = {
         await db.add(`e_${member.guild.id}_${member.user.id}.${type}`, amount);
 
         let embed = new EmbedBuilder()
-        .setDescription(`${amount} a ${member.user.tag}`);
+        .setDescription(`${amount} a ${member.user.tag} (${type})`);
 
-        return message.channel.send({ embeds: [embed] })
+        return message.channel.send({ embeds: [embed] });
         
     }
 }

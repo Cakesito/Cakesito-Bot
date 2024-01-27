@@ -2,59 +2,91 @@
     "descriptions": {
         "leche": "Un material esencial para la creación de Quesos Canjeables",
         "polvo": "Un polvito mágico usado para la creación de Quesos Canjeables",
-        "quesoken": "Quesos Canjeables"
+        "quesoken": "Quesos canjeables"
+    },
+
+    "convertion": {
+        "cash": "monedas",
+        "inv.quesoken": "quesoken",
+        "inv.": "Materiales"
     },
 
     "shop": {
-        "test": {
-            "description": "obvio",
-            "price-qk": 1000,
-            "reward": {
-                "type": "qc",
-                "amount": 10000
+        "items": [{
+            "name": "tiendita 1",
+            "description": "nose",
+            "price": {
+                "type": "inv.quesoken",
+                "amount": 1000
             },
-            "txt": "Has obtenido {reward}"
-        },
-        
-        "test2": {
-            "description": "axd",
-            "price-qc": 50,
+            "reward": {
+                "type": "cash",
+                "amount": 10000
+            }
+        }, {
+            "name": "cosita 2",
+            "description": "fsdaf",
+            "price": {
+                "type": "cash",
+                "amount": 50
+            },
             "reward": {
                 "type": "role",
-                "role": "804743888857727016"
+                "id": "804743888857727016"
+            }
+        }, {
+            "name": "chiquistrikis",
+            "description": "3",
+            "price": {
+                "type": "cash",
+                "amount": 50
             },
-            "txt": "Rol: {reward}"
-        }
+            "reward": {
+                "type": "cash",
+                "amount": 300
+            }
+        }],
+
+        "txt": "Obtuviste {reward}"
     },
 
     "craft": {
-        "pr": 80,
-        "items": {
-            "quesoken": {
-                "leche": 10,
-                "polvo": 5
+        "items": [{
+            "name": "quesoken",
+            "type": "inv.quesoken",
+            "probability": 80,
+            "description": "Tokens canjeables",
+            "materials": {
+                "leche": 5,
+                "polvo": 10
             }
-        },
-        "txt": [
-            "**🧱 Crafteaste un item correctamente**\n`» | Item crafteado:` {obj}",
-            "**🧱 Algo salió mal en el proceso...**\n`◽ | Item:` Nada :("
-        ]
+        }],
+
+        "txt": {
+            "success": "**🧱 Crafteaste un item correctamente**\n`» | Item crafteado:` {item}",
+            "fail": "**🧱 Algo salió mal en el proceso...**\n`◽ | Item:` Nada :("
+        }
     },
  
     "claim": {
         "cooldown": 3600000,
-        "amount": 5,
-        "oam": {
-            "leche": [5, 5],
-            "polvo": [3, 3]
+        "reward": {
+            "type": "inv.",
+            "materials": {
+                "leche": [5, 5],
+                "polvo": [1, 5]
+            }
         },
-        "txt": "**🎁 Has recogido tu suministro de materiales!**\n`◽ | Materiales:` **{obj}**\n\n*Vuelve en **⏳ 1 hora** para recibir otro suministro.*"
+        "txt": "**🎁 Has recogido tu suministro!**\n`◽ | Has obtenido:` **{reward}**\n\n*Vuelve en **⏳ 1 hora** para recibir otro suministro.*"
     },
- 
+
     "daily": {
         "cooldown": 43200000,
-        "amount": 3000,
-        "txt": "**🌞 Reclamaste tu recompensa diaria!**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 12 horas** para reclamar otra recompensa.*"
+        "reward": {
+            "type": "cash",
+            "amount": 1000
+        },
+        "txt": "**🌞 Reclamaste tu recompensa diaria!**\n`◽ | Dinero:` **<:star:991110840780599336> {reward}**\n\n*Vuelve en **⏳ 12 horas** para reclamar otra recompensa.*"
     },
  
     "work": {
@@ -69,8 +101,8 @@
  
     "crime": {
         "cooldown": 600000,
-        "pr": 75,
-        "win": {
+        "probability": 75,
+        "success": {
             "txt": [
                 "**🔪 Has cometido un delito!**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para cometer otro crimen de odio.*"
             ],
@@ -78,7 +110,7 @@
             "max": 500
         },
  
-        "loose": {
+        "fail": {
             "txt": [
                 "**🔪 Intentaste cometer un delito...**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para intentar otro crimen de odio.*"
             ],
@@ -88,37 +120,14 @@
     },
  
     "explore": {
-        "pr": 100,
         "cooldown": 600000,
-        "opr": {
-            "leche": 70,
-            "polvo": 30
+        "materials": {
+            "leche": [4, 5],
+            "polvo": [0, 0]
         },
- 
-        "win": {
-            "txt": [
-                "**🔍 Has explorado la zona.**\n`◽ | Materiales:` **{obj}**\n\n*Vuelve en **⏳ 10 minutos** para explorar la hermosa fauna que te pierdes en la vida real.*"
-            ]
-        }
-    },
-
-    "mine": {
-        "pr": 75,
-        "opr": {
-            "leche": 70,
-            "polvo": 30
-        },
-
-        "win": {
-            "txt": [
-                "aqui"
-            ]
-        },
-
-        "loose": {
-            "txt": [
-                "aqui"
-            ]
+        "txt": {
+            "success": "**🔍 Has explorado la zona.**\n`◽ | Materiales:` **{reward}**\n\n*Vuelve en **⏳ 10 minutos** para explorar la hermosa fauna que te pierdes en la vida real.*",
+            "fail": "No encontraste nada, qué mala suerte."
         }
     }
 }

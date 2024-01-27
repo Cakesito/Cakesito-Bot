@@ -5,19 +5,16 @@ module.exports = {
     run: async (client, message, args) => {
         const db = client.db.get('db');
         
-        let current = await db.get(`e_${message.author.id}.cash`) || 0;
-        // if(!current) return message.reply('xd');
+        let current = await db.get(`e_${message.guild.id}_${message.author.id}.cash`) || 0;
 
-        let amount = args[0];
-        if(!amount || isNaN(Number(amount)) && amount != 'all') return message.reply('xd');
+        let amount = Number(args[0]);
+        if(!amount || isNaN(amount) && amount != 'all' ||isNaN(amount) && amount != 'max') return message.reply('¿Cuánto dinero depositarás?');
         
         if(amount == 'all' || amount == 'max') amount = current;
-        if(current = 0 || amount > current) return message.reply(`Parece que no tienes dinero suficiente.\nFaltante: ${amount - current}`);
-        
-        amount = Number(amount);
+        if(current <= 0 || amount > current) return message.reply(`Parece que no tienes dinero suficiente.\nFaltante: ${amount - current}`);
 
-        await db.add(`e_${member.guild.id}_${message.author.id}.bank`, amount);
-        await db.sub(`e_${member.guild.id}_${message.author.id}.cash`, amount);
+        await db.add(`e_${message.guild.id}_${message.author.id}.bank`, amount);
+        await db.sub(`e_${message.guild.id}_${message.author.id}.cash`, amount);
 
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL()})

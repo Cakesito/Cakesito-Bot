@@ -1,7 +1,7 @@
 const req = require('web-request');
-const Level = require('../things/level.js');
+const Level = require('../../../things/level.js');
 const { MessageEmbed } = require('discord.js');
-const wd = require('../things/wd')
+const wd = require('../../../things/wd.js')
 const face = {
     'unrated': 'https://i.imgur.com/DO57Ksu.png',
     'unrated-featured': 'https://i.imgur.com/mNOp3Pj.png',

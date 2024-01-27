@@ -56,18 +56,17 @@ module.exports = {
                 } else {
 
                     member = member.first();
-                    if(member.user.bot) return message.reply('x?');
+                    if(member.user.bot) return message.reply('El usuario elegido es un bot.');
     
                 }
 
             } 
 
             if(!member.user) return message.reply('No pude encontrar el usuario.');
-            if(member.user.bot) return message.reply('xx?');
+            if(member.user.bot) return message.reply('El usuario elegido es un bot.');
 
         }
 
-        
         let bal = await db.get(`e_${member.guild.id}_${member.user.id}`);
         if (!bal) bal = { cash: 0, bank: 0 };
 
@@ -84,7 +83,7 @@ module.exports = {
         )
         .setTimestamp();
 
-        return message.reply({ embeds: [balEmbed] });
+        return message.reply({ embeds: [balEmbed], allowedMentions: { repliedUser: false } });
         
     }
 }

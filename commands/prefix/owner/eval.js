@@ -18,6 +18,8 @@ module.exports = {
     ownerOnly: true,
     run: async (client, message, args) => {
 
+      const db = client.db.get('db');
+
         try {
             const evaled = eval(args.join(' '));
             const cleaned = await clean(evaled);
