@@ -6,7 +6,7 @@ module.exports = {
     .setDescription('Retira dinero de tu banco')
     .addStringOption(x =>
         x.setName('cantidad')
-        .setDescription('Cantidad a retirar o all/max')),
+        .setDescription('Cantidad a retirar o all/max (por defecto)')),
         
     run: async (client, interaction) => {
         const db = client.db.get('db');

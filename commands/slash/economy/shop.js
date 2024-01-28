@@ -17,13 +17,12 @@ module.exports = {
         let count = 0;
         let pages = [];
         let txt = [];
-        var maxPerPage = 1;
+        var maxPerPage = 10;
         
         shopText.forEach(item => {
-
+            count++
             if(shopText.length < maxPerPage && shopText.length == count) pages.push(txt);
             
-            count++
             txt.push(item);
 
             if (count == maxPerPage) {
@@ -45,26 +44,26 @@ module.exports = {
         });
 
         var id = client.collectors.get('active') || 0;
-        client.collectors.set('active', n + 1);
+        client.collectors.set('active', id + 1);
 
         let previousBtn = new ButtonBuilder()
-        .setCustomId(id)
+        .setCustomId(`cake-${id}`)
         .setLabel('<<')
         .setStyle('Primary')
         .setDisabled(pages[current - 1] ? false : true);
         
         let nextBtn = new ButtonBuilder()
-        .setCustomId('n' + id)
+        .setCustomId(`cake-n-${id}`)
         .setLabel('>>')
         .setStyle('Primary')
         .setDisabled(pages[current + 1] ? false : true);
         
         if(pages.length > 1) {
-            let filter = (i) => (i.customId == n || i.customId == `n${id}`) && i.user.id == interaction.user.id;
+            let filter = (i) => (i.customId == `cake-${id}` || i.customId == `cake-n-${id}`) && i.user.id == interaction.user.id;
             let collector = interaction.channel.createMessageComponentCollector({ filter, time: 300_000 });
     
             collector.on('collect', async i => {
-                i.customId == id ? current-- : current++;
+                i.customId == `cake-${id}` ? current-- : current++;
 
                 embed.setFields([]);
                 previousBtn.setDisabled(pages[current - 1] ? false : true);

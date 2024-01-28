@@ -15,6 +15,7 @@
         "items": [{
             "name": "tiendita 1",
             "description": "nose",
+            "onlyOnce": true,
             "price": {
                 "type": "inv.quesoken",
                 "amount": 1000
@@ -25,17 +26,20 @@
             }
         }, {
             "name": "cosita 2",
+            "onlyOnce": true,
             "description": "fsdaf",
             "price": {
                 "type": "cash",
                 "amount": 50
             },
             "reward": {
+                "amount": 1,
                 "type": "role",
                 "id": "804743888857727016"
             }
         }, {
             "name": "chiquistrikis",
+            "onlyOnce": false,
             "description": "3",
             "price": {
                 "type": "cash",
@@ -49,6 +53,8 @@
 
         "txt": "Obtuviste {reward}"
     },
+
+    "materials": ["leche", "polvo", "caramelo"],
 
     "craft": {
         "items": [{

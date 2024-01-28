@@ -4,7 +4,7 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('deposit')
     .setDescription('Deposita dinero a tu banco')
-    .addStringOption(x => x.setName('cantidad').setDescription('Cantidad a depositar o all/max')),
+    .addStringOption(x => x.setName('cantidad').setDescription('Cantidad a depositar o all/max (por defecto)')),
 
     run: async (client, interaction) => {
         const db = client.db.get('db');

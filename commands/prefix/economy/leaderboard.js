@@ -60,9 +60,9 @@ module.exports = {
         var maxPerPage = 10;
 
         desc.forEach((item, i) => {
+            count++
             if(desc.length < maxPerPage && desc.length == count) pages.push(txt);
             
-            count++
             txt.push(item);
 
             if (count == maxPerPage) {
@@ -81,26 +81,26 @@ module.exports = {
         .setFooter({ text: `Página 1/${pages.length} · Tu posición: ${rank}` });
 
         var id = client.collectors.get('active') || 0;
-        client.collectors.set('active', n + 1);
+        client.collectors.set('active', id + 1);
 
         let previousBtn = new ButtonBuilder()
-        .setCustomId(id)
+        .setCustomId(`cake-${id}`)
         .setLabel('<<')
         .setStyle('Primary')
         .setDisabled(pages[current - 1] ? false : true);
         
         let nextBtn = new ButtonBuilder()
-        .setCustomId('n' + id)
+        .setCustomId(`cake-n-${id}`)
         .setLabel('>>')
         .setStyle('Primary')
         .setDisabled(pages[current + 1] ? false : true);
         
         if(pages.length > 1) {
-            let filter = (i) => (i.customId == id || i.customId == `n${id}`) && i.user.id == message.author.id;
+            let filter = (i) => (i.customId == `cake-${id}` || i.customId == `cake-n-${id}`) && i.user.id == message.author.id;
             let collector = message.channel.createMessageComponentCollector({ filter, time: 300_000 });
     
             collector.on('collect', async i => {
-                i.customId == id ? current-- : current++;
+                i.customId == `cake-${id}` ? current-- : current++;
 
                 embed.setFields([]);
                 previousBtn.setDisabled(pages[current - 1] ? false : true);

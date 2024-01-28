@@ -33,9 +33,12 @@ module.exports = {
 
         if (!item.description) return message.reply('No encontré el objeto `' + item + '`.');
 
-        current = await db.get(`e_${message.guild.id}_${message.author.id}.${item.price.type}`) || 0;
+        item = item[0];
 
-        
+        current = await db.get(`e_${message.guild.id}_${message.author.id}.${item.price.type}`) || 0;
+        var hasBought = await db.get(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`) || [];
+
+        if (item.onlyOnce && hasBought.includes(item.name)) return interaction.reply({ content: 'Ya has comprado este objeto.', ephemeral: true });
         if (amount > 1 && item.reward.type == 'role') return message.reply(`Solo puedes comprar uno.`);
 
         item.reward.amount = item.reward.amount * amount;
@@ -56,15 +59,13 @@ module.exports = {
             let role = await message.guild.roles.cache.find(x => x.id == item.reward.id);
             if (!role) return message.reply('Rol no encontrado.');
 
-            if (message.member.roles.cache.has(role)) return message.reply('Ya has comprado este objeto.');
-
             message.member.roles.add(role);
-            text = `<&${item.reward.id}>`;
+            text = `<@&${item.reward.id}>`;
 
         } else await db.add(`e_${message.guild.id}_${message.author.id}.${item.reward.type}`, item.reward.amount);
 
         await db.sub(`e_${message.guild.id}_${message.author.id}.${item.price.type}`, item.price.amount);
-
+        if (item.onlyOnce) await db.push(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`, item.name);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })

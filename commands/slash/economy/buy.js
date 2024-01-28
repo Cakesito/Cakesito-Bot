@@ -19,8 +19,12 @@ module.exports = {
         const db = client.db.get('db');
 
         let item = shop.items.filter(x => x.name == interaction.options.getString('objeto'));
+        item = item[0];
         let amount = interaction.options.getInteger('cantidad') || 1;
 
+        var hasBought = await db.get(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`) || [];
+
+        if (item.onlyOnce && hasBought.includes(item.name)) return interaction.reply({ content: 'Ya has comprado este objeto.', ephemeral: true });
         if (amount > 1 && item.reward.type == 'role') return interaction.reply({ content: 'Solo puedes comprar uno.', ephemeral: true });
 
         item.reward.amount = item.reward.amount * amount;
@@ -43,14 +47,13 @@ module.exports = {
             let role = await interaction.guild.roles.cache.find(x => x.id == item.reward.id);
             if (!role) return interaction.reply('Rol no encontrado.');
 
-            if (interaction.member.roles.cache.has(role)) return interaction.reply({ content: 'Ya has comprado este objeto.', ephemeral: true });
-
             interaction.member.roles.add(role);
-            text = `<&${item.reward.id}>`;
+            text = `<@&${item.reward.id}>`;
 
         } else await db.add(`e_${interaction.guildId}_${interaction.user.id}.${item.reward.type}`, item.reward.amount);
 
         await db.sub(`e_${interaction.guildId}_${interaction.user.id}.${item.price.type}`, item.price.amount);
+        if (item.onlyOnce) await db.push(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`, item.name);
 
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.member.displayName || interaction.user.username, iconURL: interaction.member.displayAvatarURL() })

@@ -4,9 +4,9 @@ module.exports = {
     run: async (client, message) => {
         const db = client.db.get('db');
         var prefix = await db.get(`p_${message.guild.id}`) || default_prefix;
-        var regex = new RegExp(`<@${clientId}>`);
+        var regex = new RegExp(`<@${clientId}>`, 'g');
 
-        if(message.author.bot || !message.guild || !message.content.startsWith(prefix) || message.content.match(regex)) return;
+        if(message.author.bot || !message.guild || !message.content.startsWith(prefix)) return;
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g);
         const cmd = args.shift().toLowerCase();
@@ -32,10 +32,10 @@ module.exports = {
         }
 
         if(command.cooldown) {
-            let timeout = client.cooldowns.get(`c_${message.guild.id}_${command.name}_${message.author.id}`) || 0;
+            let timeout = client.cooldowns.get(`c_${message.guild.id}_${message.author.id}_${command.name}`) || 0;
 
             if(timeout + command.cooldown > Date.now()) return message.reply(`Espera hasta <t:${Math.floor((timeout + command.cooldown) / 1000)}:t> (<t:${Math.floor((command.cooldown + timeout) / 1000)}:R>) para usar ${command.name}.`);
-            client.cooldowns.set(`c_${message.guild.id}_${command.name}_${message.author.id}`, Date.now());
+            client.cooldowns.set(`c_${message.guild.id}_${message.author.id}_${command.name}`, Date.now());
         }
 
         command.run(client, message, args);
