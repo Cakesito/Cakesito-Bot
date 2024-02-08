@@ -1,0 +1,79 @@
+{
+    "prefix": ",",
+    "descriptions": {},
+    "materials": [],
+
+    "convertion": {
+        "cash": "monedas",
+        "inv.": "Materiales"
+    },
+
+    "shop": {
+        "items": [],
+        "txt": "Obtuviste {reward}"
+    },
+
+    "craft": {
+        "items": [],
+        "txt": {
+            "success": "**🧱 Crafteaste un item correctamente**\n`» | Item crafteado:` {item}",
+            "fail": "**🧱 Algo salió mal en el proceso...**\n`◽ | Item:` Nada :("
+        }
+    },
+ 
+    "claim": {
+        "cooldown": 3600000,
+        "reward": {
+            "type": "cash",
+            "amount": 100
+        },
+        "txt": "**🎁 Has recogido tu suministro!**\n`◽ | Has obtenido:` **{reward}**\n\n*Vuelve en **⏳ 1 hora** para recibir otro suministro.*"
+    },
+
+    "daily": {
+        "cooldown": 43200000,
+        "reward": {
+            "type": "cash",
+            "amount": 1000
+        },
+        "txt": "**🌞 Reclamaste tu recompensa diaria!**\n`◽ | Dinero:` **<:star:991110840780599336> {reward}**\n\n*Vuelve en **⏳ 12 horas** para reclamar otra recompensa.*"
+    },
+ 
+    "work": {
+        "cooldown": 300000,
+        "min": 100,
+        "max": 250,
+        "txt": [
+            "**💼 Trabajaste en QuesosCorp.**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 5 minutos** para trabajar como esclavo.*"
+        ]
+    },
+ 
+    "crime": {
+        "cooldown": 600000,
+        "probability": 75,
+        "success": {
+            "txt": [
+                "**🔪 Has cometido un delito!**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para cometer otro crimen de odio.*"
+            ],
+            "min": 250,
+            "max": 500
+        },
+ 
+        "fail": {
+            "txt": [
+                "**🔪 Intentaste cometer un delito...**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para intentar otro crimen de odio.*"
+            ],
+            "min": 100,
+            "max": 250
+        }
+    },
+ 
+    "explore": {
+        "cooldown": 600000,
+        "materials": {},
+        "txt": {
+            "success": "**🔍 Has explorado la zona.**\n`◽ | Materiales:` **{reward}**\n\n*Vuelve en **⏳ 10 minutos** para explorar la hermosa fauna que te pierdes en la vida real.*",
+            "fail": "No encontraste nada, qué mala suerte."
+        }
+    }
+}

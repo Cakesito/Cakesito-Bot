@@ -1,0 +1,55 @@
+
+.markable {
+    border: 2px solid #3a3b3c;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+#sidebar-daily-claim {
+    color: #fff;
+    background-color: #3a3b3c;
+    border-radius: 5px;
+}
+
+.markable:hover {
+    border: 2px solid #959595;
+    cursor: pointer;
+}
+
+.disabled p {
+    color: #959595;
+}
+
+.select-type {
+    display: flex;
+    gap: 2rem;
+}
+
+.disabled:hover {
+    cursor: default !important;
+    border: 2px solid #3a3b3c !important;
+}
+
+#claim-selected {
+    border: 2px solid #738ADB;
+}
+
+#daily-selected {
+    border: 2px solid #738ADB;
+}
+
+select:active {
+    background-color: transparent;
+}
+
+.div-money, .div-money input {
+    min-width: 5rem;
+}
+
+.claim-cooldown {
+    display: inline-block;
+}
+
+.claim-description {
+    display: inline-block;
+}

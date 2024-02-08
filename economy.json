@@ -130,7 +130,7 @@
         "materials": {
             "leche": [4, 5],
             "polvo": [0, 0]
-        },
+    },
         "txt": {
             "success": "**🔍 Has explorado la zona.**\n`◽ | Materiales:` **{reward}**\n\n*Vuelve en **⏳ 10 minutos** para explorar la hermosa fauna que te pierdes en la vida real.*",
             "fail": "No encontraste nada, qué mala suerte."

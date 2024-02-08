@@ -1,0 +1,84 @@
+#sidebar-materials {
+    color: #fff;
+    background-color: #3a3b3c;
+    border-radius: 5px;
+}
+
+.objects-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.objects-available {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#add-object {
+    width: 7vw;
+    height: 7vw;
+    border: 3px solid #959595;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 1rem;
+}
+
+.object {
+    max-width: 32vw;
+    min-width: 13vw;
+    border: 3px solid #959595;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 1rem;
+    justify-content: start;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#add-object {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.object:hover {
+    border: 3px solid #fff;
+}
+
+#add-object:hover {
+    border: 3px solid #687cc5; 
+}
+
+#add-object:hover svg {
+    fill: #687cc5;
+}
+
+.material > * {
+    font-size: 1rem;
+}
+
+.material input {
+    margin: 3px 0 3px 0;
+}
+
+.unavailable {
+    border: 3px solid #3a3b3c !important;
+}
+
+.unavailable > svg {
+    fill: #3a3b3c !important;
+}
+
+.unavailable:hover {
+    cursor: default !important;
+    border: 3px solid #3a3b3c !important;
+}

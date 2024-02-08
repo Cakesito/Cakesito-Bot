@@ -1,0 +1,186 @@
+body {
+    background-color: #151515;
+    font-family: 'Nunito', sans-serif;
+    color: #fff
+}
+
+.alert {
+    position: fixed;
+    border-radius: 5px;
+    padding: 0.7rem;
+    animation: hide 5s linear 2s 1 forwards;
+    cursor: default;
+    z-index: 100;
+}
+
+.success {
+    background-color: #56bb74;
+}
+
+.error {
+    background-color: #ec5454;
+}
+
+@keyframes hide {
+    to {
+        opacity: 0;
+    }
+}
+
+.container {
+    margin-left: calc(15vw + 2rem);
+}
+
+.guild {
+    display: flex;
+    align-items: center;
+}
+
+.guild img {
+    clip-path: circle();
+    width: 2.5rem;
+    height: auto;
+}
+
+.guild p {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: inline-block;
+    padding-left: 0.5rem;
+}
+
+input, select, textarea {
+    background-color: transparent;
+    border: 2px solid #3a3b3c;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 0.5rem 0 0.5rem 0;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+}
+
+select {
+    background-color: #151515;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input:focus, select:focus {
+    padding: 5px;
+    border: 2px solid #959599;
+    outline: 0;
+    color: #fff;
+}
+
+.marked {
+    background-color: #3a3b3c;
+    font-size: 0.9rem;
+    margin: 2px;
+    padding: 1px;
+}
+
+.invalid {
+    border: 2px solid #ec5454;
+    color: #ec5454;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.save {
+    font-family: 'Nunito', sans-serif;
+    border: 3px solid #3a3b3c;
+    padding: .6rem;
+    font-size: 1.2rem;
+    background-color: #3a3b3c;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.save:hover {
+    background-color: #fff;
+    border: 3px solid #cccccc;
+    color: #3a3b3c;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.divider {
+    display: flex;
+    gap: 2rem;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+}
+
+.invisible {
+    position: absolute;
+    visibility: hidden;
+}
+
+button:disabled {
+    color: #959595;
+}
+
+button:disabled:hover {
+    border: 3px solid #3a3b3c;
+    background-color: #3a3b3c;
+    color: #959595;
+    cursor: default;
+}
+
+.help {
+    display: inline-block;
+}
+
+.divider-special {
+    justify-content: space-between;
+    margin-right: 2rem;
+}
+
+.description {
+    display: inline-block;
+}
+
+.custom-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.caution {
+    font-family: 'Nunito', sans-serif;
+    border: 3px solid #3a3b3c;
+    padding: .6rem;
+    font-size: 1.2rem;
+    background-color: #202020;
+    border-radius: 5px;
+    color: #ec5454;
+    justify-self: center;
+    align-self: center;
+}
+
+.caution:hover {
+    background-color: #171717;
+    border: 3px solid #ec5454;
+    color: #ec5454;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+}
+
+.yet-another-div {
+    display: flex;
+    gap: 1.5rem;
+}

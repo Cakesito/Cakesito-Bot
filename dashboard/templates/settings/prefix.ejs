@@ -1,0 +1,53 @@
+<%- include("../partials/nav.ejs", { bot, user, path, title: "Cake | Prefix" }) %>
+<%- include("../partials/sidebar.ejs", { bot, user, path }) %>
+
+<head>
+  <link rel="stylesheet" href="/settings.css">
+  <style>
+    #sidebar-prefix {
+      color: #fff;
+      background-color: #3a3b3c;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<div class="container">
+  <div class="content">
+    <% if (alert) { %>
+      <div class="alert alert-success" role="alert">
+        <%= alert %>
+      </div>
+    <% } %>
+    <div class="guild">
+      <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png">` %>
+      <p><%= guild.name %></p>
+    </div>
+    <p class="title">Prefix</p>
+    <p class="description">El prefix se escribe antes del nombre del comando.</p><br>
+    <input type="text" id="prefix" value="<%= settings.prefix %>" placeholder="Prefix">
+    <br><button class="save" id="save">Guardar cambios</button>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var button = document.getElementById('save');
+  var value = document.getElementById('prefix');
+
+  save.addEventListener('click', () => {
+
+    fetch(window.location.href, {
+      method: 'POST',
+      headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+      },
+      body: {
+        "setting": "prefix",
+        "data": value.value
+      }
+
+    }).then(() => {});
+
+  })
+</script>

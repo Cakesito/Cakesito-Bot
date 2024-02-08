@@ -1,0 +1,65 @@
+
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Nunito", sans-serif;
+}
+
+body {
+    background-color: #151515;
+}
+
+.main-con {
+    margin: 20vw;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+
+.desc {
+    color: #fff;
+    text-align: center;
+    position: relative;
+    font-size: 2.4rem;
+}
+
+.button {
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    border: 4px solid #3a3b3c;
+    background-color: transparent;
+    color: #fff;
+    text-align: center;
+}
+
+.button-con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button:hover {
+    background-color: #fff;
+    border: 4px solid #cccccc;
+    color: #3a3b3c;
+    transition: 0.2s;
+}
+
+.button:hover svg {
+    fill: #3a3b3c;
+}
+
+.invite:hover {
+    background-color: #738ADB;
+    transition: 0.2s;
+    border: 4px solid #687cc5;
+}
+
+.icon {
+    width: 1.5rem;
+    height: auto;
+    position: relative;
+    top: 3px;
+}

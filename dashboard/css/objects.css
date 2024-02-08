@@ -1,0 +1,135 @@
+#sidebar-objects {
+    color: #fff;
+    background-color: #3a3b3c;
+    border-radius: 5px;
+}
+
+input[type='text'] {
+    max-width: 80%;
+}
+
+.objects-container {
+    display: flex;
+    margin-right: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.objects-container div {
+    width: 12rem;
+    height: 12rem;
+    border: 3px solid #959595;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.3rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.object:hover {
+    border: 3px solid #fff;
+}
+
+#add-object > svg {
+    width: 80%;
+    height: 80%;
+}
+
+#add-object:hover {
+    border: 3px solid #687cc5; 
+}
+
+#add-object:hover svg {
+    fill: #687cc5;
+}
+
+.secondary {
+    font-size: 0.9rem;
+    color: #959595;
+}
+
+.material > * {
+    font-size: 1rem;
+}
+
+.material input {
+    margin: 3px 0 3px 0;
+}
+
+.unavailable {
+    border: 3px solid #3a3b3c !important;
+}
+
+.unavailable > svg {
+    fill: #3a3b3c !important;
+}
+
+.unavailable:hover {
+    cursor: default !important;
+    border: 3px solid #3a3b3c !important;
+}
+
+.object-info {
+    overflow-x: hidden;
+    width: 0;
+    position: fixed;
+    height: 100%;
+    right: -5rem;
+    top: 0;
+    background-color: #151515;
+    border-left: 3px solid #3a3b3c;
+    padding: 1.5rem;
+    transition: 0.1s;
+    z-index: 60;
+}
+
+.layer {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    z-index: 50;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    overflow: hidden;
+}
+
+.object-info-close {
+    right: 6rem;
+    top: 1rem;
+    position: absolute;
+    fill: #fff;
+    width: 1.3rem;
+    height: auto;
+}
+
+.object-info-close:hover {
+    cursor: pointer;
+}
+
+.material-list {
+    padding: 0.5rem; 
+    display: inline-block;
+}
+
+.material-list:hover {
+    background-color: #3a3b3c;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.down {
+    width: 1rem;
+    height: auto;
+    opacity: 0;
+}
+
+.material-list:hover > .down {
+    opacity: 1;
+}

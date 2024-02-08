@@ -1,0 +1,58 @@
+<%- include("../partials/nav.ejs", { bot, user, path, title: "Cake | Materiales" }) %>
+<%- include("../partials/sidebar.ejs", { bot, user, path }) %>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/settings.css">
+    <link rel="stylesheet" type="text/css" href="/materials.css">
+</head>
+
+<div class="container">
+    <div class="alert-container"></div>
+
+    <div class="guild">
+        <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png">` %>
+        <p><%= guild.name %></p>
+    </div>
+
+    <p class="title">Materiales</p>
+    <div>
+        <p class="description">Los materiales se usan para crear objetos.</p><br><br>
+        <p class="title available-text">Materiales disponibles (<%= settings.materials.length ?? 0 %>/10)</p><br>
+    </div>
+
+    <div class="objects-container">
+        <div id="add-object">
+            <svg style="width: 5rem;" xmlns="http://www.w3.org/2000/svg" fill="#959595" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+            </svg>
+        </div>
+
+        <div class="objects-available">
+            
+            <div class="invisible" id="object-template">
+                <input style="max-width: 10vw;" class="title object-name" type="text" value="Mi material" maxlength="70"></input>
+                <p class="help">Descripción:</p>
+                <input style="max-width: 20vw;" class="description object-description" type="text" value="Descripción divertida" maxlength="70"></input>
+                <br><button class="caution remove-object">Eliminar</button>
+            </div>
+
+            <% if (settings.materials.length) { %>
+                <% let descriptions = settings.descriptions %>
+                <% settings.materials.forEach(material => {  %>
+                    <div class="object">
+                        <input style="max-width: 80%;" class="title object-name" type="text" value="<%= material.name %>" maxlength="70"></input>
+                        <p class="help">Descripción:</p>
+                        <input style="max-width: 80%;" class="description object-description" type="text" value="<%= material.description %>" maxlength="70"></input>
+                        <br><button class="caution remove-object">Eliminar</button>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+
+    </div><br>
+
+    <button class="save" id="save">Guardar cambios</button><br><br>
+
+</div>
+<script type="text/javascript" src="/materials.js"></script>

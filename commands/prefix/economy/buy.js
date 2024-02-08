@@ -38,7 +38,7 @@ module.exports = {
         current = await db.get(`e_${message.guild.id}_${message.author.id}.${item.price.type}`) || 0;
         var hasBought = await db.get(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`) || [];
 
-        if (item.onlyOnce && hasBought.includes(item.name)) return interaction.reply({ content: 'Ya has comprado este objeto.', ephemeral: true });
+        if (item.onlyOnce && hasBought.includes(item.name)) return interaction.reply({ content: 'Ya has comprado este objeto.' });
         if (amount > 1 && item.reward.type == 'role') return message.reply(`Solo puedes comprar uno.`);
 
         item.reward.amount = item.reward.amount * amount;

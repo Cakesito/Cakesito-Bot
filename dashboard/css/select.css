@@ -1,0 +1,69 @@
+
+
+body {
+    background-color: #151515;
+}
+
+
+.main-con {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+.card {
+    margin: 2rem;
+    width: 13vw;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    max-width: 15vw;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-img-top {
+    /* clip-path: circle(); */
+    width: 10vw;
+    height: auto;
+    max-width: 10vw;
+    border-radius: 10%;
+    border: 4px solid #3a3b3c;
+}
+
+.card-title {
+    font-family: "Nunito", sans-serif;
+    color: white;
+    text-align: center;
+    margin: 1rem;
+    font-size: 1.5rem;
+}
+
+.button {
+    border: 3px solid #3a3b3c;
+    padding: .6rem;
+    font-family: "Nunito", sans-serif;
+    font-size: 1.1rem;
+    background-color: #3a3b3c;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #fff;
+    border: 3px solid #cccccc;
+    color: #3a3b3c;
+    transition: 0.2s;
+}
+
+.invite {
+    background-color: transparent;
+}
+
+.invite:hover {
+    background-color: #738ADB;
+    transition: 0.2s;
+    border: 3px solid #687cc5;
+}

@@ -1,0 +1,264 @@
+<%- include("../partials/nav.ejs", { bot, user, path, title: "Cake | Work - Crime - Explore" }) %>
+<%- include("../partials/sidebar.ejs", { bot, user, path }) %>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/settings.css">
+    <style>
+      
+    #sidebar-work-crime-explore {
+      color: #fff;
+      background-color: #3a3b3c;
+      border-radius: 5px;
+    }
+
+    </style>
+    
+</head>
+
+<div class="container">
+    <div class="alert-container"></div>
+    <div class="content">
+      
+      <div class="guild">
+        <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png">` %>
+        <p><%= guild.name %></p>
+      </div>
+
+      <div class="divider divider-special">
+        <div style="max-width: 30vw;">
+            <p class="title">Work</p>
+            <p style="display: inline;" class="description">Gana dinero cada </p>
+            <input style="display: inline;" type="text" id="input-work-cooldown" value="<%= settings.work.cooldown %>">
+            <br>
+            <div class="div-money">
+                <p class="subtitle">Rango de dinero</p>
+                <p class="help">De: </p>
+                <input style="display: inline-block;" type="number" id="input-work-min" value="<%= settings.work.min %>" placeholder="Cantidad">
+                <p class="help"> a </p>
+                <input style="display: inline-block;" type="number" id="input-work-max" value="<%= settings.work.max %>" placeholder="Cantidad">
+            </div>
+        </div>
+  
+      <div style="width: 65%;">
+          <p class="title">Work - Texto Personalizado</p>
+          <p class="description">Escribir</p> <p class="description marked">{money} </p> <p class="description">para indicar la cantidad de dinero ganado.</p><br>
+          <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
+
+          <div class="custom-text-text" id="custom-text-1">
+            <button id="work-add-text" class="save add-text">Añadir</button><br>
+            <div class="custom-text">
+              <% settings.work.txt.forEach(x => { %>
+                <div class="yet-another-div">
+                  <textarea rows="5" maxlength="2000"> <%= x %> </textarea>
+                  <button class="caution remove-text">Eliminar</button>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+      </div>  
+    </div>
+
+    <button class="save" id="save-work">Guardar cambios en Work</button>
+    <br>
+    <br>
+
+  <div class="divider divider-special">
+    <div style="max-width: 30vw;">
+        <p class="title">Crime</p>
+        <p class="description">Gana o pierde dinero cada </p>
+        <input style="display: inline; margin: 3px 0 3px 0" type="text" id="input-crime-cooldown" value="<%= settings.crime.cooldown %>"><br>
+        <p class="description">Probabilidad de ganar: </p>
+        <input style="display: inline; margin: 3px 0 3px 0" type="number" id="input-crime-probability" value="<%= settings.crime.probability %>">
+        <p class="description">%</p>
+        <br>
+        <div class="div-money">
+            <p class="subtitle">En caso de ganar</p>
+            <p class="help">De: </p>
+            <input style="display: inline-block;" type="number" id="input-crime-success-min" value="<%= settings.crime.success.min %>" placeholder="Cantidad">
+            <p class="help"> a </p>
+            <input style="display: inline-block;" type="number" id="input-crime-success-max" value="<%= settings.crime.success.max %>" placeholder="Cantidad">
+
+            <p class="subtitle">En caso de perder</p>
+            <p class="help">De: </p>
+            <input style="display: inline-block;" type="number" id="input-crime-fail-min" value="<%= settings.crime.fail.min %>" placeholder="Cantidad">
+            <p class="help"> a </p>
+            <input style="display: inline-block;" type="number" id="input-crime-fail-max" value="<%= settings.crime.fail.max %>" placeholder="Cantidad">
+
+        </div>
+    </div>
+
+    <div style="width: 65%;">
+      <p class="title">Crime - Texto Personalizado</p>
+      <p class="description">Escribir</p> <p class="description marked">{money} </p> <p class="description">para indicar la cantidad de dinero ganado.</p><br>
+      <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
+                
+        <div class="custom-text-text" id="custom-text-4">
+            <p class="subtitle">En caso de ganar</p>
+            <br><button class="save add-text add-text-success">Añadir</button><br>
+            <div class="custom-text">
+              <% if (settings.crime.success.txt) { %>
+                <% settings.crime.success.txt.forEach(x => { %>
+                  <div class="yet-another-div">
+                    <textarea rows="5" maxlength="2000"> <%= x %> </textarea>
+                    <button class="caution remove-text">Eliminar</button>
+                  </div>
+                <% }) %>
+              <% } else { %>
+                <div class="yet-another-div">
+                  <textarea rows="5" maxlength="2000">{}</textarea>
+                  <button class="caution remove-text">Eliminar</button>
+                </div>
+              <% } %>
+            </div>
+        </div>
+
+        <div class="custom-text-text" id="custom-text-5">
+          <p class="subtitle">En caso de perder</p>
+          <br><button class="save add-text add-text-success">Añadir</button><br>
+          <div class="custom-text">
+            <% if (settings.crime.fail.txt) { %>
+              <% settings.crime.fail.txt.forEach(x => { %>
+                <div class="yet-another-div">
+                  <textarea rows="5" maxlength="2000"> <%= x %> </textarea>
+                  <button class="caution remove-text">Eliminar</button>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="yet-another-div">
+                <textarea rows="5" maxlength="2000">{}</textarea>
+                <button class="caution remove-text">Eliminar</button>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+  </div>  
+
+  <button class="save" id="save-crime">Guardar cambios en Crime</button>
+  <br>
+  <br>
+
+  </div>
+
+  <div class="divider divider-special">
+    <div style="max-width: 25vw;">
+        <p class="title">Explore</p>
+        <p style="display: inline-block;" class="description">Consigue objetos o materiales cada </p>
+        <input style="display: inline-block;" type="text" id="input-explore-cooldown" value="<%= settings.explore.cooldown %>">
+        <br>
+
+        <div <%- (settings.craft.items.length || settings.materials.length) ? `class="div-objects-explore"` : 'class="div-objects-explore disabled"' %> >
+          <p class="subtitle">Objetos / Materiales</p>
+
+          <% if (settings.craft.length || settings.materials.length) { %>
+            
+            <% var selectedMaterials = [];
+            Object.entries(settings.explore.materials).forEach(x => selectedMaterials.push(x[0]));
+            %>
+            
+            <% if (settings.craft.items.length) { %>
+              <% let selectedObject; %>
+              <select id="select-objects">
+                <option value="Nada">Nada</option>
+                <% settings.craft.items.forEach(x => { %>
+                  <% if (selectedMaterials.includes(x.name)) { %>
+                    <% selectedObject = x.name %>
+                    <option selected value="<%= x.name %>"><%= x.name %></option>
+                  <% } else { %>
+                    <option value="<%= x.name %>"><%= x.name %></option>
+                  <% } %>
+                <% }); %>
+              </select>
+
+              <p class="help">: de </p>
+              <input id="object-min" type="number" placeholder="Mínimo" value="<%= settings.explore.materials[selectedObject] ? settings.explore.materials[selectedObject][0] : 0 %>">
+              <p class="help"> a </p>
+              <input id="object-max" type="number" placeholder="Máximo" value="<%= settings.explore.materials[selectedObject] ? settings.explore.materials[selectedObject][1] : 0  %>">
+              <br>
+            <% } %>
+            
+            <% if (settings.materials.length) { %>
+              <% let selectedMaterial; %>
+              <select id="select-materials">
+                <option value="Nada">Nada</option>
+                <% settings.materials.forEach(x => { %>
+                  <% if (selectedMaterials.includes(x.name)) { %>
+                    <% selectedMaterial = x.name %>
+                    <option selected value="<%= x.name %>"><%= x.name %></option>
+                  <% } else { %>
+                    <option value="<%= x.name %>"><%= x.name %></option>
+                  <% } %>
+                <% }); %>
+              </select>
+
+              <p class="help">: de </p>
+              <input  id="material-min" type="number" placeholder="Mínimo" value="<%= settings.explore.materials[selectedMaterial] ? settings.explore.materials[selectedMaterial][0] : 0  %>">
+              <p class="help"> a </p>
+              <input id="material-max" type="number" placeholder="Máximo" value="<%= settings.explore.materials[selectedMaterial] ? settings.explore.materials[selectedMaterial][1] : 0  %>">
+              <br>
+
+            <% } %>
+
+          <% } else { %>
+              <select disabled>
+                  <option>No disponible</option>
+              </select>
+          <% } %>
+      </div>
+    </div>
+
+  <div style="width: 65%;">
+      <p class="title">Explore - Texto Personalizado</p>
+      <p class="description">Escribir</p> <p class="description marked">{objectName} </p> <p class="description">para indicar el nombre del objeto obtenido.</p><br>
+      <p class="description">Escribir</p> <p class="description marked">{objectAmount} </p> <p class="description">para indicar la cantidad de objetos obtenidos.</p><br>
+      <p class="description">Escribir</p> <p class="description marked">{materialName} </p> <p class="description">para indicar el nombre del material obtenido.</p><br>
+      <p class="description">Escribir</p> <p class="description marked">{materialAmount} </p> <p class="description">para indicar la cantidad de materiales obtenidos.</p><br>
+      <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
+                
+        <div class="custom-text-text" id="custom-text-2">
+            <p class="subtitle">En caso de ganar</p>
+            <br><button class="save add-text add-text-success">Añadir</button><br>
+            <div class="custom-text">
+              <% if (settings.explore.txt) { %>
+                <% settings.explore.txt.success.forEach(x => { %>
+                  <div class="yet-another-div">
+                    <textarea rows="5" maxlength="2000"> <%= x %> </textarea>
+                    <button class="caution remove-text">Eliminar</button>
+                  </div>
+                <% }) %>
+              <% } else { %>
+                <div class="yet-another-div">
+                  <textarea rows="5" maxlength="2000">{}</textarea>
+                  <button class="caution remove-text">Eliminar</button>
+                </div>
+              <% } %>
+            </div>
+        </div>
+
+        <div class="custom-text-text" id="custom-text-3">
+          <p class="subtitle">En caso de perder</p>
+          <br><button class="save add-text add-text-success">Añadir</button><br>
+          <div class="custom-text">
+            <% if (settings.explore.txt) { %>
+              <% settings.explore.txt.fail.forEach(x => { %>
+                <div class="yet-another-div">
+                  <textarea rows="5" maxlength="2000"> <%= x %> </textarea>
+                  <button class="caution remove-text">Eliminar</button>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="yet-another-div">
+                <textarea rows="5" maxlength="2000">{}</textarea>
+                <button class="caution remove-text">Eliminar</button>
+              </div>
+            <% } %>
+          </div>
+      </div>
+      </div>
+  </div>  
+  <button class="save" id="save-explore">Guardar cambios en Explore</button>
+  <br>
+  <br>
+</div>
+
+<script src="/work-crime-explore.js" type="module"></script>

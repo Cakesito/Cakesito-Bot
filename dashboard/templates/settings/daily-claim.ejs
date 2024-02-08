@@ -1,0 +1,244 @@
+<%- include("../partials/nav.ejs", { bot, user, path, title: "Cake | Daily - Claim" }) %>
+<%- include("../partials/sidebar.ejs", { bot, user, path }) %>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/settings.css">
+    <link rel="stylesheet" type="text/css" href="/daily-claim.css">
+</head>
+
+<div class="container">
+  <div class="alert-container"></div>
+      
+    <div class="guild">
+      <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png">` %>
+      <p><%= guild.name %></p>
+    </div>
+      
+    <div class="divider divider-special">
+
+      <div style="min-width: 30vw;  max-width: 30vw;">
+        <p class="title">Daily</p>
+        <p class="description" >Una recompensa diaria de dinero, objetos o materiales.</p><br><br>
+
+        <div>
+          <div class="select-type">
+            <div class="div-money div-money-daily markable" id="<%= settings.daily.reward.type == 'cash' ? 'daily-selected' : '' %>" onclick="selectDaily(this)">
+              <p class="subtitle">Dinero</p>
+              <input type="number" id="input-money-daily" value="<%= settings.daily.reward.type == 'cash' ? settings.daily.reward.amount : '' %>" placeholder="Cantidad">
+            </div>
+            
+            <div id="<%= settings.daily.reward.type == 'inv.' ? 'daily-selected' : '' %>" <%- (settings.craft.items.length || settings.materials.length) ? `onclick="selectDaily(this)" class=" div-objects-daily markable"` : 'class="div-objects-daily markable disabled"' %> >
+                <p class="subtitle">Objetos / Materiales</p>
+    
+                <% if (settings.craft.length || settings.materials.length) { %>
+                  
+                  <% var selectedMaterials = [];
+                  if (settings.daily.reward.type == 'inv.') {
+                    Object.entries(settings.daily.reward.materials).forEach(x => selectedMaterials.push(x[0]));
+                  } %>
+                  
+                  <% if (settings.craft.items.length) { %>
+                    <% let selectedObject; %>
+                    <select id="select-objects-daily">
+                      <option value="Nada">Nada</option>
+                      <% settings.craft.items.forEach(x => { %>
+                        <% if (selectedMaterials.includes(x.name)) { %>
+                          <% selectedObject = x.name %>
+                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% } else { %>
+                          <option value="<%= x.name %>"><%= x.name %></option>
+                        <% } %>
+                      <% }); %>
+                    </select>
+    
+                    <p class="help">: de </p>
+                    <input id="object-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials[selectedObject] ? settings.daily.reward.materials[selectedObject][0] : 0  %>">
+                    <p class="help"> a </p>
+                    <input id="object-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials[selectedObject] ? settings.daily.reward.materials[selectedObject][1] : 0  %>">
+                    <br>
+                  <% } %>
+                  
+                  <% if (settings.materials.length) { %>
+                    <% let selectedMaterial; %>
+                    <select id="select-materials-daily">
+                      <option value="Nada">Nada</option>
+                      <% settings.materials.forEach(x => { %>
+                        <% if (selectedMaterials.includes(x.name)) { %>
+                          <% selectedMaterial = x.name %>
+                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% } else { %>
+                          <option value="<%= x.name %>"><%= x.name %></option>
+                        <% } %>
+                      <% }); %>
+                    </select>
+    
+                    <p class="help">: de </p>
+                    <input  id="material-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][0] : 0  %>">
+                    <p class="help"> a </p>
+                    <input id="material-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][1] : 0  %>">
+                    <br>
+    
+                  <% } %>
+    
+                <% } else { %>
+                    <select disabled>
+                        <option>No disponible</option>
+                    </select>
+                <% } %>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div style="width: 65%;">
+        <p class="title">Daily - Texto Personalizado</p>
+        <p class="description desc-money">Escribir</p> <p class="description marked">{money} </p> <p class="description">para indicar la cantidad de dinero ganado.</p><br><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{objectName} </p> <p class="description">para indicar el nombre del objeto obtenido.</p><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{objectAmount} </p> <p class="description">para indicar la cantidad de objetos obtenidos.</p><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{materialName} </p> <p class="description">para indicar el nombre del material obtenido.</p><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{materialAmount} </p> <p class="description">para indicar la cantidad de materiales obtenidos.</p><br>
+        
+        <p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
+
+        <div class="custom-text-text" id="custom-text-1">
+          <div class="custom-text">
+              <div class="yet-another-div">
+                <textarea rows="5" maxlength="2000"> <%= settings.daily.txt || '{}' %> </textarea>
+              </div>
+          </div>
+        </div>
+
+    
+      </div>
+
+      
+    </div>
+  
+    <br>
+    <button class="save" id="save-daily">Guardar cambios en Daily</button>
+    <br>
+    <br>
+
+    <div class="divider divider-special">
+
+      <div style="min-width: 30vw; max-width: 30vw;">
+        <p class="title">Claim</p>
+        <p class="description claim-description">Una recompensa de dinero, objetos o materiales cada</p>
+        <input type="text" class="claim-input" id="claim-cooldown" value="<%= settings.claim.cooldown %>">
+        
+        <div>
+          <div class="select-type">
+            <div class="div-money div-money-claim markable" id="<%= settings.claim.reward.type == 'cash' ? 'claim-selected' : '' %>" onclick="selectClaim(this)">
+              <p class="subtitle">Dinero</p>
+              <input type="number" id="input-money-claim" value="<%= settings.claim.reward.type == 'cash' ? settings.claim.reward.amount : '' %>" placeholder="Cantidad">
+            </div>
+
+            <div id="<%= settings.claim.reward.type == 'inv.' ? 'claim-selected' : '' %>"  <%- (settings.craft.items.length || settings.materials.length) ? `onclick="selectClaim(this)" class="div-objects-claim markable "` : 'class="div-objects-claim markable disabled"' %> >
+                <p class="subtitle">Objetos / Materiales</p>
+      
+                <% if (settings.craft.length || settings.materials.length) { %>
+                  
+                  <% var selectedMaterials = [];
+                  if (settings.claim.reward.type == 'inv.') {
+                    Object.entries(settings.claim.reward.materials).forEach(x => selectedMaterials.push(x[0]));
+                  } %>
+                  
+                  <% if (settings.craft.items.length) { %>
+                    <% let selectedObject; %>
+                    <select id="select-objects-claim">
+                      <option value="Nada">Nada</option>
+                      <% settings.craft.items.forEach(x => { %>
+                        <% if (selectedMaterials.includes(x.name)) { %>
+                          <% selectedObject = x.name %>
+                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% } else { %>
+                          <option value="<%= x.name %>"><%= x.name %></option>
+                        <% } %>
+                      <% }); %>
+                    </select>
+      
+                    <p class="help">: de </p>
+                    <input id="object-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials[selectedObject] ? settings.claim.reward.materials[selectedObject][0] : 0 %>">
+                    <p class="help"> a </p>
+                    <input id="object-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials[selectedObject] ? settings.claim.reward.materials[selectedObject][1] : 0  %>">
+                    <br>
+                  <% } %>
+                  
+                  <% if (settings.materials.length) { %>
+                    <% let selectedMaterial; %>
+                    <select id="select-materials-claim">
+                      <option value="Nada">Nada</option>
+                      <% settings.materials.forEach(x => { %>
+                        <% if (selectedMaterials.includes(x.name)) { %>
+                          <% selectedMaterial = x.name %>
+                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% } else { %>
+                          <option value="<%= x.name %>"><%= x.name %></option>
+                        <% } %>
+                      <% }); %>
+                    </select>
+      
+                    <p class="help">: de </p>
+                    <input  id="material-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][0] : 0  %>">
+                    <p class="help"> a </p>
+                    <input id="material-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][1] : 0  %>">
+                    <br>
+      
+                  <% } %>
+      
+                <% } else { %>
+                    <select disabled>
+                        <option>No disponible</option>
+                    </select>
+                <% } %>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      
+      <div style="width: 65%;">
+        <p class="title">Claim - Texto Personalizado</p>
+        <p class="description desc-money">Escribir</p> <p class="description marked">{money} </p> <p class="description">para indicar la cantidad de dinero ganado.</p><br><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{objectName} </p> <p class="description">para indicar el nombre del objeto obtenido.</p><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{objectAmount} </p> <p class="description">para indicar la cantidad de objetos obtenidos.</p><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{materialName} </p> <p class="description">para indicar el nombre del material obtenido.</p><br>
+        <p class="description desc-obj">Escribir</p> <p class="description marked">{materialAmount} </p> <p class="description">para indicar la cantidad de materiales obtenidos.</p><br>
+        
+        <p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
+
+        <div class="custom-text-text" id="custom-text-2">
+          <div class="custom-text">
+              <div class="yet-another-div">
+                <textarea rows="5" maxlength="2000"> <%= settings.claim.txt || '{}' %> </textarea>
+              </div>
+          </div>
+        </div>
+
+      </div>
+    
+    </div>
+    
+    <br>
+    <button class="save" id="save-claim">Guardar cambios en Claim</button><br><br>
+</div>
+
+<script src="/daily-claim.js" type="module"></script>
+<script type="text/javascript">
+  function selectDaily (element) {
+    var previous = document.getElementById('daily-selected');
+    if (previous) previous.id = '';
+
+    element.id = 'daily-selected';
+  }
+
+  function selectClaim (element) {
+    var previous = document.getElementById('claim-selected');
+    if (previous) previous.id = '';
+
+    element.id = 'claim-selected';
+  }
+</script>

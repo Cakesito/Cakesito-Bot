@@ -1,0 +1,104 @@
+<%- include("../partials/nav.ejs", { bot, user, path, title: "Cake | Tienda" }) %>
+<%- include("../partials/sidebar.ejs", { bot, user, path }) %>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/settings.css">
+    <link rel="stylesheet" type="text/css" href="/store.css">
+</head>
+
+<div class="container">
+    <div class="alert-container"></div>
+
+    <div class="guild">
+        <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png">` %>
+        <p><%= guild.name %></p>
+    </div>
+
+    <p class="title">Tienda</p>
+    <div>
+        <p class="description">Los objetos se consguien a través del comando <p class="description marked">buy</p>.<br>
+        <p class="title available-text">Objetos disponibles (<%= settings.craft.items.length ?? 0 %>/10)</p><br>
+    </div>
+
+    <div class="objects-container">
+        <div id="add-object">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#959595" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+            </svg>
+        </div>
+
+        <div class="invisible" id="object-template">
+            <p class="title" style="font-style: italic;">Sin nombre</p>
+        </div>
+
+        <% if (settings.shop.items.length) { %>
+            <% settings.shop.items.forEach(item => {  %>
+                <div class="object" id="<%= item.name %>">
+                    <p class="invisible jijiji" id="info-<%= item.name %>"><%= JSON.stringify(item) %></p>
+                    <p class="title name"><%= item.name %> </p>
+                    <p class="desc"><%= item.description %></p>
+                    <p class="secondary">Precio:</p>
+                    <p>x<%= item.price.amount %> <%= item.price.type.replace('inv.', '').replace('cash', 'monedas') %></p>
+                    <p class="secondary">Recompensa:</p>
+
+                    <% let roles = guild.roles.cache.get(item.reward.id); %>
+                    <p><%= item.reward.type == 'cash' ? 'monedas' : item.reward.type.replace('inv.', '') %>: <%- item.reward.id ? `${roles.name || 'Rol no encontrado'}` : `x${item.reward.amount}` %></p>
+                    <%- item.onlyOnce ? '<p>Solo se puede comprar una vez</p>' : '' %>
+                </div>
+            <% }); %>
+        <% } %>
+
+    </div><br>
+
+    <div class="layer"></div>
+    <div class="object-info">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="object-info-close" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+        </svg>
+        
+        <p class="description" style="color: #ec5454">Los cambios NO se guardan automáticamente.</p><br><br>
+        <p class="subtitle">Nombre del objeto</p>
+        <input id="object-info-name" type="text">
+        <p class="subtitle">Descripción</p>
+        <input id="object-info-description" type="text">
+        <p class="subtitle">Solo se compra una vez <input id="object-info-onlyonce" type="checkbox"></p>
+        
+        <br>
+        <p class="subtitle">Precio:</p>
+
+        <div>
+            <select id="object-info-price-type">
+                <option value="cash">Monedas</option>
+            <% if (settings.craft.items.length) { %>
+                <% settings.craft.items.forEach(x => { %>
+                    <option value="<%= x.name %>"><%= x.name %></option>
+                <% }); %>
+            <% } %>
+            </select>
+            <input id="object-info-price" type="number"></input>
+        </div>
+
+        <p class="subtitle">Recompensa:</p>
+        <div>    
+            <select id="object-info-reward-type">
+                <option value="cash">Monedas</option>
+                <option value="role">Rol</option>
+            <% if (settings.craft.items.length) { %>
+                <% settings.craft.items.forEach(x => { %>
+                    <option value="<%= x.name %>"><%= x.name %></option>
+                <% }); %> 
+            <% } %>
+
+            </select>
+            <input id="object-info-reward" type="number"></input>
+        </div>
+        
+        <br>
+        <button class="save" id="save">Guardar cambios</button><br><br>
+        <button class="caution" id="delete-object">Eliminar</button>
+    </div>
+
+
+</div>
+<script type="text/javascript" src="/store.js"></script>
