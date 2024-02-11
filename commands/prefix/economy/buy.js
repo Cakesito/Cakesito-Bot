@@ -1,9 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
-const { shop, convertion } = require('../../../economy.json');
 
 module.exports = {
     run: async (client, message, args) => {
         const db = client.db.get('db');
+        const shop = await db.get(`g_${message.guildId}.shop`);
+        if (!shop.items.length) return message.reply('Este comando no está disponible en este servidor.');
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
 
         let current, item, amount;
 
@@ -48,12 +50,12 @@ module.exports = {
             let embed = new EmbedBuilder()
             .setAuthor({ name: message.member.displayName || message.author.tag, iconURL: message.author.displayAvatarURL() })
             .setColor(0xec5454)
-            .setDescription(`Parece que no lo puedes comprar.\nFaltante: x${item.price.amount - current} ${convertion[item.price.type]}`)
+            .setDescription(`Parece que no lo puedes comprar.\nFaltante: x${item.price.amount - current} ${convertion[item.price.type] || item.price.type.replace('inv.', '')}`)
             .setTimestamp()
             return message.reply({ embeds: [embed] });
         }
 
-        let text = `x${item.reward.amount || 1} ${convertion[item.reward.type]}`;
+        let text = `x${item.reward.amount || 1} ${convertion[item.price.type] || item.price.type.replace('inv.', '')}`;
 
         if (item.reward.type == 'role') {
             let role = await message.guild.roles.cache.find(x => x.id == item.reward.id);

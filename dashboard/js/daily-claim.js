@@ -95,9 +95,18 @@ dailySaveBtn.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(daily)
-    }).then(() => {});
+    }).then(res => {
+        if (res.status == 400) {
+            res.json().then(data => {
+                alert.innerHTML = data.errors.join('<br>');
+                alert.classList = 'alert error';
+                alertCon.appendChild(alert);
+            });
+        } else {
+            alertCon.appendChild(alert);
+        }
+    });
 
-    alertCon.appendChild(alert);
     setTimeout(() => alert.remove(), 6000);
 
 });
@@ -118,7 +127,7 @@ claimSaveBtn.addEventListener('click', () => {
     var texts = document.querySelector('#custom-text-2 > div > div > textarea');
     daily.data.txt = texts.value;
 
-    daily.data.cooldown = ms(cooldown, { toString: false });
+    daily.data.cooldown = ms(cooldown.value, { toString: false });
 
     if (selected.classList == 'div-money div-money-claim') {
         var inputMoney = document.getElementById('input-money-claim');
@@ -146,9 +155,18 @@ claimSaveBtn.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(daily)
-    }).then(() => {});
+    }).then(res => {
+        if (res.status == 400) {
+            res.json().then(data => {
+                alert.innerHTML = data.errors.join('<br>');
+                alert.classList = 'alert error';
+                alertCon.appendChild(alert);
+            });
+        } else {
+            alertCon.appendChild(alert);
+        }
+    });
 
-    alertCon.appendChild(alert);
     setTimeout(() => alert.remove(), 6000);
 
 });

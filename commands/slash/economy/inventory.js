@@ -1,5 +1,4 @@
 const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
-const { descriptions } = require('../../../economy.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,6 +10,9 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const materials = await db.get(`g_${interaction.guildId}.materials`);
+        const craft = await db.get(`g_${interaction.guildId}.craft`);
+
         let member = interaction.options.getMember('usuario') || interaction.member;
 
         if (member.user.bot) return interaction.reply({ content: 'El usuario seleccionado es un bot', ephemeral: true });
@@ -24,7 +26,8 @@ module.exports = {
 
         if(inv) {
             Object.entries(inv).forEach(e => {
-                if(e[1] != 0) invEmbed.addFields({ name: `${mayus(e[0])} x${e[1]}`, value: mayus(descriptions[e[0]]) });
+                let desc = materials.find(x => x.name === e[0]) || craft.items.find(x => x.name === e[0]);
+                if(e[1] != 0) invEmbed.addFields({ name: `${e[0]} x${e[1]}`, value: desc.description });
             });
         
         } else invEmbed.setDescription('Parece que no hay nada...');

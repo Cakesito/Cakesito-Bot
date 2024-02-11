@@ -8,7 +8,7 @@ module.exports = (client) => {
             let pull = require(`../commands/slash/${dir}/${file}`);
 
             client.slash_commands.set(pull.data.name, pull);
-            console.log(`[SLASH] Loading ${file}`);
+            console.log(`[ Slash ] Loading ${file}`);
         
             if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name));
         }

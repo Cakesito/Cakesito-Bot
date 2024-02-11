@@ -46,9 +46,9 @@ module.exports = {
         num = num.sort((a, b) => b - a);
 
         let rank;
-        let desc = num.map((e, i) => {
+        let desc = num.map(async (e, i) => {
             var sub = message.guild.id.length + 3;
-            let name = message.guild.members.resolve(lb[e].substring(sub));
+            let name = message.guild.members.resolve(lb[e].substring(sub)) || await message.guild.members.fetch(lb[e].substring(sub));
             
             if(name && name.user.tag  == message.author.tag) rank = i + 1;
             return `**${i + 1}.** ${name? name.user.tag : '`unknown`'} **·** <:star:991110840780599336> ${e}`;

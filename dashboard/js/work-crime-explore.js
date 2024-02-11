@@ -70,7 +70,17 @@ saveCrime.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(crime)
-    }).then((x) => console.log(x));
+    }).then(res => {
+        if (res.status == 400) {
+            res.json().then(data => {
+                alert.innerHTML = data.errors.join('<br>');
+                alert.classList = 'alert error';
+                alertCon.appendChild(alert);
+            });
+        } else {
+            alertCon.appendChild(alert);
+        }
+    });
 
     setTimeout(() => alert.remove(), 6000);
 
@@ -107,7 +117,17 @@ saveExplore.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(explore)
-    }).then((x) => console.log(x));
+    }).then(res => {
+        if (res.status == 400) {
+            res.json().then(data => {
+                alert.innerHTML = data.errors.join('<br>');
+                alert.classList = 'alert error';
+                alertCon.appendChild(alert);
+            });
+        } else {
+            alertCon.appendChild(alert);
+        }
+    });
 
     setTimeout(() => alert.remove(), 6000);
     
@@ -138,7 +158,17 @@ saveWork.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(work)
-    }).then(() => {});
+    }).then(res => {
+        if (res.status == 400) {
+            res.json().then(data => {
+                alert.innerHTML = data.errors.join('<br>');
+                alert.classList = 'alert error';
+                alertCon.appendChild(alert);
+            });
+        } else {
+            alertCon.appendChild(alert);
+        }
+    });
 
     setTimeout(() => alert.remove(), 6000);
 });

@@ -1,10 +1,11 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
-const { craft } = require('../../../economy.json');
 
 module.exports = {
     run: async (client, message) => {
+        const db = client.db.get('db');
+        const craft = await db.get(`g_${message.guildId}.craft`);
 
-        if(!craft) return message.reply('No hay objetos que crear.');
+        if(!craft.items.length) return message.reply('No hay objetos que crear.');
 
         let craftText = Object.entries(craft.items).map(x => {
             let materials = Object.entries(x[1].materials).map(x => `x${x[1]} **${x[0]}**`);

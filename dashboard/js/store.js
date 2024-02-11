@@ -85,17 +85,23 @@ saveButton.addEventListener('click', () => {
     objList.forEach(x => obj.push(JSON.parse(x.textContent)));
 
     var selected = obj.find(x => x.name == lastObject);
+    selected = { price: {}, reward: {} };
 
     selected.name = objectName.value;
     selected.description = objectDescription.value;
-    selected.onlyOnce = objectOnlyOnce.value == 'on' ? true : false;
-    console.log(objectOnlyOnce.value)
-    selected.price.type = objectPriceType.value;
+    selected.onlyOnce = objectOnlyOnce.checked;
+    selected.price.type = objectPriceType.value == 'cash'|| objectPriceType.value == 'role' ? objectPriceType.value : 'inv.' + objectPriceType.value;
     selected.price.amount = objectPrice.value;
-    selected.reward.type = objectRewardType.value;
+    selected.reward.type = objectRewardType.value !== 'cash' || objectRewardType.value !== 'role' ? objectRewardType.value : 'inv.' + objectRewardType.value;
+    
+    if (objectRewardType.value == 'role') {
+        selected.reward.id = objectReward.value;
+    } else {
+        selected.reward.amount = objectReward.value;
+        delete selected.reward.id
+    }
 
-    objectRewardType.value == 'role' ? selected.reward.id = objectReward.value : selected.reward.amount = objectReward.value;
-
+    obj[obj.length - 1] = selected;
     object.data = obj;
 
     fetch(window.location.href, {
@@ -105,11 +111,19 @@ saveButton.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(object)
-    }).then(() => {});
+    }).then(res => {
+        if (res.status == 400) {
+            res.json().then(data => {
+                alert.innerHTML = data.errors.join('<br>');
+                alert.classList = 'alert error';
+                alertCon.appendChild(alert);
+            });
+        } else {
+            alertCon.appendChild(alert);
+            location.reload();
+        }
+    });
 
-    location.reload();
-
-    alertCon.appendChild(alert);
     setTimeout(() => alert.remove(), 6000);
 
 });

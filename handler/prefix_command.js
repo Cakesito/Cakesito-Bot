@@ -10,7 +10,7 @@ module.exports = (client) => {
             pull.category = pull.category || dir;
             client.prefix_commands.set(pull.name, pull);
 
-            console.log(`[PREFIX] Loading ${file}`);
+            console.log(`[ Prefix ] Loading ${file}`);
         
             if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name));
         

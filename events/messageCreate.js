@@ -31,10 +31,11 @@ module.exports = {
             if (permissions.length) return message.reply(`Necesitas ${permissions.length > 1 ? 'los permisos' : 'el permiso'}: ${permissions.join(", ")} para ejecutar este comando.`)
         }
 
-        if(command.cooldown) {
+        if(command.requiresCooldown) {
+            let cooldown = await db.get(`g_${message.guildId}.${command.name}.cooldown`);
             let timeout = client.cooldowns.get(`c_${message.guild.id}_${message.author.id}_${command.name}`) || 0;
 
-            if(timeout + command.cooldown > Date.now()) return message.reply(`Espera hasta <t:${Math.floor((timeout + command.cooldown) / 1000)}:t> (<t:${Math.floor((command.cooldown + timeout) / 1000)}:R>) para usar ${command.name}.`);
+            if(timeout + cooldown > Date.now()) return message.reply(`Espera hasta <t:${Math.floor((timeout + cooldown) / 1000)}:t> (<t:${Math.floor((cooldown + timeout) / 1000)}:R>) para usar ${command.name}.`);
             client.cooldowns.set(`c_${message.guild.id}_${message.author.id}_${command.name}`, Date.now());
         }
 

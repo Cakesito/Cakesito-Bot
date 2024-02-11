@@ -1,16 +1,17 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const { claim, convertion } = require('../../../economy.json');
 
 module.exports = {
-    cooldown: claim.cooldown || 0,
+    requiresCooldown: true,
     data: new SlashCommandBuilder()
     .setName('claim')
     .setDescription('Reclama una recompensa'),
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const claim = await db.get(`g_${interaction.guildId}.claim`);
+        const convertion = await db.get(`g_${interaction.guildId}.convertion`);
 
-        let desc = [`x${claim.reward.amount || 1} ${convertion[claim.reward.type]}`];
+        let desc = [`x${claim.reward.amount || 1} ${convertion[item.price.type] || item.price.type.replace('inv.', '')}`];
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.member.displayName || interaction.user.username, iconURL: interaction.member.displayAvatarURL() })

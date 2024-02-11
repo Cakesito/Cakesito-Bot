@@ -48,7 +48,17 @@ saveButton.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(materials)
-    }).then(() => {});
+    }).then(res => {
+        if (res.status == 400) {
+            res.json().then(data => {
+                alert.innerHTML = data.errors.join('<br>');
+                alert.classList = 'alert error';
+                alertCon.appendChild(alert);
+            });
+        } else {
+            alertCon.appendChild(alert);
+        }
+    });
 
     alertCon.appendChild(alert);    
     setTimeout(() => alert.remove(), 6000);

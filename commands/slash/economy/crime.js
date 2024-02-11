@@ -1,14 +1,15 @@
-const { crime } = require('../../../economy.json');
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    cooldown: crime.cooldown || 0,
+    requiresCooldown: true,
     data: new SlashCommandBuilder()
     .setName('crime')
     .setDescription('Comete un crimen'),
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const crime = await db.get(`g_${interaction.guildId}.crime`);
+
         let randomMoney = 0;
         
         let embed = new EmbedBuilder()

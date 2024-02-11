@@ -1,12 +1,12 @@
 const { EmbedBuilder } = require("discord.js");
-const { descriptions } = require('../../../economy.json');
-
 
 module.exports = {
     aliases: ['inv'],
     run: async (client, message, args) => {
 
         const db = client.db.get('db');
+        const materials = await db.get(`g_${message.guildId}.materials`);
+        const craft = await db.get(`g_${message.guildId}.craft`);
         let member = message.member;
 
         if (args[0]) {
@@ -78,15 +78,12 @@ module.exports = {
 
         if(inv) {
             Object.entries(inv).forEach(e => {
-                if(e[1] != 0) invEmbed.addFields({ name: `${mayus(e[0])} x${e[1]}`, value: mayus(descriptions[e[0]]) });
+                let desc = materials.find(x => x.name === e[0]) || craft.items.find(x => x.name === e[0]);
+                if(e[1] != 0) invEmbed.addFields({ name: `${e[0]} x${e[1]}`, value: desc.description });
             });
         } else invEmbed.setDescription('Parece que no hay nada...')
 
         return message.reply({ embeds: [invEmbed], allowedMentions: { repliedUser: false } });
         
     }
-}
-
-function mayus (str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
 }

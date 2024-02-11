@@ -1,13 +1,12 @@
-// const Economy = require('../../things/economy');
-const { crime } = require('../../../economy.json');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    cooldown: crime.cooldown || 0,
-    tCooldown: crime.tCooldown || null,
+    requiresCooldown: true,
     run: async (client, message) => {
 
         const db = client.db.get('db');
+        const crime = await db.get(`g_${message.guildId}.crime`);
+
         let randomMoney = 0;
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.author.displayName || message.author.username, iconURL: message.author.displayAvatarURL() })

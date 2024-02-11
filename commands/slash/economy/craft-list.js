@@ -1,5 +1,4 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } = require('discord.js');
-const { craft } = require('../../../economy.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,8 +6,10 @@ module.exports = {
     .setDescription('Mira la lista de objetos creables'),
 
     run: async (client, interaction) => {
+        const db = client.db.get('db');
+        const craft = await db.get(`g_${interaction.guildId}.craft`);
 
-        if(!craft) return interaction.reply('No hay objetos que crear.');
+        if(!craft.items.length) return interaction.reply('No hay objetos que crear.');
 
         let craftText = Object.entries(craft.items).map(x => {
             let materials = Object.entries(x[1].materials).map(x => `x${x[1]} **${x[0]}**`);

@@ -1,13 +1,15 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
-const { shop, convertion } = require('../../../economy.json');
 
 module.exports = {
     run: async (client, message) => {
+        const db = client.db.get('db');
+        const shop = await db.get(`g_${message.guildId}.shop`);
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
 
-        if(!shop) return message.reply('No hay tienda.');
+        if(!shop.items.length) return message.reply('No hay tienda.');
 
         let shopText = Object.entries(shop.items).map(x => {
-            return { title: x[1].name, type: convertion[x[1].price.type], price: x[1].price.amount, description: x[1].description }
+            return { title: x[1].name, type: convertion[x[1].price.type] || convertion[x[1].price.type].replace('inv.', ''), price: x[1].price.amount, description: x[1].description }
         });
 
         let count = 0;

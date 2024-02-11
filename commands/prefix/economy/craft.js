@@ -1,9 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
-const { craft } = require('../../../economy.json');
 
 module.exports = {
     run: async (client, message, args) => {
         const db = client.db.get('db');
+        const craft = await db.get(`g_${message.guildId}.craft`);
+        if (!craft.items.length) return message.reply('Este comando no está disponible en este servidor.');
 
         let item, amount, current, inv, n;
 

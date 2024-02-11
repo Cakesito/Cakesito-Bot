@@ -1,16 +1,14 @@
 const { EmbedBuilder, SlashCommandBuilder, SlashCommandStringOption } = require('discord.js');
-const { craft } = require('../../../economy.json');
 
 let options = new SlashCommandStringOption()
 .setName('objeto')
-.setDescription('Nombre del objeto')
+.setDescription('Nombre del objeto a crear')
 .setRequired(true);
 
-craft.items.forEach(x => {
-    options.addChoices({ name: x.name, value: x.name });
-});
+// craft.items.forEach(x => options.addChoices({ name: x.name, value: x.name }));
 
 module.exports = {
+    deactivated: true,
     data: new SlashCommandBuilder()
     .setName('craft')
     .setDescription('Crea algo')
@@ -19,6 +17,8 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const craft = await db.get(`g_${interaction.guildId}.craft`);
+        if (!craft.items.length) return interaction.reply({ content: 'Este comando no está disponible en este servidor.', ephemeral: true });
 
         var selected = interaction.options.getString('objeto');
         let item = craft.items.find(x => x.name == selected);

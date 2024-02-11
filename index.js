@@ -7,6 +7,7 @@ const db = new QuickDB();
 
 client.prefix_commands = new Collection();
 client.slash_commands = new Collection();
+client.menu_commands = new Collection();
 client.aliases = new Collection();
 client.cooldowns = new Collection();
 client.collectors = new Collection();
@@ -14,6 +15,6 @@ client.collectors = new Collection();
 client.db = new Collection();
 client.db.set('db', db);
 
-for(let handler of  ["prefix_command", "slash_command", "event"]) require(`./handler/${handler}`)(client);
+for(let handler of  ["prefix_command", "slash_command", "menu_command", "event"]) require(`./handler/${handler}`)(client);
 
 client.login(token);

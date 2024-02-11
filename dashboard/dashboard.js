@@ -9,6 +9,8 @@ const url = require("url");
 const { PermissionsBitField } = require('discord.js');
 const { clientSecret, clientId, discordInvite } = require('../config.json');
 const defaultEconomy = require('../default_economy.json');
+const { validate } = require('./check');
+const { updateCommand } = require('./updateCommand');
 
 const app = express();
 const MemoryStore = require("memorystore")(session);
@@ -159,7 +161,6 @@ module.exports = async (client) => {
         if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return res.redirect("/dashboard");
 
         let storedSettings = await db.get(`g_${guild.id}`);
-
         if (!storedSettings) await db.set(`g_${guild.id}`, defaultEconomy);
 
         renderTemplate(res, req, `/settings/${req.params.setting}.ejs`, {
@@ -171,7 +172,6 @@ module.exports = async (client) => {
     });
 
     app.post("/dashboard/:guildId/:setting", checkAuth, async (req, res) => {
-
         const guild = client.guilds.cache.get(req.params.guildId);
         if (!guild) return res.redirect("/dashboard");
 
@@ -179,11 +179,29 @@ module.exports = async (client) => {
         if (!member) return res.redirect("/dashboard");
 
         if (!member.permissions.has("MANAGE_GUILD")) return res.redirect("/dashboard");
+
+        let settings = await db.get(`g_${guild.id}`);
+        const validationResult = validate(req.body, settings);
+
+        if (validationResult.valid) {
+            await db.set(`g_${guild.id}.${req.body.setting}`, validationResult.parsed);
+            
+            if (validationResult.requiresUpdate) {
+                res.status(202);
+                
+                try {
+                    await updateCommand(req.body, guild);
+                } catch (err) {
+                    return res.status(400).json({ errors: [err] });
+                }
+            }
+
+            res.status(200);
+
+        } else {
+            res.status(400).json({ errors: validationResult.err });
+        }
         
-        // await db.set(`g_${guild.id}.${req.body.setting}`, req.body.data);
-
-        console.log(req.body);
-
     });
 
     app.listen(53134, () => console.log('Listening port 53134'));

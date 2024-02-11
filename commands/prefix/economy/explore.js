@@ -1,26 +1,39 @@
-const { explore } = require('../../../economy.json');
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-    cooldown: explore.cooldown || 0,
-    tCooldown: explore.tCooldown || null,
+    requiresCooldown: true,
     run: async (client, message) => {
         const db = client.db.get('db');
+        const explore = await db.get(`g_${message.guildId}.explore`);
+        const materials = await db.get(`g_${message.guildId}.materials`);
+
+        if (!Object.keys(explore.materials).length) return message.reply('Este comando no está disponible en este servidor.');
         
-        let desc = [];
+        let reward = {};
+        var success = false;
         for (x of Object.entries(explore.materials)) {
             var amount = random(x[1][0], x[1][1]);
             if (amount == 0) continue;
 
-            desc.push(`x${amount} **${x[0]}**`);
+            let material = materials.find(x => x.name === x[0]);
+            if (material) {
+                reward.material = x[0];
+                reward.materialAmount = amount;
+            } else {
+                reward.object = x[0];
+                reward.objectAmount = amount;
+            }
+
+            success = true;
             await db.add(`e_${message.guild.id}_${message.author.id}.inv.${x[0]}`, amount);
         }
         
+        let randomText = success ? explore.txt.success[Math.floor(Math.random() * explore.txt.success.length)].replace('{objectName}', reward.object || '').replace('{objectAmount}', reward.objectAmount || '').replace('{materialName}', reward.material || '').replace('{materialAmount}', reward.materialAmount || '') : explore.txt.fail[Math.floor(Math.random() * explore.txt.fail.length)];
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.member.displayName || message.author.username, iconURL: message.member.displayAvatarURL() })
         .setTimestamp()
-        .setDescription(desc.length ? explore.txt.success.replace('{reward}', desc.join(', ')) : explore.txt.fail)
-        .setColor(desc.length ? 0x56bb74 : 0xec5454);
+        .setDescription(randomText)
+        .setColor(success ? 0x56bb74 : 0xec5454);
                 
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
 

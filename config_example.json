@@ -1,0 +1,8 @@
+{
+    "token": "TOKEN",
+    "clientId": "CLIENT_ID",
+    "ownerId": "OWNER_ID",
+    "default_prefix": ",",
+    "clientSecret": "CLIENT_SECRET",
+    "discordInvite": "DISCORD_INVITE"
+}

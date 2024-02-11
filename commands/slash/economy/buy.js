@@ -1,14 +1,14 @@
 const { EmbedBuilder, SlashCommandBuilder, SlashCommandStringOption } = require('discord.js');
-const { shop, convertion } = require('../../../economy.json');
 
 let options = new SlashCommandStringOption()
 .setName('objeto')
 .setDescription('Nombre del objeto')
 .setRequired(true);
 
-shop.items.forEach(x => options.addChoices({ name: x.name, value: x.name }))
+// shop.items.forEach(x => options.addChoices({ name: x.name, value: x.name }));
 
 module.exports = {
+    deactivated: true,
     data: new SlashCommandBuilder()
     .setName('buy')
     .setDescription('Compra algo en la tienda')
@@ -17,6 +17,10 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const shop = await db.get(`g_${interaction.guildId}.shop`);
+        if (!shop.items.length) return interaction.reply({ content: 'Este comando no está disponible en este servidor.', ephemeral: true});
+
+        const convertion = await db.get(`g_${interaction.guildId}.convertion`);
 
         let item = shop.items.filter(x => x.name == interaction.options.getString('objeto'));
         item = item[0];
@@ -36,12 +40,12 @@ module.exports = {
             let embed = new EmbedBuilder()
             .setAuthor({ name: interaction.member.displayName || interaction.user.tag, iconURL: interaction.member.displayAvatarURL() })
             .setColor(0xec5454)
-            .setDescription(`Parece que no lo puedes comprar.\nFaltante: x${item.price.amount - current} ${convertion[item.price.type]}`)
+            .setDescription(`Parece que no lo puedes comprar.\nFaltante: x${item.price.amount - current} ${convertion[item.price.type] || item.price.type.replace('inv.', '')}`)
             .setTimestamp()
             return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
-        let text = `x${item.reward.amount || 1} ${convertion[item.reward.type]}`;
+        let text = `x${item.reward.amount || 1} ${convertion[item.reward.type] || item.price.type.replace('inv.', '')}`;
 
         if (item.reward.type == 'role') {
             let role = await interaction.guild.roles.cache.find(x => x.id == item.reward.id);

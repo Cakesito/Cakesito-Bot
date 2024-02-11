@@ -1,15 +1,14 @@
-const { work } = require('../../../economy.json');
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    cooldown: work.cooldown || 0,
-    tCooldown: work.tCooldown || null,
+    requiresCooldown: true,
     data: new SlashCommandBuilder()
     .setName('work')
     .setDescription('Trabaja y gana dinero'),
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const work = await db.get(`g_${interaction.guildId}.work`);
 
         let randomMoney = random(work.min, work.max);
         let randomText = work.txt[Math.floor(Math.random() * work.txt.length)];

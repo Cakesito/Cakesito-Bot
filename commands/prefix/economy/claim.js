@@ -1,12 +1,13 @@
 const { EmbedBuilder } = require('discord.js');
-const { claim, convertion } = require('../../../economy.json');
 
 module.exports = {
-    cooldown: claim.cooldown || 0,
+    requiresCooldown: true,
     run: async (client, message) => {
         const db = client.db.get('db');
+        const claim = await db.get(`g_${message.guildId}.claim`);
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
 
-        let desc = [`x${claim.reward.amount || 1} ${convertion[claim.reward.type]}`];
+        let desc = [`x${claim.reward.amount || 1} ${convertion[claim.reward.type] || claim.reward.type.replace('inv.', '')}`];
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.member.displayName || message.author.tag, iconURL: message.author.displayAvatarURL() })

@@ -1,16 +1,17 @@
-const { daily, convertion } = require('../../../economy.json');
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-    cooldown: daily.cooldown || 0,
+    requiresCooldown: true,
     data: new SlashCommandBuilder()
     .setName('daily')
     .setDescription('Reclama una recompensa diaria'),
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const daily = await db.get(`g_${interaction.guildId}.daily`);
+        const convertion = await db.get(`g_${interaction.guildId}.convertion`);
         
-        let desc = [`x${daily.reward.amount || 1} ${convertion[daily.reward.type]}`];
+        let desc = [`x${daily.reward.amount || 1} ${convertion[daily.reward.type].replace('inv.', '')}`];
 
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
