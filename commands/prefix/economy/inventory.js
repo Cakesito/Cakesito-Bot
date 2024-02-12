@@ -12,6 +12,8 @@ module.exports = {
         if (args[0]) {
 
             member = message.mentions.members.first() || message.guild.members.cache.filter(m => Number(args[0]) ? m.user.id == args[0] : m.user.username.toLowerCase().startsWith(args.join(' ').toLowerCase()));
+            if (!member && Number(args[0])) member = await message.guild.members.fetch(args[0]);
+            if (!member && !Number(args[0])) member = await message.guild.members.search(args[0]);
 
             if (member.size) {
                 if (member.size > 1) {
@@ -79,7 +81,7 @@ module.exports = {
         if(inv) {
             Object.entries(inv).forEach(e => {
                 let desc = materials.find(x => x.name === e[0]) || craft.items.find(x => x.name === e[0]);
-                if(e[1] != 0) invEmbed.addFields({ name: `${e[0]} x${e[1]}`, value: desc.description });
+                if(e[1] != 0) invEmbed.addFields({ name: `${e[0]} x${e[1]}`, value: desc.description ?? '_Este objeto no tiene descripción_' });
             });
         } else invEmbed.setDescription('Parece que no hay nada...')
 

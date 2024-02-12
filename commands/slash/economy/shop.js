@@ -13,7 +13,7 @@ module.exports = {
         if(!shop.items.length) return interaction.reply({ content: 'No hay tienda.', ephemeral: true });
 
         let shopText = Object.entries(shop.items).map(x => {
-            return { title: x[1].name, type: convertion[x[1].price.type] || x[1].price.type.replace('inv.', ''), price: x[1].price.amount, description: x[1].description }
+            return { title: x[1].name, type: convertion[x[1].price.type] || x[1].price.type.replace('inv.', ''), price: x[1].price.amount, description: x[1].description ?? '_Este objeto no tiene descripción_' }
         });
 
         let count = 0;

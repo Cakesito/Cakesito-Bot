@@ -11,7 +11,7 @@ module.exports = {
         const explore = await db.get(`g_${interaction.guildId}.explore`);
         const materials = await db.get(`g_${interaction.guildId}.materials`);
 
-        if (!Object.keys(explore.materials).length) return interaction.reply('Este comando no está disponible en este servidor.');
+        if (!Object.keys(explore.materials).length) return interaction.reply({ content: 'Este comando no está disponible en este servidor.', ephemeral: true });
 
         let reward = {};
         var success = false;

@@ -9,7 +9,7 @@ module.exports = {
 
         let craftText = Object.entries(craft.items).map(x => {
             let materials = Object.entries(x[1].materials).map(x => `x${x[1]} **${x[0]}**`);
-            return { title: x[1].name, materials: materials, description: x[1].description }
+            return { title: x[1].name, materials: materials, description: x[1].description ?? '_Este objeto no tiene descripción_' }
         });
 
         let count = 0;
@@ -72,13 +72,13 @@ module.exports = {
                 });
 
                 embed.setFooter({ text: `Página ${current + 1}/${pages.length}` });
-                await i.update({ embeds: [embed], components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+                await i.update({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
 
             });
 
             collector.on('end', () => client.collectors.set('active', id - 1));
         }
 
-        return message.reply({ embeds: [embed], components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
     }
 }

@@ -6,7 +6,7 @@ module.exports = {
         const craft = await db.get(`g_${message.guildId}.craft`);
         if (!craft.items.length) return message.reply('Este comando no está disponible en este servidor.');
 
-        let item, amount, current, inv, n;
+        let item, amount, inv, n;
 
         if (!args[0]) return message.reply('Indica una cantidad y/o un objeto.');
 
@@ -22,30 +22,21 @@ module.exports = {
             if (!item) return message.reply(`Vas a crear ${amount}... ¿qué?`);
         }
 
-        craft.items.forEach(x => {
-            if (x.name.startsWith(item)) item = x;
-        });
-        
-        if (!item.description) {
-            craft.items.forEach(x => {
-                if (x.name.includes(item)) item = x;
-            });
-        }
+        var temp = item;
+        item = craft.items.find(x => x.name === temp);
+        if (!item) item = craft.items.find(x => x.name.startsWith(temp));
+        if (!item) item = craft.items.find(x => x.name.includes(temp));
 
-        if (!item.description) return message.reply('No encontré el objeto `' + item + '`.');
-
-        inv = await db.get(`e_${message.guild.id}_${message.author.id}.inv`) || {};
-        current = {};
-        Object.entries(inv).forEach(x => current[x[0]] = x[1]);
-
+        if (!item) return message.reply('No encontré el objeto `' + temp + '`.');
         Math.floor(Math.random() * 100) <= item.probability ? n = 'success' : n = 'fail';
 
+        inv = await db.get(`e_${message.guildId}_${message.author.id}.inv`);
         var missing = [];
 
         // Quick.db doesn't work in forEach
         for (x of Object.keys(item.materials)) {
-            if ((item.materials[x] * amount) > current[x]) {
-                missing.push(`x${(item.materials[x] * amount) - current[x]} **${x}** (${current[x]}/${item.materials[x] * amount})`);
+            if ((item.materials[x] * amount) > inv[x]) {
+                missing.push(`x${(item.materials[x] * amount) - inv[x]} **${x}** (${inv[x]}/${item.materials[x] * amount})`);
             }
         }
         
@@ -63,7 +54,7 @@ module.exports = {
             await db.sub(`e_${message.guild.id}_${message.author.id}.inv.${x}`, item.materials[x] * amount);
         }
 
-        await db.add(`e_${message.guild.id}_${message.author.id}.${item.type}`, amount);
+        await db.add(`e_${message.guild.id}_${message.author.id}.inv.${item.name}`, amount);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.member.displayName || message.author.tag, iconURL: message.author.displayAvatarURL() })

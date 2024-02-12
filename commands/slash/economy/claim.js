@@ -11,7 +11,7 @@ module.exports = {
         const claim = await db.get(`g_${interaction.guildId}.claim`);
         const convertion = await db.get(`g_${interaction.guildId}.convertion`);
 
-        let desc = [`x${claim.reward.amount || 1} ${convertion[item.price.type] || item.price.type.replace('inv.', '')}`];
+        let desc = [`x${claim.reward.amount || 1} ${convertion[claim.reward.type] || item.price.type.replace('inv.', '')}`];
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.member.displayName || interaction.user.username, iconURL: interaction.member.displayAvatarURL() })

@@ -10,6 +10,8 @@ module.exports = {
         if (args[0]) {
 
             member = message.mentions.members.first() || message.guild.members.cache.filter(m => Number(args[0]) ? m.user.id == args[0] : m.user.username.toLowerCase().startsWith(args.join(' ').toLowerCase()));
+            if (!member && Number(args[0])) member = await message.guild.members.fetch(args[0]);
+            if (!member && !Number(args[0])) member = await message.guild.members.search(args[0]);
 
             if (member.size) {
                 if (member.size > 1) {
@@ -46,7 +48,7 @@ module.exports = {
                         return false;
                     }
 
-                    let number = await message.channel.awaitMessages({ filter, time: 20000, errors: ['time'], max: 1 });
+                    let number = await message.channel.awaitMessages({ filter, time: 20_000, errors: ['time'], max: 1 });
 
                     if (number.first().content.toLowerCase().startsWith('cancelar')) return;
 

@@ -11,7 +11,7 @@ module.exports = {
         const daily = await db.get(`g_${interaction.guildId}.daily`);
         const convertion = await db.get(`g_${interaction.guildId}.convertion`);
         
-        let desc = [`x${daily.reward.amount || 1} ${convertion[daily.reward.type].replace('inv.', '')}`];
+        let desc = [`x${daily.reward.amount || 1} ${convertion[daily.reward.type] || item.price.type.replace('inv.', '')}`];
 
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })

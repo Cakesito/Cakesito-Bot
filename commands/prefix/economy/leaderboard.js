@@ -46,13 +46,17 @@ module.exports = {
         num = num.sort((a, b) => b - a);
 
         let rank;
-        let desc = num.map(async (e, i) => {
+        let desc = await Promise.all(num.map(async (e, i) => {
             var sub = message.guild.id.length + 3;
-            let name = message.guild.members.resolve(lb[e].substring(sub)) || await message.guild.members.fetch(lb[e].substring(sub));
-            
-            if(name && name.user.tag  == message.author.tag) rank = i + 1;
-            return `**${i + 1}.** ${name? name.user.tag : '`unknown`'} **·** <:star:991110840780599336> ${e}`;
-        });
+            let name = message.guild.members.cache.get(lb[e].substring(sub));
+            if (!name) { 
+                await message.guild.members.fetch(lb[e].substring(sub));
+                name = message.guild.members.cache.get(lb[e].substring(sub));
+            }
+
+            if(name && name.user.tag == message.author.tag) rank = i + 1;
+            return `**${i + 1}.** ${name ? name.user.tag : '`unknown`'} **·** <:star:991110840780599336> ${e}`;
+        }));
 
         let count = 0;
         let pages = [];
@@ -109,13 +113,13 @@ module.exports = {
                 embed.setDescription(pages[current].join('\n'));
                 embed.setFooter({ text: `Página 1/${pages.length} · Tu posición: ${rank}` })
                 
-                await i.update({ embeds: [embed], components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+                await i.update({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
 
             });
 
             collector.on('end', () => client.collectors.set('active', id - 1));
         }
 
-        return message.reply({ embeds: [embed], components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
     } 
 }

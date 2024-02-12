@@ -9,7 +9,7 @@ module.exports = (client) => {
         
         pull.event = pull.event || file.replace(".js", "")
         client.on(pull.event, pull.run.bind(null, client))
-        console.log(`[EVENT] Loading ${file}`)
+        console.log(`[ Event ] Loading ${file}`)
 
     } catch(err) {
         console.log("Error While loading/executing command")

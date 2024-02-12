@@ -22,8 +22,8 @@ module.exports = {
 
         const convertion = await db.get(`g_${interaction.guildId}.convertion`);
 
-        let item = shop.items.filter(x => x.name == interaction.options.getString('objeto'));
-        item = item[0];
+        let item = shop.items.find(x => x.name == interaction.options.getString('objeto'));
+        if (!item) return interaction.reply({ content: 'No encontré el objeto `' + temp + '`.', ephemeral: true });
         let amount = interaction.options.getInteger('cantidad') || 1;
 
         var hasBought = await db.get(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`) || [];

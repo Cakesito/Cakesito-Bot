@@ -59,13 +59,18 @@ module.exports = {
         num = num.sort((a, b) => b - a);
 
         let rank;
-        let desc = num.map(async (e, i) => {
+        let desc = await Promise.all(num.map(async (e, i) => {
             var sub = interaction.guild.id.length + 3;
-            let name = interaction.guild.members.resolve(lb[e].substring(sub)) || await interaction.guild.members.fetch(lb[e].substring(sub));
+            let name = interaction.guild.members.cache.get(lb[e].substring(sub));
+            if (!name) { 
+                await interaction.guild.members.fetch(lb[e].substring(sub));
+                name = interaction.guild.members.cache.get(lb[e].substring(sub));
+            }
 
             if(name && name.user.id  == interaction.user.id) rank = i + 1;
             return `**${i + 1}.** ${name? name.user.tag : '`unknown`'} **·** <:star:991110840780599336> ${e}`;
-        });
+        }));
+        
         let count = 0;
         let pages = [];
         let txt = [];

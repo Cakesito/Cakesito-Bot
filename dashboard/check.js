@@ -168,7 +168,7 @@ const validations = {
 
     'craft.items': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
-        description: string().max(70).optional(),
+        description: string().min(1).max(70).optional(),
         probability: number().min(0).max(100).required().integer(),
     
         materials: object().required().test({
@@ -186,12 +186,12 @@ const validations = {
 
     'materials': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
-        description: string().max(70).optional()
+        description: string().min(1).max(70).optional()
     }).noUnknown()),
 
     'shop.items': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
-        description: string().max(70).optional(),
+        description: string().min(1).max(70).optional(),
         onlyOnce: boolean().optional().default(false),
     
         price: object({

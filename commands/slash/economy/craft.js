@@ -24,18 +24,17 @@ module.exports = {
         let item = craft.items.find(x => x.name == selected);
         let amount = interaction.options.getInteger('cantidad') || 1;
 
-        inv = await db.get(`e_${interaction.guildId}_${interaction.user.id}.inv`) || {};
-        current = {};
-        Object.entries(inv).forEach(x => current[x[0]] = x[1]);
+        if (!item) return interaction.reply({ content: 'No encontré el objeto `' + item + '`.', ephemeral: true });
 
+        let inv = await db.get(`e_${interaction.guildId}_${interaction.user.id}.inv`) || {};
         Math.floor(Math.random() * 100) <= item.probability ? n = 'success' : n = 'fail';
-
+        
         var missing = [];
 
         // Quick.db doesn't work in forEach
         for (x of Object.keys(item.materials)) {
-            if ((item.materials[x] * amount) > current[x]) {
-                missing.push(`x${(item.materials[x] * amount) - current[x]} **${x}** (${current[x]}/${item.materials[x] * amount})`);
+            if ((item.materials[x] * amount) > inv[x]) {
+                missing.push(`x${(item.materials[x] * amount) - inv[x]} **${x}** (${inv[x]}/${item.materials[x] * amount})`);
             }
         }
         
@@ -53,7 +52,7 @@ module.exports = {
             await db.sub(`e_${interaction.guild.id}_${interaction.user.id}.inv.${x}`, item.materials[x] * amount);
         }
 
-        await db.add(`e_${interaction.guildId}_${interaction.user.id}.${item.type}`, amount);
+        await db.add(`e_${interaction.guildId}_${interaction.user.id}.inv.${item.name}`, amount);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.member.displayName || interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })

@@ -23,24 +23,17 @@ module.exports = {
             if (!item) return message.reply(`Vas a comprar ${amount}... ¿qué?`);
         }
 
-        shop.items.forEach(x => {
-            if (x.name.startsWith(item)) item = x;
-        });
-        
-        if (!item.description) {
-            shop.items.forEach(x => {
-                if (x.name.includes(item)) item = x;
-            });
-        }
+        var temp = item;
+        item = shop.items.find(x => x.name === temp);
+        if (!item) item = shop.items.find(x => x.name.startsWith(temp));
+        if (!item) item = shop.items.find(x => x.name.includes(temp));
 
-        if (!item.description) return message.reply('No encontré el objeto `' + item + '`.');
-
-        item = item[0];
+        if (!item) return message.reply('No encontré el objeto `' + temp + '`.');
 
         current = await db.get(`e_${message.guild.id}_${message.author.id}.${item.price.type}`) || 0;
-        var hasBought = await db.get(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`) || [];
+        var hasBought = await db.get(`e_${message.guildId}_${message.author.id}.alreadyBought`) || [];
 
-        if (item.onlyOnce && hasBought.includes(item.name)) return interaction.reply({ content: 'Ya has comprado este objeto.' });
+        if (item.onlyOnce && hasBought.includes(item.name)) return message.reply('Ya has comprado este objeto.');
         if (amount > 1 && item.reward.type == 'role') return message.reply(`Solo puedes comprar uno.`);
 
         item.reward.amount = item.reward.amount * amount;
@@ -67,7 +60,7 @@ module.exports = {
         } else await db.add(`e_${message.guild.id}_${message.author.id}.${item.reward.type}`, item.reward.amount);
 
         await db.sub(`e_${message.guild.id}_${message.author.id}.${item.price.type}`, item.price.amount);
-        if (item.onlyOnce) await db.push(`e_${interaction.guildId}_${interaction.user.id}.alreadyBought`, item.name);
+        if (item.onlyOnce) await db.push(`e_${message.guildId}_${message.author.id}.alreadyBought`, item.name);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL() })
