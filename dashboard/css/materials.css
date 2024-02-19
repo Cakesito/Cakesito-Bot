@@ -82,3 +82,22 @@
     cursor: default !important;
     border: 3px solid #3a3b3c !important;
 }
+
+@media only screen and (max-width: 600px) {
+    #add-object {
+        width: 30vw;
+        height: auto;
+    }
+
+    .objects-container {
+        justify-content: center;
+    }
+
+    .objects-available {
+        flex-direction: column;
+    }
+
+    .object {
+        min-width: 70vw;
+    }
+}

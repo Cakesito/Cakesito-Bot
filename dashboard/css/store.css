@@ -133,3 +133,9 @@ input[type='text'] {
 .material-list:hover > .down {
     opacity: 1;
 }
+
+@media only screen and (max-width: 600px) {
+    .objects-container {
+        justify-content: center;
+    }
+}

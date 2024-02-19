@@ -61,7 +61,7 @@ saveButton.addEventListener('click', () => {
 
     selected.name = objectName.value;
     selected.description = objectDescription.value;
-    selected.probability = objectProbability.value;
+    selected.probability = Number(objectProbability.value);
     selected.materials = materialList;
 
     object.data = obj;
@@ -76,16 +76,12 @@ saveButton.addEventListener('click', () => {
         },
         body: JSON.stringify(object)
     }).then(res => {
-        if (res.status == 400) {
-            res.json().then(data => {
-                alert.innerHTML = data.errors.join('<br>');
-                alert.classList = 'alert error';
-                alertCon.appendChild(alert);
-            });
-        } else {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
             location.reload();
-        }
+        });
     });
 
     alertCon.appendChild(alert);
@@ -107,8 +103,6 @@ deleteButton.addEventListener('click', () => {
     var selected = obj.find(x => x.name == lastObject);
     obj.splice(obj.indexOf(selected), 1);
 
-    console.log(obj);
-
     fetch(window.location.href, {
         method: 'POST',
         headers: {
@@ -116,11 +110,15 @@ deleteButton.addEventListener('click', () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(object)
-    }).then(() => {});
+    }).then((res) => {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
+            alertCon.appendChild(alert);
+            location.reload();
+        });
+    });
 
-    location.reload();
-
-    alertCon.appendChild(alert);
     setTimeout(() => alert.remove(), 6000);
     
 });
@@ -135,16 +133,17 @@ addObject.addEventListener('click', () => {
     var newObjectDiv = document.getElementById('object-template').cloneNode(true);
     newObjectDiv.classList = 'object';
 
-    var newP = document.createElement('p');
+    var newP = document.createElement('input');
     newP.classList = 'invisible jijiji';
     newP.id = `info-Sin nombre`;
     newP.textContent = `{ "name": "Sin nombre" }`;
+    newP.hidden = true;
 
     newObjectDiv.appendChild(newP);
     lastObject = 'Sin nombre';
     
     newObjectDiv.addEventListener('click', () => {
-        objectInfo.style.width = '40%';
+        objectInfo.style.width = mobile.matches ? '100%' : '40%';;
         layer.style.opacity = '1';
         layer.style.visibility = 'visible';
     });
@@ -174,7 +173,7 @@ materials.forEach(x => {
             amount.addEventListener('input', resizeInput);
             amount.addEventListener('input', () => {
                 checkNumber.call(amount);
-                materialList[name] = amount.value;
+                materialList[name] = Number(amount.value);
                 saveButton.disabled = false;
             });
 
@@ -207,7 +206,7 @@ closeObjectInfo.addEventListener('click', () => {
     layer.style.visibility = 'hidden';
 
     var info = document.getElementById(`info-${actualObject.id}`);
-    var info = JSON.parse(info.textContent);
+    var info = JSON.parse(info.value);
 
     objectName.value = '';
     objectDescription.value = '';
@@ -223,12 +222,12 @@ objects.forEach(x => {
     x.addEventListener('click', () => {
         actualObject = x;
 
-        objectInfo.style.width = '40%';
+        objectInfo.style.width = mobile.matches ? '100%' : '40%';
         layer.style.opacity = '1';
         layer.style.visibility = 'visible';
 
         var info = document.getElementById(`info-${x.id}`);
-        var info = JSON.parse(info.textContent);
+        var info = JSON.parse(info.value);
 
         objectName.value = info.name;
         objectDescription.value = info.description;
@@ -250,6 +249,8 @@ objects.forEach(x => {
 
     });
 });
+
+const mobile = window.matchMedia('(max-width: 600px)');
 
 function resizeInput() {
     this.style.width = (this.value.length + 0.5) + "ch";

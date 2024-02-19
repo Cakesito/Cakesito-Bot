@@ -71,15 +71,12 @@ saveCrime.addEventListener('click', () => {
         },
         body: JSON.stringify(crime)
     }).then(res => {
-        if (res.status == 400) {
-            res.json().then(data => {
-                alert.innerHTML = data.errors.join('<br>');
-                alert.classList = 'alert error';
-                alertCon.appendChild(alert);
-            });
-        } else {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-        }
+            location.reload();
+        });
     });
 
     setTimeout(() => alert.remove(), 6000);
@@ -118,15 +115,12 @@ saveExplore.addEventListener('click', () => {
         },
         body: JSON.stringify(explore)
     }).then(res => {
-        if (res.status == 400) {
-            res.json().then(data => {
-                alert.innerHTML = data.errors.join('<br>');
-                alert.classList = 'alert error';
-                alertCon.appendChild(alert);
-            });
-        } else {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-        }
+            location.reload();
+        });
     });
 
     setTimeout(() => alert.remove(), 6000);
@@ -159,15 +153,12 @@ saveWork.addEventListener('click', () => {
         },
         body: JSON.stringify(work)
     }).then(res => {
-        if (res.status == 400) {
-            res.json().then(data => {
-                alert.innerHTML = data.errors.join('<br>');
-                alert.classList = 'alert error';
-                alertCon.appendChild(alert);
-            });
-        } else {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-        }
+            location.reload();
+        });
     });
 
     setTimeout(() => alert.remove(), 6000);

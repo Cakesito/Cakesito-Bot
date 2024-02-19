@@ -184,3 +184,30 @@ textarea {
     display: flex;
     gap: 1.5rem;
 }
+
+input[type="number"] {
+    max-width: 6rem;
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        margin: 1.5rem;
+    }
+
+    .divider {
+        flex-direction: column;
+    }
+
+    .divider div {
+        min-width: 100% !important;
+    }
+
+    .description {
+        display: inline;
+    }
+
+    .yet-another-div {
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+}

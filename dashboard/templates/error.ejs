@@ -1,0 +1,16 @@
+<%- include("partials/nav.ejs", { bot, user, path, title: `${code} | ${codeMessage}` }) %>
+
+<html>
+  <link rel="stylesheet" type="text/css" href="/index.css">
+  <link rel="stylesheet" type="text/css" href="/error.css">
+</html>
+
+<body>
+    <div class="container">
+        <h2><%= code %></h2>
+        <p><%= message %></p>
+        <a class="button" href="/">Volver al inicio</a>
+    </div>
+</body>
+
+<%- include("partials/footer.ejs", { bot }) %>

@@ -182,12 +182,40 @@ const validations = {
             },
             message: "amount not valid"
         })
-    }).noUnknown()),
+    }).noUnknown()).test({
+        test: (value) => {
+            for (let i = 0; i < value.length; i++) {
+                for (let j = i + 1; j < value.length; j++) {
+                  if (value[i].name === value[j].name) {
+                    return true;
+                  }
+                }
+            }
+
+            return false;
+            
+        },
+        message: "duplicated object"
+    }),
 
     'materials': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
         description: string().min(1).max(70).optional()
-    }).noUnknown()),
+    }).noUnknown()).test({
+        test: (value) => {
+            for (let i = 0; i < value.length; i++) {
+                for (let j = i + 1; j < value.length; j++) {
+                  if (value[i].name === value[j].name) {
+                    return true;
+                  }
+                }
+            }
+
+            return false;
+            
+        },
+        message: "duplicated material"
+    }),
 
     'shop.items': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
@@ -224,7 +252,21 @@ const validations = {
             })
         }).required().noUnknown()
 
-    }).noUnknown())
+    }).noUnknown()).test({
+        test: (value) => {
+            for (let i = 0; i < value.length; i++) {
+                for (let j = i + 1; j < value.length; j++) {
+                  if (value[i].name === value[j].name) {
+                    return true;
+                  }
+                }
+            }
+
+            return false;
+            
+        },
+        message: "duplicated object"
+    })
 };
 
 module.exports = { validate };

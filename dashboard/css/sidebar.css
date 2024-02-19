@@ -32,3 +32,16 @@
     padding: 0.5rem;
     cursor: default;
 }
+
+@media only screen and (max-width: 600px) {
+    .sidebar {
+        width: 90%;
+        position: relative;
+        border: 0;
+    }
+
+    .navbar {
+        position: relative;
+        z-index: 15;
+    }
+}

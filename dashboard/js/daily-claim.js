@@ -96,15 +96,12 @@ dailySaveBtn.addEventListener('click', () => {
         },
         body: JSON.stringify(daily)
     }).then(res => {
-        if (res.status == 400) {
-            res.json().then(data => {
-                alert.innerHTML = data.errors.join('<br>');
-                alert.classList = 'alert error';
-                alertCon.appendChild(alert);
-            });
-        } else {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-        }
+            location.reload();
+        });
     });
 
     setTimeout(() => alert.remove(), 6000);
@@ -156,15 +153,12 @@ claimSaveBtn.addEventListener('click', () => {
         },
         body: JSON.stringify(daily)
     }).then(res => {
-        if (res.status == 400) {
-            res.json().then(data => {
-                alert.innerHTML = data.errors.join('<br>');
-                alert.classList = 'alert error';
-                alertCon.appendChild(alert);
-            });
-        } else {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-        }
+            location.reload();
+        });
     });
 
     setTimeout(() => alert.remove(), 6000);
@@ -177,7 +171,6 @@ input.forEach(x => {
 });
 
 function resizeInput() {
-    if (this.value.length >= 4) return;
     this.style.width = (this.value.length + 0.5) + "ch";
 }
 

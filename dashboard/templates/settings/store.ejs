@@ -35,7 +35,7 @@
         <% if (settings.shop.items.length) { %>
             <% settings.shop.items.forEach(item => {  %>
                 <div class="object" id="<%= item.name %>">
-                    <p class="invisible jijiji" id="info-<%= item.name %>"><%= JSON.stringify(item) %></p>
+                    <input hidden class="invisible jijiji" id="info-<%= item.name %>" value="<%= JSON.stringify(item) %>" ></input>
                     <p class="title name"><%= item.name %> </p>
                     <p class="desc"><%= item.description %></p>
                     <p class="secondary">Precio:</p>
@@ -43,7 +43,7 @@
                     <p class="secondary">Recompensa:</p>
 
                     <% let roles = guild.roles.cache.get(item.reward.id); %>
-                    <p><%= item.reward.type == 'cash' ? 'monedas' : item.reward.type.replace('inv.', '') %>: <%- item.reward.id ? `${roles.name || 'Rol no encontrado'}` : `x${item.reward.amount}` %></p>
+                    <p><%= item.reward.type == 'cash' ? 'monedas' : item.reward.type.replace('inv.', '') %>: <%- item.reward.id ? `${roles?.name || 'Rol no encontrado'}` : `x${item.reward.amount}` %></p>
                     <%- item.onlyOnce ? '<p>Solo se puede comprar una vez</p>' : '' %>
                 </div>
             <% }); %>

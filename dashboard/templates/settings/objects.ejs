@@ -35,7 +35,7 @@
         <% if (settings.craft.items.length) { %>
             <% settings.craft.items.forEach(item => {  %>
                 <div class="object" id="<%= item.name %>">
-                    <p class="invisible jijiji" id="info-<%= item.name %>">{ "name": "<%= item.name %>", "description": "<%= item.description %>", "probability": <%= item.probability %>, "materials": <%= JSON.stringify(item.materials) %> }</p>
+                    <input hidden class="invisible jijiji" id="info-<%= item.name %>" value="<%= JSON.stringify(item) %>" ></input>
                     <p class="title name"><%= item.name %> </p>
                     <p class="desc"><%= item.description %></p>
                     <p class="secondary prob">Prob. de éxito: <%= item.probability %> %</p>
@@ -78,6 +78,7 @@
                 <p style="color: #959595">No hay materiales</p>
             <% } %>
         <br>
+        </div><br>
         <button class="save <%= settings.materials.length ? '' : 'no-materials'  %>" id="save" <%= settings.materials.length ? '' : 'disabled'  %> >Guardar cambios</button><br><br>
         <button class="caution" id="delete-object">Eliminar</button>
         <br>

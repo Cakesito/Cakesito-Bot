@@ -42,14 +42,16 @@ select:active {
     background-color: transparent;
 }
 
-.div-money, .div-money input {
-    min-width: 5rem;
-}
-
 .claim-cooldown {
     display: inline-block;
 }
 
 .claim-description {
     display: inline-block;
+}
+
+@media only screen and (max-width: 600px) {
+    .select-type {
+        flex-direction: column;
+    }
 }

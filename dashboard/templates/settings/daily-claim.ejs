@@ -52,9 +52,9 @@
                     </select>
     
                     <p class="help">: de </p>
-                    <input id="object-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials[selectedObject] ? settings.daily.reward.materials[selectedObject][0] : 0  %>">
+                    <input id="object-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.[selectedObject] ? settings.daily.reward.materials[selectedObject][0] : 0  %>">
                     <p class="help"> a </p>
-                    <input id="object-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials[selectedObject] ? settings.daily.reward.materials[selectedObject][1] : 0  %>">
+                    <input id="object-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.[selectedObject] ? settings.daily.reward.materials[selectedObject][1] : 0  %>">
                     <br>
                   <% } %>
                   
@@ -73,9 +73,9 @@
                     </select>
     
                     <p class="help">: de </p>
-                    <input  id="material-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][0] : 0  %>">
+                    <input  id="material-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][0] : 0  %>">
                     <p class="help"> a </p>
-                    <input id="material-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][1] : 0  %>">
+                    <input id="material-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][1] : 0  %>">
                     <br>
     
                   <% } %>
@@ -100,7 +100,7 @@
         <p class="description desc-obj">Escribir</p> <p class="description marked">{materialName} </p> <p class="description">para indicar el nombre del material obtenido.</p><br>
         <p class="description desc-obj">Escribir</p> <p class="description marked">{materialAmount} </p> <p class="description">para indicar la cantidad de materiales obtenidos.</p><br>
         
-        <p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
+        <br><p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
 
         <div class="custom-text-text" id="custom-text-1">
           <div class="custom-text">
@@ -160,9 +160,9 @@
                     </select>
       
                     <p class="help">: de </p>
-                    <input id="object-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials[selectedObject] ? settings.claim.reward.materials[selectedObject][0] : 0 %>">
+                    <input id="object-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.[selectedObject] ? settings.claim.reward.materials[selectedObject][0] : 0 %>">
                     <p class="help"> a </p>
-                    <input id="object-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials[selectedObject] ? settings.claim.reward.materials[selectedObject][1] : 0  %>">
+                    <input id="object-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.[selectedObject] ? settings.claim.reward.materials[selectedObject][1] : 0  %>">
                     <br>
                   <% } %>
                   
@@ -181,9 +181,9 @@
                     </select>
       
                     <p class="help">: de </p>
-                    <input  id="material-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][0] : 0  %>">
+                    <input  id="material-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][0] : 0  %>">
                     <p class="help"> a </p>
-                    <input id="material-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][1] : 0  %>">
+                    <input id="material-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][1] : 0  %>">
                     <br>
       
                   <% } %>
@@ -208,7 +208,7 @@
         <p class="description desc-obj">Escribir</p> <p class="description marked">{materialName} </p> <p class="description">para indicar el nombre del material obtenido.</p><br>
         <p class="description desc-obj">Escribir</p> <p class="description marked">{materialAmount} </p> <p class="description">para indicar la cantidad de materiales obtenidos.</p><br>
         
-        <p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
+        <br><p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
 
         <div class="custom-text-text" id="custom-text-2">
           <div class="custom-text">

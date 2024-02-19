@@ -11,7 +11,6 @@ body {
     justify-content: center;
 }
 
-
 .card {
     margin: 2rem;
     width: 13vw;
@@ -26,7 +25,6 @@ body {
 }
 
 .card-img-top {
-    /* clip-path: circle(); */
     width: 10vw;
     height: auto;
     max-width: 10vw;
@@ -66,4 +64,15 @@ body {
     background-color: #738ADB;
     transition: 0.2s;
     border: 3px solid #687cc5;
+}
+
+@media only screen and (max-width: 600px) {
+    
+    [class*="card-"] {
+        min-width: 50vw;
+    }
+    
+    .card {
+        width: 50%;
+    }
 }

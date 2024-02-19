@@ -49,18 +49,14 @@ saveButton.addEventListener('click', () => {
         },
         body: JSON.stringify(materials)
     }).then(res => {
-        if (res.status == 400) {
-            res.json().then(data => {
-                alert.innerHTML = data.errors.join('<br>');
-                alert.classList = 'alert error';
-                alertCon.appendChild(alert);
-            });
-        } else {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-        }
+            location.reload();
+        });
     });
 
-    alertCon.appendChild(alert);    
     setTimeout(() => alert.remove(), 6000);
 
 });

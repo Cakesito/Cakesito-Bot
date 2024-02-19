@@ -6,9 +6,10 @@ const session = require('express-session');
 const bodyParser = require("body-parser");
 const path = require('path');
 const url = require("url");
+const defaultEconomy = require('../default_economy.json');
+const fs = require('node:fs');
 const { PermissionsBitField } = require('discord.js');
 const { clientSecret, clientId, discordInvite } = require('../config.json');
-const defaultEconomy = require('../default_economy.json');
 const { validate } = require('./check');
 const { updateCommand } = require('./updateCommand');
 
@@ -63,13 +64,15 @@ module.exports = async (client) => {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     const renderTemplate = (res, req, template, data = {}) => {
+        const directory = path.resolve(__dirname + `/templates/${template}`);
         const baseData = {
             bot: client,
             path: req.path,
             user: req.isAuthenticated() ? req.user : null
         }
 
-        res.render(path.resolve(__dirname + `/templates/${template}`), Object.assign(baseData, data));
+        if (!fs.existsSync(directory)) return res.status(404);
+        res.render(directory, Object.assign(baseData, data));
     }
 
     const checkAuth = (req, res, next) => {
@@ -191,19 +194,38 @@ module.exports = async (client) => {
                 
                 try {
                     await updateCommand(req.body, guild);
+                    return res.status(200).json({ message: ["Cambios guardados."] });
                 } catch (err) {
-                    return res.status(400).json({ errors: [err] });
+                    return res.status(400).json({ message: [err] });
                 }
-            }
 
-            res.status(200);
+            } else res.status(200);
 
-        } else {
-            res.status(400).json({ errors: validationResult.err });
-        }
+        } else res.status(400).json({ errors: validationResult.err });
         
     });
 
-    app.listen(53134, () => console.log('Listening port 53134'));
+    app.use((req, res) => {
+        res.status(404);
+        renderTemplate(res, req, 'error.ejs', { 
+            discordInvite: discordInvite, 
+            code: '404', 
+            codeMessage: 'No encontrado', 
+            message: 'Parece que te has perdido un poco...' 
+        });
+    });
+
+    app.use((err, req, res) => {
+        console.error(err.stack);
+        res.status(500);
+        renderTemplate(res, req, 'error.ejs', { 
+            discordInvite: discordInvite, 
+            code: '500',
+            codeMessage: 'Error interno',
+            message: 'Hubo un error con el servidor...' 
+        });
+    });
+
+    app.listen(53134, () => console.log('[ Dashboard ] : Listening port 53134'));
 
 }
