@@ -24,7 +24,7 @@ module.exports = {
         let item = craft.items.find(x => x.name == selected);
         let amount = interaction.options.getInteger('cantidad') || 1;
 
-        if (!item) return interaction.reply({ content: 'No encontré el objeto `' + item + '`.', ephemeral: true });
+        if (!item) return interaction.reply({ content: 'No encontré el objeto `' + selected + '`.', ephemeral: true });
 
         let inv = await db.get(`e_${interaction.guildId}_${interaction.user.id}.inv`) || {};
         Math.floor(Math.random() * 100) <= item.probability ? n = 'success' : n = 'fail';

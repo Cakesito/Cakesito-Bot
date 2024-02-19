@@ -22,16 +22,17 @@ module.exports = {
             let randomText = crime.success.txt[Math.floor(Math.random() * crime.success.txt.length)];
             embed.setDescription(randomText.replace('{money}', randomMoney));
             embed.setColor(0x56bb74);
-
+            await db.add(`e_${interaction.guildId}_${interaction.user.id}.cash`, randomMoney);
+            
         } else {
             randomMoney = random(crime.fail.min, crime.fail.max);
-
+            
             let randomText = crime.fail.txt[Math.floor(Math.random() * crime.fail.txt.length)];
             embed.setDescription(randomText.replace('{money}', randomMoney));
             embed.setColor(0xec5454);
+            await db.sub(`e_${interaction.guildId}_${interaction.user.id}.cash`, randomMoney);
         }
 
-        await db.add(`e_${interaction.guildId}_${interaction.user.id}.cash`, randomMoney);
         return interaction.reply({ embeds: [embed] });
 
     }

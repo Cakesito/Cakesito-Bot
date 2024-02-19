@@ -17,9 +17,7 @@ module.exports = {
 
         if(await db.get(`n_${message.guild.id}_${command.name}`)) return message.reply({ content: 'Este comando está deshabilitado en este servidor.' })
 
-        if (command.ownerOnly) {
-            if (message.author.id != ownerId) return;
-        }
+        if (command.ownerOnly && message.author.id !== ownerId) return;
 
         if (command.botPermissions) {
             let permissions = command.botPermissions.filter(x => !message.guild.me.permissions.has(x)).map(x => "`" + x + "`");
@@ -39,6 +37,11 @@ module.exports = {
             client.cooldowns.set(`c_${message.guild.id}_${message.author.id}_${command.name}`, Date.now());
         }
 
-        command.run(client, message, args);
+        try {
+            command.run(client, message, args);
+        } catch (err) {
+            message.repy('Ocurrió un error con el bot. No eres tú, soy yo :(');
+            console.error(err);
+        }
     }
 }

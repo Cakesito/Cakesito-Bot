@@ -8,8 +8,10 @@ module.exports = {
         
         // await interaction.deferReply().catch(err => {});
 
+        let command;
+
         if (interaction.isChatInputCommand()) {
-            let command = client.slash_commands.get(interaction.commandName);
+            command = client.slash_commands.get(interaction.commandName);
             if (!command) return;
     
             if(await db.get(`n_${interaction.guildId}_${command.data.name}`)) return interaction.reply({ content: 'Este comando está deshabilitado en este servidor.', ephemeral: true });
@@ -22,14 +24,18 @@ module.exports = {
                 client.cooldowns.set(`c_${interaction.guildId}_${interaction.user.id}_${command.data.name}`, Date.now());
             }
             
-            command.run(client, interaction);
         }
         
         if (interaction.isUserContextMenuCommand()) {
-            let command = client.menu_commands.get(interaction.commandName);
+            command = client.menu_commands.get(interaction.commandName);
             if (!command) return;
+        }
 
+        try {
             command.run(client, interaction);
+        } catch (err) {
+            interaction.reply({ content: 'Ocurrió un error con el bot. No eres tú, soy yo :(', ephemeral: true });
+            console.error(err);
         }
 
     }

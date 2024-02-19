@@ -1,24 +1,17 @@
 const { SlashCommandBuilder, PermissionsBitField, SlashCommandStringOption } = require("discord.js");
-const { readdirSync } = require('node:fs');
 
 let options = new SlashCommandStringOption()
 .setRequired(true)
 .setName('comando')
-.setDescription('Comando a activar/desactivar');
-
-
-readdirSync("./commands/prefix").forEach(dir => {
-    let commands = readdirSync(`./commands/prefix/${dir}/`).filter(file => file.endsWith('.js'));
-
-    for (let file of commands) {
-        let pull = require(`../../prefix/${dir}/${file}`);
-        pull.name = pull.name || file.replace('.js', '');
-        if (dir == 'owner' || pull.name == 'toggle') return;
-
-        options.addChoices({ name: pull.name, value: pull.name });
-    }
-
-});
+.setDescription('Comando a activar/desactivar')
+.addChoices(
+    { name: 'work', value: 'work' },
+    { name: 'crime', value: 'crime' },
+    { name: 'daily', value: 'daily' },
+    { name: 'claim', value: 'claim' },
+    { name: 'craft', value: 'craft' },
+    { name: 'explore', value: 'explore' }
+);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,14 +22,16 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const available = ['claim', 'craft', 'crime', 'daily', 'explore', 'work'];
         let selection = interaction.options.getString('comando');
-        let command = client.prefix_commands.get(selection);
+        
+        if (!available.includes(selection)) return message.reply({ content: 'El comando `' + selection + '` no existe o no se puede deshabilitar.', ephemeral: true });
 
         let status = await db.get(`n_${interaction.guildId}_${command.name}`) || false
         let newStatus = status == true ? false : true;
 
         await db.set(`n_${interaction.guildId}_${command.name}`, newStatus);
 
-        return interaction.reply('`' + command.name + '`:' + ` ${newStatus == true ? 'Desactivado' : 'Activado'}`);
+        return interaction.reply('`' + command.name + '`:' + ` ${newStatus == true ? 'desactivado' : 'activado'}`);
     }
 }
