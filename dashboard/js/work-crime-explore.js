@@ -73,7 +73,7 @@ saveCrime.addEventListener('click', () => {
     }).then(res => {
         res.json().then(data => {
             alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
             location.reload();
         });
@@ -117,7 +117,7 @@ saveExplore.addEventListener('click', () => {
     }).then(res => {
         res.json().then(data => {
             alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
             location.reload();
         });
@@ -155,7 +155,7 @@ saveWork.addEventListener('click', () => {
     }).then(res => {
         res.json().then(data => {
             alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${res.status === 400 ? 'alert error' : 'alert success' }`;
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
             location.reload();
         });

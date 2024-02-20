@@ -8,6 +8,10 @@ const path = require('path');
 const url = require("url");
 const defaultEconomy = require('../default_economy.json');
 const fs = require('node:fs');
+const helmet = require('helmet');
+const Redis = require('ioredis');
+const redisClient = new Redis({ enableOfflineQueue: false });
+const { RateLimiterRedis } = require('rate-limiter-flexible');
 const { PermissionsBitField } = require('discord.js');
 const { clientSecret, clientId, discordInvite } = require('../config.json');
 const { validate } = require('./check');
@@ -16,7 +20,79 @@ const { updateCommand } = require('./updateCommand');
 const app = express();
 const MemoryStore = require("memorystore")(session);
 
+const maxWrongAttemptsByIPperDay = 100;
+const maxConsecutiveFailsByUsernameAndIP = 10;
+
+const limiterSlowBruteByIP = new RateLimiterRedis({
+    storeClient: redisClient,
+    useRedisPackage: true,
+    keyPrefix: 'login_fail_ip_per_day',
+    points: maxWrongAttemptsByIPperDay,
+    duration: 60 * 60 * 24,
+    blockDuration: 60 * 60 * 24, // Block for 1 day, if 100 wrong attempts per day
+});
+
+const limiterConsecutiveFailsByUsernameAndIP = new RateLimiterRedis({
+    storeClient: redisClient,
+    keyPrefix: 'login_fail_consecutive_username_and_ip',
+    points: maxConsecutiveFailsByUsernameAndIP,
+    duration: 60 * 60 * 24 * 90, // Store number for 90 days since first fail
+    blockDuration: 60 * 60, // Block for 1 hour
+});
+
 module.exports = async (client) => {
+
+    const getUsernameIPkey = (username, ip) => `${username}_${ip}`;
+
+    async function limiter (req, res, guildId, successful) {
+        const ipAddr = req.ip;
+        const usernameIPkey = getUsernameIPkey(guildId, ipAddr);
+
+        const [resUsernameAndIP, resSlowByIP] = await Promise.all([
+            limiterConsecutiveFailsByUsernameAndIP.get(usernameIPkey),
+            limiterSlowBruteByIP.get(ipAddr),
+        ]);
+
+        let retrySecs = 0;
+
+        // Check if IP or Username + IP is already blocked
+        if (resSlowByIP !== null && resSlowByIP.consumedPoints > maxWrongAttemptsByIPperDay) {
+            retrySecs = Math.round(resSlowByIP.msBeforeNext / 1000) || 1;
+        } else if (resUsernameAndIP !== null && resUsernameAndIP.consumedPoints > maxConsecutiveFailsByUsernameAndIP) {
+            retrySecs = Math.round(resUsernameAndIP.msBeforeNext / 1000) || 1;
+        }
+
+        if (retrySecs > 0) {
+            res.set('Retry-After', String(retrySecs));
+            res.status(429).json({ message: 'Too many requests' });
+
+        } else {
+
+            if (!successful) {
+                try {
+                    await limiterSlowBruteByIP.consume(ipAddr);
+                    await limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey);
+
+                } catch (err) {
+                    if (err instanceof Error) {
+                        console.error(err.stack);
+                        res.status(500);
+                    } else {
+                        res.set('Retry-After', String(Math.round(rlRejected.msBeforeNext / 1000)) || 1);
+                        res.status(429).json({ message: 'Too many requests' });
+                    }
+                }
+            }
+
+            if (successful) {
+                if (resUsernameAndIP !== null && resUsernameAndIP.consumedPoints > 0) {
+                    // Reset on successful authorisation
+                    await limiterConsecutiveFailsByUsernameAndIP.delete(usernameIPkey);
+                }
+            }
+
+        }
+    }
 
     client.discordInvite = discordInvite;
     const db = client.db.get('db');
@@ -40,14 +116,13 @@ module.exports = async (client) => {
         ),
     );
 
+    app.use(helmet());
     app.use(session({
         store: new MemoryStore({ checkPeriod: 86400000 }),
         secret: "#@%#&^$^$%@$^$&%#$%@#$%$^%&$%^#$%@#$%#E%#%@$FEErfgr3g#%GT%536c53cc6%5%tv%4y4hrgrggrgrgf4n",
         resave: false,
         saveUninitialized: false
     }));
-
-    // app.set('views', path.resolve(`${process.cwd()}${path.sep}dashboard${path.sep}templates`));
 
     app.use("/", express.static(path.resolve(`${process.cwd()}${path.sep}dashboard${path.sep}css`)));
     app.use("/", express.static(path.resolve(`${process.cwd()}${path.sep}dashboard${path.sep}js`)));
@@ -186,6 +261,8 @@ module.exports = async (client) => {
         let settings = await db.get(`g_${guild.id}`);
         const validationResult = validate(req.body, settings);
 
+        await limiter(req, res, guild.id, validationResult.valid);
+
         if (validationResult.valid) {
             await db.set(`g_${guild.id}.${req.body.setting}`, validationResult.parsed);
             
@@ -201,7 +278,7 @@ module.exports = async (client) => {
 
             } else res.status(200);
 
-        } else res.status(400).json({ errors: validationResult.err });
+        } else res.status(400).json({ message: validationResult.err });
         
     });
 
