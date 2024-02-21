@@ -4,5 +4,6 @@
     "ownerId": "OWNER_ID",
     "default_prefix": ",",
     "clientSecret": "CLIENT_SECRET",
-    "discordInvite": "DISCORD_INVITE"
+    "discordInvite": "DISCORD_INVITE",
+    "domain": "DOMAIN"
 }
