@@ -53,6 +53,8 @@ const limiter = rateLimit({
     message: { message: ["Inténtelo de nuevo más tarde"] }
 });
 
+app.set('trust proxy', 1);
+
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
@@ -200,8 +202,8 @@ app.post("/dashboard/:guildId/:setting", checkAuth, limiter, async (req, res) =>
     
     if (!member.permissions.has("MANAGE_GUILD")) return res.redirect("/dashboard");
     
-    let settings = await db.get(`g_${guild.id}`);
-    const validationResult = validate(req.body, settings);
+    const settings = await db.get(`g_${guild.id}`);
+    const validationResult = await validate(req.body, settings);
 
     if (validationResult.valid) {
         await db.set(`g_${guild.id}.${req.body.setting}`, validationResult.parsed);

@@ -69,7 +69,7 @@ dailySaveBtn.addEventListener('click', () => {
     var texts = document.querySelector('#custom-text-1 > div > div > textarea');
     daily.data.txt = texts.value;
 
-    if (selected.classList == 'div-money div-money-daily') {
+    if (selected.classList.contains('div-money')) {
         var inputMoney = document.getElementById('input-money-daily');
         if (inputMoney.value == '') inputMoney.value = '0';
 
@@ -84,8 +84,8 @@ dailySaveBtn.addEventListener('click', () => {
 
         if (objectSelected || materialSelected) daily.data.reward.materials = {};
 
-        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials[objectSelected.value] = [dailyObjectMin, dailyObjectMax];
-        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials[materialSelected.value] = [dailyMaterialMin, dailyMaterialMax];
+        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials[objectSelected.value] = [dailyObjectMin.value, dailyObjectMax.value];
+        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials[materialSelected.value] = [dailyMaterialMin.value, dailyMaterialMax.value];
     }
     
     fetch(window.location.href, {
@@ -100,7 +100,7 @@ dailySaveBtn.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 
@@ -126,7 +126,7 @@ claimSaveBtn.addEventListener('click', () => {
 
     daily.data.cooldown = ms(cooldown.value, { toString: false });
 
-    if (selected.classList == 'div-money div-money-claim') {
+    if (selected.classList.contains('div-money')) {
         var inputMoney = document.getElementById('input-money-claim');
         if (inputMoney.value == '') inputMoney.value = '0';
 
@@ -141,8 +141,8 @@ claimSaveBtn.addEventListener('click', () => {
 
         if (objectSelected || materialSelected) daily.data.reward.materials = {};
 
-        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials[objectSelected.value] = [claimObjectMin, claimObjectMax];
-        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials[materialSelected.value] = [claimMaterialMin, claimMaterialMax];
+        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials[objectSelected.value] = [claimObjectMin.value, claimObjectMax.value];
+        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials[materialSelected.value] = [claimMaterialMin.value, claimMaterialMax.value];
     }
     
     fetch(window.location.href, {
@@ -157,7 +157,7 @@ claimSaveBtn.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 

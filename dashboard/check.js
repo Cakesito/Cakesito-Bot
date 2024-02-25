@@ -3,18 +3,19 @@ const { object, string, number, array, boolean, mixed } = require('yup');
 var max = 1_000_000;
 let info;
 
-function validate (options, db) {
+async function validate (options, db) {
     var validOptions = ['daily', 'claim', 'work', 'crime', 'explore', 'craft.items', 'materials', 'shop.items', 'prefix'];
     var requiresUpdate = ['craft.items', 'shop.items'];
     if (!validOptions.includes(options.setting)) return { valid: false, parsed: {}, err: ['invalid setting type'] };
 
     try {
         info = db;
-        validations[options.setting].validateSync(options.data, { abortEarly: false });
-        const parsed = validations[options.setting].cast(options.data);
-        return { valid: true, parsed: parsed, err: {}, requiresUpdate: requiresUpdate.includes(options.setting) };
+	const parsed = validations[options.setting].cast(options.data);
+	validations[options.setting].validateSync(options.data, { abortEarly: false });
+        return { valid: true, parsed: parsed, err: ["Cambios guardados"], requiresUpdate: requiresUpdate.includes(options.setting) };
     } catch(err) {
-        return { valid: false, parsed: {}, err: err.errors, requiresUpdate: false };
+	if (!err.errors) console.error(err);
+        return { valid: false, parsed: {}, err: err.errors ?? ["Error desconocido"], requiresUpdate: false };
     }
 }
 
@@ -49,13 +50,15 @@ const validations = {
 
                         if (!validObject) return false;
                         if (values.length !== 2) return false;
-                        const [value1, value2] = values;
-                        if (!Number.isInteger(Number(value1)) || !Number.isInteger(Number(value2))) return false;
+                        let [value1, value2] = values;
+			value1 = Number(value1);
+			value2 = Number(value2);
+                        if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
                         return typeof value1 === 'number' && typeof value2 === 'number' && value1 <= value2;
                     },
                     message: "amount or object not valid"
                 }),
-                otherwise: mixed().notRequired()
+                otherwise: () => mixed().notRequired()
             })
     
         }).required().test({
@@ -95,13 +98,15 @@ const validations = {
 
                         if (!validObject) return false;
                         if (values.length !== 2) return false;
-                        const [value1, value2] = values;
-                        if (!Number.isInteger(Number(value1)) || !Number.isInteger(Number(value2))) return false;
+                        let [value1, value2] = values;
+			value1 = Number(value1);
+                        value2 = Number(value2);
+                        if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
                         return typeof value1 === 'number' && typeof value2 === 'number' && value1 >= 0 && value1 <= value2;
                     },
                     message: "amount or object not valid"
                 }),
-                otherwise: mixed().notRequired()
+                otherwise: () => mixed().notRequired()
             })
     
         }).required().test({
@@ -160,8 +165,10 @@ const validations = {
 
                 if (!validObject) return false;
                 if (values.length !== 2) return false;
-                const [value1, value2] = values;
-                if (!Number.isInteger(Number(value1)) || !Number.isInteger(Number(value2))) return false;
+                let [value1, value2] = values;
+		value1 = Number(value1);
+		value2 = Number(value2);
+                if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
                 return typeof value1 === 'number' && typeof value2 === 'number' && value1 >= 0 && value1 <= value2;
             },
             message: "amount or object not valid"
@@ -178,7 +185,8 @@ const validations = {
                 const material = Object.values(value);
                 var valid = true;
                 material.forEach(amount => {
-                    if (typeof amount !== 'number' || !Number.isInteger(Number(amount)) || amount < 0 || amount > max) valid = false;
+		    amount = Number(amount);
+                    if (isNaN(amount) || !Number.isInteger(Number(amount)) || amount < 0 || amount > max) valid = false;
                 })
                 return valid;
             },
@@ -189,12 +197,12 @@ const validations = {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
                   if (value[i].name === value[j].name) {
-                    return true;
+                    return false;
                   }
                 }
             }
 
-            return false;
+            return true;
             
         },
         message: "duplicated object"
@@ -208,12 +216,12 @@ const validations = {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
                   if (value[i].name === value[j].name) {
-                    return true;
+                    return false;
                   }
                 }
             }
 
-            return false;
+            return true;
             
         },
         message: "duplicated material"
@@ -259,12 +267,12 @@ const validations = {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
                   if (value[i].name === value[j].name) {
-                    return true;
+                    return false;
                   }
                 }
             }
 
-            return false;
+            return true;
             
         },
         message: "duplicated object"
