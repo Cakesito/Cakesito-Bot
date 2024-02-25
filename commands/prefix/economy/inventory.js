@@ -81,7 +81,9 @@ module.exports = {
         if(inv) {
             Object.entries(inv).forEach(e => {
                 let desc = materials.find(x => x.name === e[0]) || craft.items.find(x => x.name === e[0]);
-                if(e[1] != 0) invEmbed.addFields({ name: `${e[0]} x${e[1]}`, value: desc.description ?? '_Este objeto no tiene descripción_' });
+                if (!desc) return;
+
+                if(e[1] != 0) invEmbed.addFields({ name: `${e[0]} x${e[1]}`, value: desc.description == "" ? '_Este objeto no tiene descripción_' : desc.description });
             });
         } else invEmbed.setDescription('Parece que no hay nada...')
 

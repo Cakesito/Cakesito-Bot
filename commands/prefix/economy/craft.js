@@ -22,10 +22,10 @@ module.exports = {
             if (!item) return message.reply(`Vas a crear ${amount}... ¿qué?`);
         }
 
-        var temp = item;
+        var temp = item.toLowerCase();
         item = craft.items.find(x => x.name === temp);
-        if (!item) item = craft.items.find(x => x.name.startsWith(temp));
-        if (!item) item = craft.items.find(x => x.name.includes(temp));
+        if (!item) item = craft.items.find(x => x.name.toLowerCase().startsWith(temp));
+        if (!item) item = craft.items.find(x => x.name.toLowerCase().includes(temp));
 
         if (!item) return message.reply('No encontré el objeto `' + temp + '`.');
         Math.floor(Math.random() * 100) <= item.probability ? n = 'success' : n = 'fail';
@@ -35,8 +35,8 @@ module.exports = {
 
         // Quick.db doesn't work in forEach
         for (x of Object.keys(item.materials)) {
-            if ((item.materials[x] * amount) > inv[x]) {
-                missing.push(`x${(item.materials[x] * amount) - inv[x]} **${x}** (${inv[x]}/${item.materials[x] * amount})`);
+            if (!inv[x] || (item.materials[x] * amount) > inv[x]) {
+                missing.push(`x${(item.materials[x] * amount) - (inv[x] || 0)} **${x}** (${inv[x] || 0}/${item.materials[x] * amount})`);
             }
         }
         

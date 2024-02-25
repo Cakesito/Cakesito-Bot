@@ -23,10 +23,10 @@ module.exports = {
             if (!item) return message.reply(`Vas a comprar ${amount}... ¿qué?`);
         }
 
-        var temp = item;
+        var temp = item.toLowerCase();
         item = shop.items.find(x => x.name === temp);
-        if (!item) item = shop.items.find(x => x.name.startsWith(temp));
-        if (!item) item = shop.items.find(x => x.name.includes(temp));
+        if (!item) item = shop.items.find(x => x.name.toLowerCase().startsWith(temp));
+        if (!item) item = shop.items.find(x => x.name.toLowerCase().includes(temp));
 
         if (!item) return message.reply('No encontré el objeto `' + temp + '`.');
 

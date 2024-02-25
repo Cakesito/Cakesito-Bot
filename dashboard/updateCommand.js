@@ -5,12 +5,10 @@ let convertion = {
     'shop.items': 'buy'
 }
 
-async function updateCommand (data, guild, db) {
+async function updateCommand (data, guild) {
     const command = convertion[data.setting];
         
     let slashCommandData = new SlashCommandBuilder()
-    .setName('craft')
-    .setDescription('Crea algo')
 
     let options = new SlashCommandStringOption()
     .setRequired(true);

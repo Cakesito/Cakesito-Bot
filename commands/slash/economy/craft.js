@@ -33,8 +33,8 @@ module.exports = {
 
         // Quick.db doesn't work in forEach
         for (x of Object.keys(item.materials)) {
-            if ((item.materials[x] * amount) > inv[x]) {
-                missing.push(`x${(item.materials[x] * amount) - inv[x]} **${x}** (${inv[x]}/${item.materials[x] * amount})`);
+            if (!inv[x] || (item.materials[x] * amount) > inv[x]) {
+                missing.push(`x${(item.materials[x] * amount) - (inv[x] || 0)} **${x}** (${inv[x] || 0}/${item.materials[x] * amount})`);
             }
         }
         
