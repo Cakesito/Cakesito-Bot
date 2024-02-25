@@ -51,8 +51,8 @@ const validations = {
                         if (!validObject) return false;
                         if (values.length !== 2) return false;
                         let [value1, value2] = values;
-			value1 = Number(value1);
-			value2 = Number(value2);
+			            value1 = Number(value1);
+			            value2 = Number(value2);
                         if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
                         return typeof value1 === 'number' && typeof value2 === 'number' && value1 <= value2;
                     },
@@ -99,7 +99,7 @@ const validations = {
                         if (!validObject) return false;
                         if (values.length !== 2) return false;
                         let [value1, value2] = values;
-			value1 = Number(value1);
+			            value1 = Number(value1);
                         value2 = Number(value2);
                         if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
                         return typeof value1 === 'number' && typeof value2 === 'number' && value1 >= 0 && value1 <= value2;
@@ -156,7 +156,7 @@ const validations = {
 
                 var validObject = true;
                 for (x of objects) {
-                    let obj = info.materials.find(k => k.name === x);
+                    let obj = info.materials.find(k => k.name === x) || info.craft.items.find(k => k.name === x);
                     if (!obj) {
                         validObject = false;
                         break;
@@ -166,8 +166,8 @@ const validations = {
                 if (!validObject) return false;
                 if (values.length !== 2) return false;
                 let [value1, value2] = values;
-		value1 = Number(value1);
-		value2 = Number(value2);
+		        value1 = Number(value1);
+		        value2 = Number(value2);
                 if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
                 return typeof value1 === 'number' && typeof value2 === 'number' && value1 >= 0 && value1 <= value2;
             },
@@ -185,8 +185,8 @@ const validations = {
                 const material = Object.values(value);
                 var valid = true;
                 material.forEach(amount => {
-		    amount = Number(amount);
-                    if (isNaN(amount) || !Number.isInteger(Number(amount)) || amount < 0 || amount > max) valid = false;
+		        amount = Number(amount);
+                if (isNaN(amount) || !Number.isInteger(Number(amount)) || amount < 0 || amount > max) valid = false;
                 })
                 return valid;
             },

@@ -75,7 +75,7 @@ saveCrime.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 
@@ -94,10 +94,10 @@ saveExplore.addEventListener('click', () => {
     explore.data.cooldown = ms(exploreCooldown.value, { toString: false });
 
     var selectedObject = document.getElementById('select-objects');
-    if (selectedObject && selectedObject.value != 'Nada') explore.data.materials[selectedObject.value] = [objectMin, objectMax];
+    if (selectedObject && selectedObject.value != 'Nada') explore.data.materials[selectedObject.value] = [objectMin.value, objectMax.value];
 
     var selectedMaterial = document.getElementById('select-materials');
-    if (selectedMaterial && selectedMaterial.value != 'Nada') explore.data.materials[selectedMaterial.value] = [materialMin, materialMax];
+    if (selectedMaterial && selectedMaterial.value != 'Nada') explore.data.materials[selectedMaterial.value] = [materialMin.value, materialMax.value];
 
     var successTexts = Array.from(document.querySelectorAll('#custom-text-2 > div > div > textarea')).map(x => x.value);
     var failTexts = Array.from(document.querySelectorAll('#custom-text-3 > div > div > textarea')).map(x => x.value);
@@ -119,7 +119,7 @@ saveExplore.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 
@@ -157,7 +157,7 @@ saveWork.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 

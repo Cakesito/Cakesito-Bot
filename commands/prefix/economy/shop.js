@@ -9,7 +9,7 @@ module.exports = {
         if(!shop.items.length) return message.reply('No hay tienda.');
 
         let shopText = Object.entries(shop.items).map(x => {
-            return { title: x[1].name, type: convertion[x[1].price.type] || convertion[x[1].price.type].replace('inv.', ''), price: x[1].price.amount, description: x[1].description ?? '_Este objeto no tiene descripción_' }
+            return { title: x[1].name, type: convertion[x[1].price.type] || x[1].price.type.replace('inv.', ''), price: x[1].price.amount, description: x[1].description ?? '_Este objeto no tiene descripción_' }
         });
 
         let count = 0;
