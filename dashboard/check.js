@@ -4,7 +4,7 @@ var max = 1_000_000;
 let info;
 
 function validate (options, db) {
-    var validOptions = ['daily', 'claim', 'work', 'crime', 'explore', 'craft.items', 'materials', 'shop.items'];
+    var validOptions = ['daily', 'claim', 'work', 'crime', 'explore', 'craft.items', 'materials', 'shop.items', 'prefix'];
     var requiresUpdate = ['craft.items', 'shop.items'];
     if (!validOptions.includes(options.setting)) return { valid: false, parsed: {}, err: ['invalid setting type'] };
 
@@ -19,6 +19,8 @@ function validate (options, db) {
 }
 
 const validations = {
+    'prefix': string().required().min(1).max(20),
+
     'daily': object({
         txt: string().optional().max(2000),
         reward: object().shape({

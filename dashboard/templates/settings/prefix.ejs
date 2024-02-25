@@ -30,24 +30,4 @@
   </div>
 </div>
 
-<script type="text/javascript">
-  var button = document.getElementById('save');
-  var value = document.getElementById('prefix');
-
-  save.addEventListener('click', () => {
-
-    fetch(window.location.href, {
-      method: 'POST',
-      headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-      },
-      body: {
-        "setting": "prefix",
-        "data": value.value
-      }
-
-    }).then(() => {});
-
-  })
-</script>
+<script type="text/javascript" src="/prefix.js"></script>

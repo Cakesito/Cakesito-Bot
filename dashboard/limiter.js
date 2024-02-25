@@ -1,7 +1,6 @@
 const Redis = require('ioredis');
-const redisClient = new Redis({ enableOfflineQueue: false });
+const redisClient = new Redis({ enableOfflineQueue: false, password: "[,/D+;i1kYdi0!50kW-n&u($ADo(!qcF>78tj.hccDko(]j@+h(U^1ky4Dwz6Vx#bj&T1+Cz~&82.Qy)jSWt490.7nrv$pigc5+" });
 const { RateLimiterRedis } = require('rate-limiter-flexible');
-
 const maxWrongAttemptsByIP = 70;
 const maxReqByIP = 9;
 
@@ -44,9 +43,9 @@ async function consecutiveFails (ipAddr, res, err) {
             limiterConsecutiveFailsByIP.consume(ipAddr);
             res.status(400).json({ message: err });
 
-        } catch (err) {
-            if (err instanceof Error) {
-                console.error(err.stack);
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error.stack);
                 res.status(500);
 
             } else {

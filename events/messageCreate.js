@@ -1,14 +1,19 @@
-const { default_prefix, clientId, ownerId } = require('../config.json');
+const { default_prefix, ownerId } = require('../config.json');
 
 module.exports = {
     run: async (client, message) => {
         const db = client.db.get('db');
-        var prefix = await db.get(`p_${message.guild.id}`) || default_prefix;
-        var regex = new RegExp(`<@${clientId}>`, 'g');
+        var prefix = await db.get(`g_${message.guildId}.prefix`) || default_prefix;
 
-        if(message.author.bot || !message.guild || !message.content.startsWith(prefix)) return;
+        var mention = `<@${client.user.id}>`;
+        if(message.author.bot || !message.guild) return;
 
-        const args = message.content.slice(prefix.length).trim().split(/ +/g);
+        let args = message.content.slice(prefix.length).trim().split(/ +/g);
+
+        if (message.mentions.has(client.user.id)) {
+            args = message.content.slice(mention.length).trim().split(/ +/g);
+        } else if (!message.content.startsWith(prefix)) return;
+
         const cmd = args.shift().toLowerCase();
 
         let command = client.prefix_commands.get(cmd);
