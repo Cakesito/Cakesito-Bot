@@ -13,7 +13,7 @@ const { PermissionsBitField, Client, GatewayIntentBits } = require('discord.js')
 const { clientSecret, clientId, discordInvite, token } = require('../config.json');
 const { validate } = require('./check');
 const { updateCommand } = require('./updateCommand');
-const { slowBruteLimiter, consecutiveFails, resetFailsLimiter, isBlocked } = require('./limiter');
+const { rateLimit } = require('express-rate-limit');
 
 const { QuickDB } = require('quick.db');
 const db = new QuickDB();
@@ -44,6 +44,14 @@ passport.use(
         },
     ),
 );
+
+const limiter = rateLimit({
+    windowMs: 60 * 15 * 1000,
+    limit: 100,
+    standardHeaders: 'draft-6',
+    legacyHeaders: false,
+    message: { message: ["Inténtelo de nuevo más tarde"] }
+});
 
 app.use(helmet({
     contentSecurityPolicy: {
@@ -183,15 +191,7 @@ app.get("/dashboard/:guildId/:setting", checkAuth, async (req, res) => {
 
 });
 
-app.post("/dashboard/:guildId/:setting", checkAuth, async (req, res) => {
-    const blocked = await isBlocked(req.ip);
-    if (blocked.blocked) {
-        res.set('Retry-After', blocked.retryAfter);
-        return res.status(429).json({ message: ['Too many requests'] });
-    }
-
-    slowBruteLimiter(req.ip);
-
+app.post("/dashboard/:guildId/:setting", checkAuth, limiter, async (req, res) => {
     const guild = client.guilds.cache.get(req.params.guildId);
     if (!guild) return res.redirect("/dashboard");
 
@@ -214,16 +214,12 @@ app.post("/dashboard/:guildId/:setting", checkAuth, async (req, res) => {
                 res.status(200).json({ message: ["Cambios guardados."] });
                 
             } catch {
-                res.status(400).json({ message: ["Error al intentar actualizar los comandos del servidor."] });
+                res.status(424).json({ message: ["Error al intentar actualizar los comandos (/) del servidor.", "Los cambios SÍ fueron guardados por el bot."] });
             }
 
         } else res.status(200).json({ message: ['Cambios guardados.'] });
 
-        await resetFailsLimiter(req.ip);
-
-    } else {
-        await consecutiveFails(req.ip, res, validationResult.err);
-    }
+    } else res.status(400).json({ message: validationResult.err });
     
 });
 
