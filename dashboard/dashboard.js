@@ -10,7 +10,7 @@ const defaultEconomy = require('../default_economy.json');
 const fs = require('node:fs');
 const helmet = require('helmet');
 const { PermissionsBitField, Client, GatewayIntentBits } = require('discord.js');
-const { clientSecret, clientId, discordInvite, token } = require('../config.json');
+const { clientSecret, clientId, discordInvite, token, domain } = require('../config.json');
 const { validate } = require('./check');
 const { updateCommand } = require('./updateCommand');
 const { rateLimit } = require('express-rate-limit');
@@ -36,7 +36,7 @@ passport.use(
         {
             clientID: clientId,
             clientSecret: clientSecret,
-            callbackURL: 'http://localhost:53134/callback',
+            callbackURL: domain + '/callback',
             scope: ['identify', 'guilds']
         },
         (acessToken, refreshToken, profile, done) => {

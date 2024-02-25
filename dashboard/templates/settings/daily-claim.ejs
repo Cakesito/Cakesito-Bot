@@ -22,12 +22,12 @@
 
         <div>
           <div class="select-type">
-            <div class="div-money div-money-daily markable" id="<%= settings.daily.reward.type == 'cash' ? 'daily-selected' : '' %>" onclick="selectDaily(this)">
+            <div class="div-money div-money-daily markable daily-markable" id="<%= settings.daily.reward.type == 'cash' ? 'daily-selected' : '' %>">
               <p class="subtitle">Dinero</p>
               <input type="number" id="input-money-daily" value="<%= settings.daily.reward.type == 'cash' ? settings.daily.reward.amount : '' %>" placeholder="Cantidad">
             </div>
             
-            <div id="<%= settings.daily.reward.type == 'inv.' ? 'daily-selected' : '' %>" <%- (settings.craft.items.length || settings.materials.length) ? `onclick="selectDaily(this)" class=" div-objects-daily markable"` : 'class="div-objects-daily markable disabled"' %> >
+            <div id="<%= settings.daily.reward.type == 'inv.' ? 'daily-selected' : '' %>" <%- (settings.craft.items.length || settings.materials.length) ? `class=" div-objects-daily markable daily-markable"` : 'class="div-objects-daily markable disabled"' %> >
                 <p class="subtitle">Objetos / Materiales</p>
     
                 <% if (settings.craft.length || settings.materials.length) { %>
@@ -130,12 +130,12 @@
         
         <div>
           <div class="select-type">
-            <div class="div-money div-money-claim markable" id="<%= settings.claim.reward.type == 'cash' ? 'claim-selected' : '' %>" onclick="selectClaim(this)">
+            <div class="div-money div-money-claim markable claim-markable" id="<%= settings.claim.reward.type == 'cash' ? 'claim-selected' : '' %>">
               <p class="subtitle">Dinero</p>
               <input type="number" id="input-money-claim" value="<%= settings.claim.reward.type == 'cash' ? settings.claim.reward.amount : '' %>" placeholder="Cantidad">
             </div>
 
-            <div id="<%= settings.claim.reward.type == 'inv.' ? 'claim-selected' : '' %>"  <%- (settings.craft.items.length || settings.materials.length) ? `onclick="selectClaim(this)" class="div-objects-claim markable "` : 'class="div-objects-claim markable disabled"' %> >
+            <div id="<%= settings.claim.reward.type == 'inv.' ? 'claim-selected' : '' %>"  <%- (settings.craft.items.length || settings.materials.length) ? `class="div-objects-claim markable claim-markable"` : 'class="div-objects-claim markable disabled"' %> >
                 <p class="subtitle">Objetos / Materiales</p>
       
                 <% if (settings.craft.length || settings.materials.length) { %>
