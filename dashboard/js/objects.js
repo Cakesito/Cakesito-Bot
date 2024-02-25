@@ -55,7 +55,7 @@ saveButton.addEventListener('click', () => {
 
     var objList = document.querySelectorAll('.jijiji');
     let obj = [];
-    objList.forEach(x => obj.push(JSON.parse(x.textContent)));
+    objList.forEach(x => obj.push(JSON.parse(x.value)));
 
     var selected = obj.find(x => x.name == lastObject);
 
@@ -80,7 +80,7 @@ saveButton.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 
@@ -98,7 +98,7 @@ deleteButton.addEventListener('click', () => {
 
     var objList = document.querySelectorAll('.jijiji');
     let obj = [];
-    objList.forEach(x => obj.push(JSON.parse(x.textContent)));
+    objList.forEach(x => obj.push(JSON.parse(x.value)));
 
     var selected = obj.find(x => x.name == lastObject);
     obj.splice(obj.indexOf(selected), 1);
@@ -115,7 +115,7 @@ deleteButton.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 
