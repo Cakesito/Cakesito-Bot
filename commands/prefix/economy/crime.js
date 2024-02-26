@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const default_economy = require('../../../default_economy.json');
 
 module.exports = {
     requiresCooldown: true,
@@ -11,6 +12,9 @@ module.exports = {
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.author.displayName || message.author.username, iconURL: message.author.displayAvatarURL() })
         .setTimestamp();
+
+        if (!crime.success.txt?.length) crime.success.txt = default_economy.crime.success.txt;
+        if (!crime.fail.txt?.length) crime.fail.txt = default_economy.crime.fail.txt;
 
         if ((Math.random() * 100) <= crime.pr) {
             randomMoney = random(crime.success.min, crime.success.max);

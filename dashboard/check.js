@@ -10,11 +10,12 @@ async function validate (options, db) {
 
     try {
         info = db;
-	const parsed = validations[options.setting].cast(options.data);
-	validations[options.setting].validateSync(options.data, { abortEarly: false });
+	    const parsed = validations[options.setting].cast(options.data);
+	    validations[options.setting].validateSync(options.data, { abortEarly: false });
+        
         return { valid: true, parsed: parsed, err: ["Cambios guardados"], requiresUpdate: requiresUpdate.includes(options.setting) };
     } catch(err) {
-	if (!err.errors) console.error(err);
+	    if (!err.errors) console.error(err);
         return { valid: false, parsed: {}, err: err.errors ?? ["Error desconocido"], requiresUpdate: false };
     }
 }

@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const default_economy = require('../../../default_economy.json');
 
 module.exports = {
     requiresCooldown: true,
@@ -6,6 +7,8 @@ module.exports = {
 
         const db = client.db.get('db');
         const work = await db.get(`g_${message.guildId}.work`);
+
+        if (!work.txt?.length) work.txt = default_economy.work.txt;
 
         let randomMoney = random(work.min, work.max);
         let randomText = work.txt[Math.floor(Math.random() * work.txt.length)];

@@ -100,6 +100,8 @@ const checkAuth = (req, res, next) => {
     res.redirect('/login');
 };
 
+app.get('/others/:file', (req, res) => res.sendFile(path.resolve(__dirname + `/others/${req.params.file}`)));
+
 app.get('/login', (req, res, next) => {
     if (req.session.backURL) {
         req.session.backURL = req.session.backURL;
