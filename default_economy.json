@@ -61,6 +61,7 @@
  
     "explore": {
         "cooldown": 600000,
+        "probability": 75,
         "materials": {},
         "txt": {
             "success": ["**🔍 Has explorado la zona.**\n`◽ | Materiales:` **{reward}**\n\n*Vuelve en **⏳ 10 minutos** para explorar la hermosa fauna que te pierdes en la vida real.*"],

@@ -28,7 +28,7 @@
             </div>
             
             <div id="<%= settings.daily.reward.type == 'inv.' ? 'daily-selected' : '' %>" <%- (settings.craft.items.length || settings.materials.length) ? `class=" div-objects-daily markable daily-markable"` : 'class="div-objects-daily markable disabled"' %> >
-                <p class="subtitle">Objetos / Materiales</p>
+                <p class="subtitle">Materiales</p>
     
                 <% if (settings.craft.length || settings.materials.length) { %>
                   
@@ -64,7 +64,7 @@
                       <option value="Nada">Nada</option>
                       <% settings.materials.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedMaterial = x.name %>
+                          <% selectedObject = x.name %>
                           <option selected value="<%= x.name %>"><%= x.name %></option>
                         <% } else { %>
                           <option value="<%= x.name %>"><%= x.name %></option>
@@ -169,7 +169,7 @@
                       <option value="Nada">Nada</option>
                       <% settings.materials.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedMaterial = x.name %>
+                          <% selectedObject = x.name %>
                           <option selected value="<%= x.name %>"><%= x.name %></option>
                         <% } else { %>
                           <option value="<%= x.name %>"><%= x.name %></option>

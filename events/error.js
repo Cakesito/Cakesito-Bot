@@ -1,3 +1,3 @@
 module.exports = {
-    run: (err) => console.error(err)
+    run: (client, err) => console.error(err)
 }

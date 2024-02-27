@@ -21,7 +21,7 @@ module.exports = {
         if (!crime.success.txt?.length) crime.success.txt = default_economy.crime.success.txt;
         if (!crime.fail.txt?.length) crime.fail.txt = default_economy.crime.fail.txt;
 
-        if ((Math.random() * 100) <= crime.pr) {
+        if ((Math.random() * 100) <= crime.probability) {
             randomMoney = random(crime.success.min, crime.success.max);
 
             let randomText = crime.success.txt[Math.floor(Math.random() * crime.success.txt.length)];

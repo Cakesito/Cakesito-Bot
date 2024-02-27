@@ -148,66 +148,38 @@
   <div class="divider divider-special">
     <div style="max-width: 25vw;">
         <p class="title">Explore</p>
-        <p style="display: inline-block;" class="description">Consigue objetos o materiales cada </p>
-        <input style="display: inline-block;" type="text" id="input-explore-cooldown" value="<%= settings.explore.cooldown %>">
+        <p class="description">Consigue como máximo</p>
+        <input style="display: inline-block;" type="number" id="input-explore-max" value="<%= settings.explore.maxMaterials || 0 %>">
+        <p class="description"> tipos de materiales cada </p>
+        <input style="display: inline-block;" type="text" id="input-explore-cooldown" value="<%= settings.explore.cooldown %>"><br>
+        <p class="description">Probabilidad de conseguir materiales: </p>
+        <input style="display: inline; margin: 3px 0 3px 0" type="number" id="input-explore-probability" value="<%= settings.explore.probability %>">
+        <p class="description">%</p>
         <br>
 
         <div <%- (settings.craft.items.length || settings.materials.length) ? `class="div-objects-explore"` : 'class="div-objects-explore disabled"' %> >
-          <p class="subtitle">Objetos / Materiales</p>
+          <p class="subtitle">Lista de materiales</p>
 
           <% if (settings.craft.length || settings.materials.length) { %>
             
             <% var selectedMaterials = [];
             Object.entries(settings.explore.materials).forEach(x => selectedMaterials.push(x[0]));
             %>
-            
-            <% if (settings.craft.items.length) { %>
-              <% let selectedObject; %>
-              <select id="select-objects">
-                <option value="Nada">Nada</option>
-                <% settings.craft.items.forEach(x => { %>
-                  <% if (selectedMaterials.includes(x.name)) { %>
-                    <% selectedObject = x.name %>
-                    <option selected value="<%= x.name %>"><%= x.name %></option>
-                  <% } else { %>
-                    <option value="<%= x.name %>"><%= x.name %></option>
-                  <% } %>
-                <% }); %>
-              </select>
 
-              <p class="help">: de </p>
-              <input id="object-min" type="number" placeholder="Mínimo" value="<%= settings.explore.materials[selectedObject] ? settings.explore.materials[selectedObject][0] : 0 %>">
-              <p class="help"> a </p>
-              <input id="object-max" type="number" placeholder="Máximo" value="<%= settings.explore.materials[selectedObject] ? settings.explore.materials[selectedObject][1] : 0  %>">
-              <br>
-            <% } %>
-            
-            <% if (settings.materials.length) { %>
-              <% let selectedMaterial; %>
-              <select id="select-materials">
-                <option value="Nada">Nada</option>
-                <% settings.materials.forEach(x => { %>
-                  <% if (selectedMaterials.includes(x.name)) { %>
-                    <% selectedMaterial = x.name %>
-                    <option selected value="<%= x.name %>"><%= x.name %></option>
-                  <% } else { %>
-                    <option value="<%= x.name %>"><%= x.name %></option>
-                  <% } %>
-                <% }); %>
-              </select>
-
-              <p class="help">: de </p>
-              <input  id="material-min" type="number" placeholder="Mínimo" value="<%= settings.explore.materials[selectedMaterial] ? settings.explore.materials[selectedMaterial][0] : 0  %>">
-              <p class="help"> a </p>
-              <input id="material-max" type="number" placeholder="Máximo" value="<%= settings.explore.materials[selectedMaterial] ? settings.explore.materials[selectedMaterial][1] : 0  %>">
-              <br>
-
+            <% if (settings.materials) { %>
+              <% settings.materials.forEach(material => { %>
+                <div class="material" id="<%= material.name %>">
+                  <p class="subtitle" style="display: inline-block;">▸ <%= material.name %></p>
+                  <p class="description">: de</p>
+                  <input id="min-<%= material.name %>" type="number" placeholder="Mínimo" value="<%= settings.explore.materials?.[material.name] ? settings.explore.materials[material.name][0] : 0 %>"></input>
+                  <p class="help"> a </p>
+                  <input id="max-<%= material.name %>" type="number" placeholder="Máximo" value="<%= settings.explore.materials?.[material.name] ? settings.explore.materials[material.name][1] : 0 %>"></input>
+                </div>
+              <% }); %>
             <% } %>
 
           <% } else { %>
-              <select disabled>
-                  <option>No disponible</option>
-              </select>
+              <p disabled>No disponible</p>
           <% } %>
       </div>
     </div>
@@ -218,7 +190,23 @@
       <%- include("../partials/texts/money.ejs") %>
       <%- include("../partials/texts/objects.ejs") %>
       <%- include("../partials/texts/timestamp.ejs") %>
-
+      <br>
+      <p class="description">Si incluyes </p>
+      <p class="description marked">{materialName}</p>
+      <p class="description"> o </p>
+      <p class="description marked">{materialAmount}</p>
+      <p class="description"> dentro de </p>
+      <p class="description marked">[]</p>
+      <p class="description">iterarás entre los materiales.</p><br><br>
+      <p class="description">Ejemplo: </p>
+      <p class="description marked">Recibiste [x{materialAmount} {materialName}, ] ¡Qué suerte!</p><br>
+      <p class="description">devolverá: </p>
+      <p class="description marked">Recibiste x3 Material, x1 Material 2, ¡Qué suerte!</p><br>
+      <p class="description">pero</p>
+      <p class="description marked">Shhh [top secret]</p><br>
+      <p class="description">devolverá: </p>
+      <p class="description marked">Shhh [top secret]</p><br>
+      
         <br><p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br>
                 
         <div class="custom-text-text" id="custom-text-2">

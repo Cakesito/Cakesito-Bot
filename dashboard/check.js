@@ -44,7 +44,7 @@ const validations = {
 
                         var validObject = true;
                         for (x of objects) {
-                            let obj = info.craft.items.find(k => k.name === x) || info.materials.find(k => k.name === x);
+                            let obj = info.materials.find(k => k.name === x) || info.craft.items.find(k => k.name === x);
                             if (!obj) {
                                 validObject = false;
                                 break;
@@ -92,7 +92,7 @@ const validations = {
 
                         var validObject = true;
                         for (x of objects) {
-                            let obj = info.craft.items.find(k => k.name === x) || info.materials.find(k => k.name === x);
+                            let obj = info.materials.find(k => k.name === x) || info.craft.items.find(k => k.name === x);
                             if (!obj) {
                                 validObject = false;
                                 break;
@@ -152,6 +152,8 @@ const validations = {
         }).optional().noUnknown(),
 
         cooldown: number().required().min(1).integer(),
+        maxMaterials: number().required().max(10).integer(),
+        probability: number().required().min(0).max(10).integer(),
         materials: object().required().test({
             test: (value) => {
                 const values = Object.values(value)[0];
@@ -159,7 +161,7 @@ const validations = {
 
                 var validObject = true;
                 for (x of objects) {
-                    let obj = info.materials.find(k => k.name === x) || info.craft.items.find(k => k.name === x);
+                    let obj = info.materials.find(k => k.name === x);
                     if (!obj) {
                         validObject = false;
                         break;

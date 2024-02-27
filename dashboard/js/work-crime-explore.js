@@ -19,6 +19,9 @@ var crimeFailMin = document.getElementById('input-crime-fail-min');
 var crimeFailMax = document.getElementById('input-crime-fail-max');
 
 var crimeProb = document.getElementById('input-crime-probability');
+var exploreProb = document.getElementById('input-explore-probability');
+
+var numberInputs = document.querySelectorAll('input[type="number"]');
 
 var amounts = [[workMin, workMax], [objectMin, objectMax], [materialMin, materialMax], [crimeSuccessMin, crimeSuccessMax], [crimeFailMin, crimeFailMax]];
 
@@ -93,19 +96,24 @@ saveExplore.addEventListener('click', () => {
     var explore = { setting: 'explore', data: { materials: {}, txt: {} } };
     explore.data.cooldown = ms(exploreCooldown.value, { toString: false });
 
-    var selectedObject = document.getElementById('select-objects');
-    if (selectedObject && selectedObject.value != 'Nada') explore.data.materials[selectedObject.value] = [objectMin.value, objectMax.value];
+    var max = document.getElementById('input-explore-max');
 
-    var selectedMaterial = document.getElementById('select-materials');
-    if (selectedMaterial && selectedMaterial.value != 'Nada') explore.data.materials[selectedMaterial.value] = [materialMin.value, materialMax.value];
+    var materials = document.querySelectorAll('.material');
+    materials.forEach(div => {
+        var min = document.getElementById(`min-${div.id}`);
+        var max = document.getElementById(`max-${div.id}`);
+
+        if (min.value == '0' && max.value == '0') return;
+        explore.data.materials[div.id] = [min.value, max.value];
+    });
 
     var successTexts = Array.from(document.querySelectorAll('#custom-text-2 > div > div > textarea')).map(x => x.value);
     var failTexts = Array.from(document.querySelectorAll('#custom-text-3 > div > div > textarea')).map(x => x.value);
 
     explore.data.txt.success = successTexts;
     explore.data.txt.fail = failTexts;
-
-    alertCon.appendChild(alert);
+    explore.data.maxMaterials = max.value;
+    explore.data.probability = exploreProb.value;
 
     fetch(window.location.href, {
         method: 'POST',
@@ -219,10 +227,12 @@ cooldowns.forEach(cd => {
     });
 });
 
-crimeProb.addEventListener('focusout', () => {
-    if (crimeProb.value > 100) crimeProb.value = '100';
-    if (crimeProb.value < 0) crimeProb.value = '0';
-    resizeInput.call(crimeProb);
+numberInputs.forEach(prob => {
+    prob.addEventListener('focusout', () => {
+        if (prob.value > 100) prob.value = '100'
+        if (prob.value < 0) prob.value = '0';
+        resizeInput.call(prob);
+    });
 });
 
 amounts.forEach(list => {
