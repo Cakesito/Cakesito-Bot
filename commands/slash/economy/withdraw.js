@@ -13,11 +13,12 @@ module.exports = {
 
         let current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.bank`) || 0;
         let amount = interaction.options.getString('cantidad') || current;
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
         
         if(amount == 'all' || amount == 'max') amount = current;
         
         if (isNaN(Number(amount))) interaction.reply({ content: 'Cantidad inválida', ephemeral: true });
-        if(current <= 0 || amount > current) return interaction.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${amount - current}`, ephemeral: true});
+        if(current <= 0 || amount > current) return interaction.reply({ content: `Parece que no tienes suficiente.\nFaltante: ${amount - current} ${convertion.cash}`, ephemeral: true});
 
         await db.add(`e_${interaction.guildId}_${interaction.user.id}.cash`, amount);
         await db.sub(`e_${interaction.guildId}_${interaction.user.id}.bank`, amount);
@@ -25,7 +26,7 @@ module.exports = {
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.user.tag, iconURL: interaction.member.displayAvatarURL()})
         .setColor(0x56bb74)
-        .setDescription(`Depositado <:star:991110840780599336> ${amount} a tu banco!`)
+        .setDescription(`Depositado ${amount} ${convertion.cash} a tu banco!`)
         .setTimestamp();
 
         return interaction.reply({ embeds: [embed]});

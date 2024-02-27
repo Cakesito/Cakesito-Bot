@@ -8,6 +8,7 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+        const convertion = await db.get(`g_${interaction.guildId}.convertion`)
         
         let current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.cash`) || 0;
 
@@ -24,7 +25,7 @@ module.exports = {
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.user.tag, iconURL: interaction.member.displayAvatarURL()})
         .setColor(0x56bb74)
-        .setDescription(`Depositado <:star:991110840780599336> ${amount} a tu banco!`)
+        .setDescription(`Depositado ${amount} ${convertion.cash} a tu banco!`)
         .setTimestamp();
 
         return interaction.reply({ embeds: [embed]});

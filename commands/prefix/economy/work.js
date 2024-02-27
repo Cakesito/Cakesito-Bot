@@ -7,6 +7,7 @@ module.exports = {
 
         const db = client.db.get('db');
         const work = await db.get(`g_${message.guildId}.work`);
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
 
         if (!work.txt?.length) work.txt = default_economy.work.txt;
 
@@ -16,7 +17,10 @@ module.exports = {
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.member.displayName || message.author.username, iconURL: message.author.displayAvatarURL() })
         .setColor(0x56bb74)
-        .setDescription(randomText.replace('{money}', randomMoney))
+        .setDescription(randomText
+            .replace('{money}', randomMoney + ' ' + convertion.cash)
+            .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + work.cooldown) / 1000)}:t>`)
+            .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + work.cooldown) / 1000)}:R>`))
         .setTimestamp();
 
         await db.add(`e_${message.guild.id}_${message.author.id}.cash`, randomMoney);

@@ -41,7 +41,9 @@
   
       <div style="width: 65%;">
           <p class="title">Work - Texto Personalizado</p>
-          <p class="description">Escribir</p> <p class="description marked">{money} </p> <p class="description">para indicar la cantidad de dinero ganado.</p><br>
+          <%- include("../partials/texts/money.ejs") %>
+          <%- include("../partials/texts/timestamp.ejs") %>
+          
           <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
 
           <div class="custom-text-text" id="custom-text-1">
@@ -89,7 +91,10 @@
 
     <div style="width: 65%;">
       <p class="title">Crime - Texto Personalizado</p>
-      <p class="description">Escribir</p> <p class="description marked">{money} </p> <p class="description">para indicar la cantidad de dinero ganado.</p><br>
+
+      <%- include("../partials/texts/money.ejs") %>
+      <%- include("../partials/texts/timestamp.ejs") %>
+
       <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
                 
         <div class="custom-text-text" id="custom-text-4">
@@ -209,11 +214,12 @@
 
   <div style="width: 65%;">
       <p class="title">Explore - Texto Personalizado</p>
-      <p class="description">Escribir</p> <p class="description marked">{objectName} </p> <p class="description">para indicar el nombre del objeto obtenido.</p><br>
-      <p class="description">Escribir</p> <p class="description marked">{objectAmount} </p> <p class="description">para indicar la cantidad de objetos obtenidos.</p><br>
-      <p class="description">Escribir</p> <p class="description marked">{materialName} </p> <p class="description">para indicar el nombre del material obtenido.</p><br>
-      <p class="description">Escribir</p> <p class="description marked">{materialAmount} </p> <p class="description">para indicar la cantidad de materiales obtenidos.</p><br>
-      <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
+      
+      <%- include("../partials/texts/money.ejs") %>
+      <%- include("../partials/texts/objects.ejs") %>
+      <%- include("../partials/texts/timestamp.ejs") %>
+
+        <br><p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br>
                 
         <div class="custom-text-text" id="custom-text-2">
             <p class="subtitle">En caso de ganar</p>

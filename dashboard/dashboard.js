@@ -162,7 +162,7 @@ app.get('/dashboard/:guildId', checkAuth, async (req, res) => {
     if (!member) return res.redirect("/dashboard");
     if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return res.redirect("/dashboard");
 
-    res.redirect(`/dashboard/${guild.id}/prefix`);
+    res.redirect(`/dashboard/${guild.id}/general`);
 
 });
 

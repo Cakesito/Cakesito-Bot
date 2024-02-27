@@ -10,6 +10,7 @@ module.exports = {
     run: async (client, interaction) => {
         const db = client.db.get('db');
         const crime = await db.get(`g_${interaction.guildId}.crime`);
+        const convertion = await db.get(`g_${interaction.guildId}.convertion`);
 
         let randomMoney = 0;
         
@@ -24,7 +25,7 @@ module.exports = {
             randomMoney = random(crime.success.min, crime.success.max);
 
             let randomText = crime.success.txt[Math.floor(Math.random() * crime.success.txt.length)];
-            embed.setDescription(randomText.replace('{money}', randomMoney));
+            embed.setDescription(randomText.replace('{money}', randomMoney + convertion.cash));
             embed.setColor(0x56bb74);
             await db.add(`e_${interaction.guildId}_${interaction.user.id}.cash`, randomMoney);
             
@@ -32,7 +33,11 @@ module.exports = {
             randomMoney = random(crime.fail.min, crime.fail.max);
             
             let randomText = crime.fail.txt[Math.floor(Math.random() * crime.fail.txt.length)];
-            embed.setDescription(randomText.replace('{money}', randomMoney));
+            embed.setDescription(randomText
+                .replace('{money}', randomMoney + ' ' + convertion.cash)
+                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + crime.cooldown) / 1000)}:t>`)
+                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + crime.cooldown) / 1000)}:R>`));
+                
             embed.setColor(0xec5454);
             await db.sub(`e_${interaction.guildId}_${interaction.user.id}.cash`, randomMoney);
         }

@@ -70,6 +70,7 @@ module.exports = {
         }
 
         let bal = await db.get(`e_${member.guild.id}_${member.user.id}`);
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
         if (!bal) bal = { cash: 0, bank: 0 };
 
         bal.cash = bal.cash ? bal.cash : 0;
@@ -79,9 +80,9 @@ module.exports = {
         .setColor(0x0099FF)
         .setAuthor({ name: member.user.displayName || member.user.username, iconURL: member.user.displayAvatarURL() })
         .addFields(
-            { name: 'Cash', value: `<:star:991110840780599336> ${bal.cash}`, inline: true },
-            { name: 'Bank', value: `<:star:991110840780599336> ${bal.bank}`, inline: true },
-            { name: 'Total', value: `<:star:991110840780599336> ${bal.cash + bal.bank}`, inline: true }
+            { name: 'Cash', value: `${bal.cash} ${convertion.cash}`, inline: true },
+            { name: 'Bank', value: `${bal.bank} ${convertion.cash}`, inline: true },
+            { name: 'Total', value: `${bal.cash + bal.bank} ${convertion.cash}`, inline: true }
         )
         .setTimestamp();
 

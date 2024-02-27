@@ -1,0 +1,50 @@
+<%- include("../partials/nav.ejs", { bot, user, path, title: "Cakesito | Prefix" }) %>
+<%- include("../partials/sidebar.ejs", { bot, user, path }) %>
+
+<head>
+  <link rel="stylesheet" href="/settings.css">
+  <style>
+    #sidebar-general {
+      color: #fff;
+      background-color: #3a3b3c;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<div class="container">
+  <div class="alert-container"></div>
+  <div class="content">
+    <div class="guild">
+      <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png">` %>
+      <p><%= guild.name %></p>
+    </div>
+    <p class="title">Prefix</p>
+    <p class="description">El prefix se escribe antes del nombre del comando.</p><br>
+    <input type="text" id="prefix" value="<%= settings.prefix %>" placeholder="Prefix">
+    <br><button class="save" id="save-prefix">Guardar Prefix</button>
+    <br>
+    <br>
+
+    <div class="divider divider-special" style="justify-content: flex-start;">
+      <div>
+        <p class="title">Divisa</p>
+        <p class="description">Lo que aparecerá al lado derecho de la cantidad.</p><br>
+        <p class="description">Para indicar un emoji: <p class="marked description"><:nombre:id></p> o <p class="marked description"></p> si es animado.</p><br>
+        <p class="description">El emoji no aparecerá si el bot no está en el servidor del emoji.</p><br>
+        <input id="currency" value="<%= settings.convertion.cash %>"></input>
+        <img class="symbol" style="width: 1.5rem; height: auto; display: inline-block; position: relative; top: 5px;"></img><p class="description" id="add"></p><br>
+        <br><button class="save" id="save-currency">Guardar Divisa</button>
+      </div>
+
+      <div>
+        <p class="title">¿Cómo obtengo el emoji?</p>
+        <p class="description">Puedes agregar <p class="description marked">\</p> frente al emoji y enviar el mensaje.</p><br>
+        <img src="/others/emoji.gif" style="max-width: 100%;"></img>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript" src="/general.js"></script>

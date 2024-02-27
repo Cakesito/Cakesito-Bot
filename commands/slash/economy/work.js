@@ -10,6 +10,7 @@ module.exports = {
     run: async (client, interaction) => {
         const db = client.db.get('db');
         const work = await db.get(`g_${interaction.guildId}.work`);
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
 
         if (!work.txt?.length) work.txt = default_economy.work.txt;
 
@@ -19,7 +20,10 @@ module.exports = {
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.member.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
         .setColor(0x56bb74)
-        .setDescription(randomText.replace('{money}', randomMoney))
+        .setDescription(randomText
+            .replace('{money}', randomMoney + ' ' + convertion.cash)
+            .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + work.cooldown) / 1000)}:t>`)
+            .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + work.cooldown) / 1000)}:R>`))
         .setTimestamp();
 
         await db.add(`e_${interaction.guild.id}_${interaction.user.id}.cash`, randomMoney);

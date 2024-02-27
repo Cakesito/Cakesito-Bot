@@ -2,8 +2,7 @@
     "prefix": ",",
     "materials": [],
     "convertion": {
-        "cash": "monedas",
-        "inv.": "Materiales"
+        "cash": "<star:991110840780599336:> monedas"
     },
 
     "shop": {
@@ -34,27 +33,27 @@
             "type": "cash",
             "amount": 1000
         },
-        "txt": "**🌞 Reclamaste tu recompensa diaria!**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 12 horas** para reclamar otra recompensa.*"
+        "txt": "**🌞 Reclamaste tu recompensa diaria!**\n`◽ | Dinero:` **{money}**\n\n*Vuelve en **⏳ 12 horas** para reclamar otra recompensa.*"
     },
  
     "work": {
         "cooldown": 300000,
         "min": 100,
         "max": 250,
-        "txt": ["**💼 Trabajaste en QuesosCorp.**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 5 minutos** para trabajar como esclavo.*"]
+        "txt": ["**💼 Trabajaste en QuesosCorp.**\n`◽ | Dinero:` **{money}**\n\n*Vuelve en **⏳ 5 minutos** para trabajar como esclavo.*"]
     },
  
     "crime": {
         "cooldown": 600000,
         "probability": 75,
         "success": {
-            "txt": ["**🔪 Has cometido un delito!**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para cometer otro crimen de odio.*"],
+            "txt": ["**🔪 Has cometido un delito!**\n`◽ | Dinero:` **{money}**\n\n*Vuelve en **⏳ 10 minutos** para cometer otro crimen de odio.*"],
             "min": 250,
             "max": 500
         },
  
         "fail": {
-            "txt": ["**🔪 Intentaste cometer un delito...**\n`◽ | Dinero:` **<:star:991110840780599336> {money}**\n\n*Vuelve en **⏳ 10 minutos** para intentar otro crimen de odio.*"],
+            "txt": ["**🔪 Intentaste cometer un delito...**\n`◽ | Dinero:` **{money}**\n\n*Vuelve en **⏳ 10 minutos** para intentar otro crimen de odio.*"],
             "min": 100,
             "max": 250
         }

@@ -4,7 +4,7 @@ var max = 1_000_000;
 let info;
 
 async function validate (options, db) {
-    var validOptions = ['daily', 'claim', 'work', 'crime', 'explore', 'craft.items', 'materials', 'shop.items', 'prefix'];
+    var validOptions = ['daily', 'claim', 'work', 'crime', 'explore', 'craft.items', 'materials', 'shop.items', 'prefix', 'convertion.cash'];
     var requiresUpdate = ['craft.items', 'shop.items'];
     if (!validOptions.includes(options.setting)) return { valid: false, parsed: {}, err: ['invalid setting type'] };
 
@@ -22,6 +22,8 @@ async function validate (options, db) {
 
 const validations = {
     'prefix': string().required().min(1).max(20),
+
+    'convertion.cash': string().required().max(100),
 
     'daily': object({
         txt: string().optional().max(2000),

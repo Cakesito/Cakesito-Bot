@@ -7,6 +7,7 @@ module.exports = {
         const db = client.db.get('db');
         const claim = await db.get(`g_${message.guildId}.claim`);
         const materials = await db.get(`g_${message.guildId}.materials`);
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.member.displayName || message.author.tag, iconURL: message.author.displayAvatarURL() })
@@ -21,7 +22,8 @@ module.exports = {
                 var amount = random(x[1][0], x[1][1]);
                 if (amount == 0) return;
                 
-                let material = materials.find(x => x.name === x[0]);
+                let material = materials.find(k => k.name == x[0]);
+
                 if (material) {
                     reward.material = x[0];
                     reward.materialAmount = amount;
@@ -36,11 +38,16 @@ module.exports = {
             embed.setDescription(claim.txt.replace('{objectName}', reward.object || '')
                 .replace('{objectAmount}', reward.objectAmount || '')
                 .replace('{materialName}', reward.material || '')
-                .replace('{materialAmount}', reward.materialAmount || ''));
+                .replace('{materialAmount}', reward.materialAmount || '')
+                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + claim.cooldown) / 1000)}:t>`)
+                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + claim.cooldown) / 1000)}:R>`));
             
         } else {
             await db.add(`e_${message.guild.id}_${message.author.id}.${claim.reward.type}`, claim.reward.amount);
-            embed.setDescription(claim.txt.replace('{money}', claim.reward.amount));
+            embed.setDescription(claim.txt
+                .replace('{money}', claim.reward.amount + ' ' + convertion.cash)
+                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + claim.cooldown) / 1000)}:t>`)
+                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + claim.cooldown) / 1000)}:R>`));
         }
 
         return message.reply({ embeds: [embed] });

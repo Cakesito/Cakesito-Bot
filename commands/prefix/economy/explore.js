@@ -19,7 +19,7 @@ module.exports = {
             var amount = random(Number(x[1][0]), Number(x[1][1]));
             if (amount == 0) continue;
 
-            let material = materials.find(x => x.name === x[0]);
+            let material = materials.find(k => k.name === x[0]);
             if (material) {
                 reward.material = x[0];
                 reward.materialAmount = amount;
@@ -36,7 +36,13 @@ module.exports = {
         .replace('{objectName}', reward.object || '')
         .replace('{objectAmount}', reward.objectAmount || '')
         .replace('{materialName}', reward.material || '')
-        .replace('{materialAmount}', reward.materialAmount || '') : explore.txt.fail[Math.floor(Math.random() * explore.txt.fail.length)];
+        .replace('{materialAmount}', reward.materialAmount || '')
+        .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + explore.cooldown) / 1000)}:t>`)
+        .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + explore.cooldown) / 1000)}:R>`) 
+        
+        : explore.txt.fail[Math.floor(Math.random() * explore.txt.fail.length)]
+        .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + explore.cooldown) / 1000)}:t>`)
+        .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + explore.cooldown) / 1000)}:R>`);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.member.displayName || message.author.username, iconURL: message.member.displayAvatarURL() })

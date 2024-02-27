@@ -84,6 +84,27 @@ input:focus, select:focus {
     padding: 1px;
 }
 
+.tooltip-con {
+    position: relative;
+}
+
+.tooltip {
+    visibility: hidden;
+    padding: 0.5rem;
+    background-color: #303030;
+    border-radius: 5px;
+    bottom: calc(100% + 1.7rem);
+    position: absolute;
+}
+
+.usable {
+    display: inline-block;
+}
+
+.usable:hover div .tooltip {
+    visibility: visible;
+}
+
 .invalid {
     border: 2px solid #ec5454;
     color: #ec5454;
@@ -209,5 +230,12 @@ input[type="number"] {
     .yet-another-div {
         flex-direction: column;
         margin-bottom: 1rem;
+    }
+
+    .tooltip {
+        visibility: visible;
+        background-color: transparent;
+        position: relative;
+        color: #959595;
     }
 }

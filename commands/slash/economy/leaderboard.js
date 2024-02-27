@@ -15,6 +15,8 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
+
+        const convertion = await db.get(`g_${message.guildId}.convertion`);
         
         let lb = {};
         let num = [];
@@ -68,7 +70,7 @@ module.exports = {
             }
 
             if(name && name.user.id  == interaction.user.id) rank = i + 1;
-            return `**${i + 1}.** ${name? name.user.tag : '`unknown`'} **·** <:star:991110840780599336> ${e}`;
+            return `**${i + 1}.** ${name? name.user.tag : '`unknown`'} **·** ${e} ${convertion.cash}`;
         }));
         
         let count = 0;
