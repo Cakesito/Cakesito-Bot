@@ -4,26 +4,46 @@
   <link rel="stylesheet" href="/select.css">
 </head>
 
-<div class="main-con">
-  <% user.guilds.forEach(guild => {
-      const permsOnGuild = new perms(guild.permissions_new);
-      if(!permsOnGuild.has(perms.Flags.ManageGuild)) return;
-  %>
-    <div class="card">
-      <div class="card-body">
-        <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}" class="card-img-top">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png" class="card-img-top">` %>
-        <h5 class="card-title"><%= guild.name %></h5>
-        <% if (bot.guilds.cache.get(guild.id)) { %>
-          <a href="/dashboard/<%- guild.id %>" class="button">Ajustes</a>
-          <% } else { %>
-            <a href="<%= `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent('http://localhost:53134/callback')}`  %>" class="button invite">Invitar Bot</a>
-            <% } %>
-      </div>
-    </div>
-  <%
-      });
-  %>
-</div>
-<script type="text/javascript" src="/dashboard.js"></script>
+<div class="main">
+  <div class="main-con">
+    <% user.guilds.forEach(guild => {
+        const permsOnGuild = new perms(guild.permissions_new);
+        if(!permsOnGuild.has(perms.Flags.ManageGuild)) return;
+    %>
 
-<%- include("partials/footer.ejs", { bot }) %>
+      <% 
+        var availableGuilds = [];
+        var inviteGuilds = [];
+        if (bot.guilds.cache.get(guild.id)) {
+          availableGuilds.push(guild);
+
+        } else inviteGuilds.push(guild);
+      %>
+
+      <% availableGuilds.forEach(x => { %>
+        <div class="card">
+          <div class="card-body">
+            <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}" class="card-img-top">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png" class="card-img-top">` %>
+            <h5 class="card-title"><%= guild.name %></h5>
+            <a href="/dashboard/<%- guild.id %>" class="button">Ajustes</a>
+          </div>
+        </div>
+      <% }); %>
+
+      <% inviteGuilds.forEach(x => { %>
+        <div class="card">
+          <div class="card-body">
+            <%- x.icon ? `<img src="https://cdn.discordapp.com/icons/${x.id}/${x.icon}" class="card-img-top">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png" class="card-img-top">` %>
+            <h5 class="card-title"><%= x.name %></h5>
+            <a href="<%= `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent('https://cakesito.xyz/callback')}`  %>" class="button invite">Invitar Bot</a>
+          </div>
+        </div>
+      <% }); %>
+
+    <% }); %>
+  </div>
+
+  <div class="blank"></div>
+
+  <%- include("partials/footer.ejs", { bot }) %>
+</div>

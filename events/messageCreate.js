@@ -1,4 +1,4 @@
-const { default_prefix, ownerId } = require('../config.json');
+const { default_prefix, ownerId, dailyFrom } = require('../config.json');
 
 module.exports = {
     run: async (client, message) => {
@@ -31,10 +31,10 @@ module.exports = {
           
         if (command.memberPermissions) {
             let permissions = command.memberPermissions.filter(x => !message.member.permissions.has(x)).map(x => "`" + x + "`")
-            if (permissions.length) return message.reply(`Necesitas ${permissions.length > 1 ? 'los permisos' : 'el permiso'}: ${permissions.join(", ")} para ejecutar este comando.`)
+            if (permissions.length) return message.reply(`Necesitas ${permissions.length > 1 ? 'los permisos' : 'el permiso'}: ${permissions.join(", ")} para usar este comando.`)
         }
 
-        if(command.requiresCooldown) {
+        if (command.requiresCooldown) {
             let cooldown = await db.get(`g_${message.guildId}.${command.name}.cooldown`);
             let timeout = client.cooldowns.get(`c_${message.guild.id}_${message.author.id}_${command.name}`) || 0;
 
@@ -42,11 +42,48 @@ module.exports = {
             client.cooldowns.set(`c_${message.guild.id}_${message.author.id}_${command.name}`, Date.now());
         }
 
+        if (command.daily) {
+            const availableFrom = parseTime(dailyFrom);
+            let lastDaily = await db.get(`d_${message.guildId}_${message.author.id}`) || undefined;
+
+            if (lastDaily) {
+                lastDaily = new Date(lastDaily);
+
+                if (!isAvailable(lastDaily, availableFrom)) {
+                    return message.reply(`Espera hasta <t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t> (<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>) para usar ${command.name}.`);
+                    
+                } else { 
+                    await db.set(`d_${message.guildId}_${message.author.id}`, Date.now());
+                }
+                
+            } else { 
+                await db.set(`d_${message.guildId}_${message.author.id}`, Date.now());
+            }
+        }
+
         try {
             command.run(client, message, args);
         } catch (err) {
-            message.repy('Ocurrió un error con el bot. No eres tú, soy yo :(');
+            message.reply('Ocurrió un error con el bot. No eres tú, soy yo :(');
             console.error(err);
         }
     }
+}
+
+function parseTime(timeString) {
+    const [hours, minutes] = timeString.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours));
+    date.setMinutes(parseInt(minutes));
+    return date;
+}
+
+function isAvailable(date1, date2) {
+    return date1.getFullYear() <= date2.getFullYear() &&
+        date1.getMonth() <= date2.getMonth() &&
+        date1.getDate() <= date2.getDate() && 
+        
+        (date1.getHours() < date2.getHours() || 
+        (date1.getHours() === date2.getHours() && 
+        date1.getMinutes() <= date2.getMinutes()))
 }

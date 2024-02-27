@@ -1,3 +1,5 @@
 añadir más materiales al explore y/o claim/daily
+fancy embed (usar un json)
 
-largo plazo: hacer los comandos un solo archivo
+hacer los comandos un solo archivo
+cambiar de db

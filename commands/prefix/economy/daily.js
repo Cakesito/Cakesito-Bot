@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const default_economy = require('../../../default_economy.json');
 
 module.exports = {
-    requiresCooldown: true,
+    daily: true,
     run: async (client, message) => {
         const db = client.db.get('db');
         const daily = await db.get(`g_${message.guildId}.daily`);

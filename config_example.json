@@ -5,5 +5,6 @@
     "default_prefix": ",",
     "clientSecret": "CLIENT_SECRET",
     "discordInvite": "DISCORD_INVITE",
-    "domain": "DOMAIN"
+    "domain": "https://example.com",
+    "dailyFrom": "HH:MM"
 }

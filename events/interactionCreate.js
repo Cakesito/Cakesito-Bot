@@ -23,6 +23,25 @@ module.exports = {
                 if(timeout + cooldown > Date.now()) return interaction.reply({ content: `Espera hasta <t:${Math.floor((timeout + cooldown) / 1000)}:t> (<t:${Math.floor((cooldown + timeout) / 1000)}:R>) para usar ${interaction.commandName}.`, ephemeral: true });
                 client.cooldowns.set(`c_${interaction.guildId}_${interaction.user.id}_${command.data.name}`, Date.now());
             }
+
+            if (command.daily) {
+                const availableFrom = parseTime(dailyFrom);
+                let lastDaily = await db.get(`d_${interaction.guildId}_${interaction.user.id}`) || undefined;
+    
+                if (lastDaily) {
+                    lastDaily = new Date(lastDaily);
+    
+                    if (!isAvailable(lastDaily, availableFrom)) {
+                        return interaction.reply(`Espera hasta <t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t> (<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>) para usar ${command.name}.`);
+                        
+                    } else { 
+                        await db.set(`d_${interaction.guildId}_${interaction.user.id}`, Date.now());
+                    }
+                    
+                } else { 
+                    await db.set(`d_${interaction.guildId}_${interaction.user.id}`, Date.now());
+                }
+            }
             
         }
         

@@ -2,7 +2,7 @@ const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const default_economy = require('../../../default_economy.json');
 
 module.exports = {
-    requiresCooldown: true,
+    daily: true,
     data: new SlashCommandBuilder()
     .setName('daily')
     .setDescription('Reclama una recompensa diaria'),
