@@ -12,6 +12,8 @@ module.exports = {
         const daily = await db.get(`g_${interaction.guildId}.daily`);
         const materials = await db.get(`g_${interaction.guildId}.materials`);
         const convertion = await db.get(`g_${interaction.guildId}.convertion`);
+
+        const availableFrom = parseTime(dailyFrom);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
@@ -42,15 +44,15 @@ module.exports = {
                 .replace('{objectAmount}', reward.objectAmount || '')
                 .replace('{materialName}', reward.material || '')
                 .replace('{materialAmount}', reward.materialAmount || '')
-                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + daily.cooldown) / 1000)}:t>`)
-                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + daily.cooldown) / 1000)}:R>`));
+                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t>`)
+                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>`));
             
         } else {
             await db.add(`e_${interaction.guildId}_${interaction.user.id}.${daily.reward.type}`, daily.reward.amount);
             embed.setDescription(daily.txt
                 .replace('{money}', daily.reward.amount + ' ' + convertion.cash)
-                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + daily.cooldown) / 1000)}:t>`)
-                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + daily.cooldown) / 1000)}:R>`));
+                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t>`)
+                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>`));
         }
 
         return interaction.reply({ embeds: [embed] });
@@ -59,4 +61,12 @@ module.exports = {
 
 function random(min, max) {
     return Math.floor((Math.random() * (max - min + 1)) + min);
+}
+
+function parseTime(timeString) {
+    const [hours, minutes] = timeString.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours));
+    date.setMinutes(parseInt(minutes));
+    return date;
 }
