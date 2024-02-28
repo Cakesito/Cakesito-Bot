@@ -64,7 +64,7 @@
                       <option value="Nada">Nada</option>
                       <% settings.materials.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedObject = x.name %>
+                          <% selectedMaterial = x.name %>
                           <option selected value="<%= x.name %>"><%= x.name %></option>
                         <% } else { %>
                           <option value="<%= x.name %>"><%= x.name %></option>
@@ -169,7 +169,7 @@
                       <option value="Nada">Nada</option>
                       <% settings.materials.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedObject = x.name %>
+                          <% selectedMaterial = x.name %>
                           <option selected value="<%= x.name %>"><%= x.name %></option>
                         <% } else { %>
                           <option value="<%= x.name %>"><%= x.name %></option>

@@ -153,7 +153,7 @@ const validations = {
 
         cooldown: number().required().min(1).integer(),
         maxMaterials: number().required().max(10).integer(),
-        probability: number().required().min(0).max(10).integer(),
+        probability: number().required().min(0).max(100).integer(),
         materials: object().required().test({
             test: (value) => {
                 const values = Object.values(value)[0];

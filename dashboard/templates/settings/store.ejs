@@ -37,7 +37,7 @@
                 <div class="object" id="<%= item.name %>">
                     <input hidden class="invisible jijiji" id="info-<%= item.name %>" value="<%= JSON.stringify(item) %>" ></input>
                     <p class="title name"><%= item.name %> </p>
-                    <p class="desc"><%= item.description %></p>
+                    <p class="desc" style="text-align: center;" ><%= item.description %></p>
                     <p class="secondary">Precio:</p>
                     <p>x<%= item.price.amount %> <%= item.price.type.replace('inv.', '').replace('cash', 'monedas') %></p>
                     <p class="secondary">Recompensa:</p>
