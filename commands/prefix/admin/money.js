@@ -10,7 +10,7 @@ module.exports = {
         if (!member && !Number(args[0])) member = await message.guild.members.search(args[0]);
         if (member && member.user.bot) return member.reply('El usuario seleccionado es un bot.');
 
-        if (!member) return message.reply('No eoncontré al usuario.');
+        if (!member) return message.reply('No encontré al usuario.');
 
         let amount = args[1];
         let type = args[2] || 'cash';

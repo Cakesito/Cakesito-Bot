@@ -1,0 +1,49 @@
+<%- include("partials/nav.ejs", { bot, user, path, title: "Cakesito | Comandos" }) %>
+
+<html>
+    <link rel="stylesheet" href="/commands.css">
+</html>
+
+<div class="main-con">
+    <div class="head">
+        <div>
+            <p class="command-type selected" id="all">Todos</p>
+            <p class="command-type" id="economy">Economía</p>
+            <p class="command-type" id="admin">Solo Administrador</p>
+        </div>
+
+        <div class="help">
+            <p class="description">El prefix por defecto es</p>
+            <p class="description marked">,</p><br>
+            <p class="description">Pero funcionará también si mencionas el bot antes del comando.</p><br>
+            <p class="description">Puedes hacer</p>
+            <p class="description marked">@Cakesito prefix</p>
+            <p class="description">para mostrar el prefix en el servidor.</p><br>
+        </div>
+    </div>
+
+    <div class="commands">
+        <% commands.forEach(x => { %>
+            <% 
+            var categories = {
+                "admin": "Admin: ",
+                "economy": "Economía"
+            }
+            %>
+
+            <div class="command <%= x.category %>">
+                <p class="name title description"><%= x.name %></p>
+                <p class="description secondary"><%- categories[x.category] + (x.memberPermission ?? '') %></p>
+                <br>
+                <p class="description">Descripción: <%= x.description %></p><br>
+                <p class="description">Uso: </p>
+                <p class="description marked"><%= x.usage %></p>
+            </div>
+
+        <% }) %>
+    </div>
+</div>
+
+<script type="text/javascript" src="/commands.js"></script>
+
+<%- include("partials/footer.ejs", { bot }) %>

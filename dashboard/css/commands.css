@@ -1,0 +1,69 @@
+
+body {
+    background-color: #151515;
+    font-family: 'Nunito', sans-serif;
+    color: #fff
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.main-con {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3rem;
+    margin: 3rem;
+}
+
+.head {
+    display: flex;
+    gap: 2rem;
+}
+
+.head > div, .commands {
+    padding: 1rem;
+    border: 3px solid #959595;
+    border-radius: 5px;
+}
+
+.command {
+    margin: 0.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.command-type {
+    padding: 0.3rem;
+    border-radius: 5px;
+    color: #959595;
+    margin: 3px;
+}
+
+.command-type:hover {
+    color: #fff;
+    background-color: #3a3b3c;
+    cursor: pointer;
+}
+
+.description {
+    display: inline-block;
+}
+
+.marked {
+    background-color: #3a3b3c;
+    font-size: 0.9rem;
+    margin: 2px;
+    padding: 1px;
+}
+
+.secondary {
+    color: #959595;
+}
+
+.selected {
+    background-color: #3a3b3c;
+    color: #fff;
+}

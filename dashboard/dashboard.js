@@ -7,8 +7,9 @@ const bodyParser = require("body-parser");
 const path = require('path');
 const url = require("url");
 const defaultEconomy = require('../default_economy.json');
-const fs = require('node:fs');
 const helmet = require('helmet');
+const { existsSync } = require('node:fs');
+const commands = require('../commands.json');
 const { PermissionsBitField, Client, GatewayIntentBits } = require('discord.js');
 const { clientSecret, clientId, discordInvite, token, domain } = require('../config.json');
 const { validate } = require('./check');
@@ -90,7 +91,7 @@ const renderTemplate = (res, req, template, data = {}) => {
         user: req.isAuthenticated() ? req.user : null
     }
 
-    if (!fs.existsSync(directory)) return res.status(404);
+    if (!existsSync(directory)) return res.status(404);
     res.render(directory, Object.assign(baseData, data));
 }
 
@@ -101,6 +102,10 @@ const checkAuth = (req, res, next) => {
 };
 
 app.get('/others/:file', (req, res) => res.sendFile(path.resolve(__dirname + `/others/${req.params.file}`)));
+
+app.get('/commands', (req, res) => {
+    renderTemplate(res, req, 'commands.ejs', { commands: commands });
+})
 
 app.get('/login', (req, res, next) => {
     if (req.session.backURL) {

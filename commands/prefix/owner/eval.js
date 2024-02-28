@@ -1,4 +1,4 @@
-const { MessageAttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder } = require('discord.js');
 
 module.exports = {
     ownerOnly: true,
@@ -36,8 +36,8 @@ module.exports = {
           await msg.channel.send(res);
 
         } else {
-          const output = new MessageAttachmentBuilder(Buffer.from(res), 'output.txt');
-          await msg.channel.send(output)
+          const output = new AttachmentBuilder(Buffer.from(res), { name: 'output.txt' });
+          await msg.channel.send({ files: [output] });
         }
 
       } catch (err) {

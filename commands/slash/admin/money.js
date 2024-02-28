@@ -5,13 +5,14 @@ module.exports = {
     .setName('money')
     .setDescription('Añade/resta dinero a un usuario o a ti mismo')
     .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageGuild)
+    .addUserOption(x =>
+        x.setRequired(true)
+        .setName('usuario')
+        .setDescription('Usuario a añadir/restar dinero'))
     .addIntegerOption(x => 
         x.setRequired(true)
         .setName('cantidad')
         .setDescription('Cantidad de dinero (puede ser negativo)'))
-    .addUserOption(x =>
-        x.setName('usuario')
-        .setDescription('Usuario a añadir/restar dinero'))
     .addStringOption(x => 
         x.setName('destino')
         .setDescription('El dinero debería ir al banco o en mano (por defecto)')
