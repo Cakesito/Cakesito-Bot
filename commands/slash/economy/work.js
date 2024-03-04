@@ -1,5 +1,5 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const default_economy = require('../../../default_economy.json');
+const { SlashCommandBuilder } = require('discord.js');
+const work = require('../../../base_commands/work');
 
 module.exports = {
     requiresCooldown: true,
@@ -9,30 +9,6 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
-        const work = await db.get(`g_${interaction.guildId}.work`);
-        const convertion = await db.get(`g_${message.guildId}.convertion`);
-
-        if (!work.txt?.length) work.txt = default_economy.work.txt;
-
-        let randomMoney = random(work.min, work.max);
-        let randomText = work.txt[Math.floor(Math.random() * work.txt.length)];
-
-        let embed = new EmbedBuilder()
-        .setAuthor({ name: interaction.member.displayName || interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-        .setColor(0x56bb74)
-        .setDescription(randomText
-            .replace('{money}', randomMoney + ' ' + convertion.cash)
-            .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + work.cooldown) / 1000)}:t>`)
-            .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + work.cooldown) / 1000)}:R>`))
-        .setTimestamp();
-
-        await db.add(`e_${interaction.guild.id}_${interaction.user.id}.cash`, randomMoney);
-
-        return interaction.reply({ embeds: [embed] });
-
+        work(interaction, db);
     }
-}
-
-function random(min, max) {
-    return Math.floor((Math.random() * (max - min + 1)) + min);
 }

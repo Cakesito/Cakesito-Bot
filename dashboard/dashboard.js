@@ -229,7 +229,6 @@ app.post("/dashboard/:guildId/:setting", checkAuth, limiter, async (req, res) =>
         } else res.status(200).json({ message: ['Cambios guardados.'] });
 
     } else  {
-        console.log(validationResult.err);
         res.status(400).json({ message: validationResult.err });
     }
     

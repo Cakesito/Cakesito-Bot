@@ -33,15 +33,14 @@
         </div>
 
         <% if (settings.craft.items.length) { %>
-            <% settings.craft.items.forEach(item => {  %>
-                <div class="object" id="<%= item.name %>">
-                    <input hidden class="invisible jijiji" id="info-<%= item.name %>" value="<%= JSON.stringify(item) %>" ></input>
+            <% settings.craft.items.forEach((item, i) => {  %>
+                <div class="object" id="<%= item.id %>">
+                    <input hidden class="invisible jijiji" id="info-<%= item.id %>" value="<%= JSON.stringify(item) %>" ></input>
                     <p class="title name"><%= item.name %> </p>
                     <p class="desc" style="text-align: center;" ><%= item.description %></p>
                     <p class="secondary prob">Prob. de éxito: <%= item.probability %> %</p>
-
-                    <% Object.keys(item.materials).forEach(material => { %>
-                        <p class="secondary">x<%= item.materials[material] %> <%= material %></p>
+                    <% item.materials.forEach(material => { %>
+                        <p class="secondary">x<%- material.amount %> <%= settings.materials.find(x => x.id === material.ref_id)?.name %></p>
                     <% }) %>
                 </div>
             <% }); %>
@@ -72,7 +71,7 @@
             <p class="subtitle">Lista de materiales</p>
             <% if (settings.materials.length) { %>
                 <% settings.materials.forEach(material => { %>
-                    <p class="material-list" id="material-<%= material.name %>" ><%= material.name %> <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" class="down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/></svg></p>
+                    <p class="material-list" id="material-<%= material.id %>" ><%= material.name %> <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" class="down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/></svg></p>
                 <% }); %>
             <% } else { %>
                 <p style="color: #959595">No hay materiales</p>

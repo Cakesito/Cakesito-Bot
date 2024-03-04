@@ -163,17 +163,17 @@
           <% if (settings.craft.length || settings.materials.length) { %>
             
             <% var selectedMaterials = [];
-            Object.entries(settings.explore.materials).forEach(x => selectedMaterials.push(x[0]));
+              settings.explore.materials.forEach(x => selectedMaterials.push(x.ref_id))
             %>
 
             <% if (settings.materials) { %>
               <% settings.materials.forEach(material => { %>
-                <div class="material" id="<%= material.name %>">
+                <div class="material" id="<%= material.id %>">
                   <p class="subtitle" style="display: inline-block;">▸ <%= material.name %></p>
                   <p class="description">: de</p>
-                  <input id="min-<%= material.name %>" type="number" placeholder="Mínimo" value="<%= settings.explore.materials?.[material.name] ? settings.explore.materials[material.name][0] : 0 %>"></input>
+                  <input id="min-<%= material.id %>" type="number" placeholder="Mínimo" value="<%= settings.explore.materials?.find(x => x.ref_id === material.id)?.amount[0] ?? '0' %>"></input>
                   <p class="help"> a </p>
-                  <input id="max-<%= material.name %>" type="number" placeholder="Máximo" value="<%= settings.explore.materials?.[material.name] ? settings.explore.materials[material.name][1] : 0 %>"></input>
+                  <input id="max-<%= material.id %>" type="number" placeholder="Máximo" value="<%= settings.explore.materials?.find(x => x.ref_id === material.id)?.amount[1] ?? '0' %>"></input>
                 </div>
               <% }); %>
             <% } %>
@@ -188,7 +188,8 @@
       <p class="title">Explore - Texto Personalizado</p>
       
       <%- include("../partials/texts/money.ejs") %>
-      <%- include("../partials/texts/objects.ejs") %>
+      <%- include("../partials/texts/materials.ejs") %>
+      <br>
       <%- include("../partials/texts/timestamp.ejs") %>
       <br>
       <p class="description">Si incluyes </p>

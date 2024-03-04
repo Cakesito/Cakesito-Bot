@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+const setPrefix = require('../../../base_commands/set-prefix');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,7 +18,6 @@ module.exports = {
         let prefix = interaction.getString('prefix');
         if (!prefix) return interaction.reply({ content: '¿Cuál es el nuevo prefix?', ephemeral: true });
 
-        await db.set(`g_${interaction.guildId}.prefix`, prefix);
-        return interaction.reply('Mi nuevo prefix en este servidor es: `' + prefix + '`');
+        setPrefix(interaction, db, { prefix: prefix });
     }
 }

@@ -82,10 +82,10 @@ dailySaveBtn.addEventListener('click', () => {
         var objectSelected = document.getElementById('select-objects-daily');
         var materialSelected = document.getElementById('select-materials-daily');
 
-        if (objectSelected || materialSelected) daily.data.reward.materials = {};
+        if (objectSelected || materialSelected) daily.data.reward.materials = [];
 
-        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials[objectSelected.value] = [dailyObjectMin.value, dailyObjectMax.value];
-        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials[materialSelected.value] = [dailyMaterialMin.value, dailyMaterialMax.value];
+        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials.push({ ref_id: objectSelected.value, amount: [dailyObjectMin.value, dailyObjectMax.value] });
+        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials.push({ ref_id: materialSelected.value, amount: [dailyMaterialMin.value, dailyMaterialMax.value] });
     }
     
     fetch(window.location.href, {
@@ -139,10 +139,10 @@ claimSaveBtn.addEventListener('click', () => {
         var objectSelected = document.getElementById('select-objects-claim');
         var materialSelected = document.getElementById('select-materials-claim');
 
-        if (objectSelected || materialSelected) daily.data.reward.materials = {};
+        if (objectSelected || materialSelected) daily.data.reward.materials = [];
 
-        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials[objectSelected.value] = [claimObjectMin.value, claimObjectMax.value];
-        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials[materialSelected.value] = [claimMaterialMin.value, claimMaterialMax.value];
+        if (objectSelected && objectSelected.value != 'Nada') daily.data.reward.materials.push({ ref_id: objectSelected.value, amount: [claimObjectMin.value, claimObjectMax.value] });
+        if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials.push({ ref_id: materialSelected.value, amount: [claimMaterialMin.value, claimMaterialMax.value] });
     }
     
     fetch(window.location.href, {

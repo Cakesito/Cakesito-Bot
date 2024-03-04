@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const deposit = require('../../../base_commands/deposit');
 
 module.exports = {
     aliases: ['dep'],
@@ -12,17 +12,8 @@ module.exports = {
         if(!amount || isNaN(amount) && amount != 'all' ||isNaN(amount) && amount != 'max') return message.reply('¿Cuánto dinero depositarás?');
         
         if(amount == 'all' || amount == 'max') amount = current;
-        if(current <= 0 || amount > current) return message.reply(`Parece que no tienes suficiente.\nFaltante: ${amount - current} ${convertion.cash}`);
+        if(current <= 0 || amount > current) return message.reply(`Parece que no tienes suficiente.\nFaltante: ${convertion.emoji} ${amount - current} ${convertion.name}`);
 
-        await db.add(`e_${message.guild.id}_${message.author.id}.bank`, amount);
-        await db.sub(`e_${message.guild.id}_${message.author.id}.cash`, amount);
-
-        let embed = new EmbedBuilder()
-        .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL()})
-        .setColor(0x56bb74)
-        .setDescription(`Depositado ${amount} ${convertion.cash} a tu banco!`)
-        .setTimestamp();
-
-        return message.reply({ embeds: [embed]});
+        deposit(message, db, { amount: amount });
     }
 }

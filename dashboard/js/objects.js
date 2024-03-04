@@ -10,7 +10,8 @@ var objectDescription = document.getElementById('object-info-description');
 var objectProbability = document.getElementById('object-info-probability');
 
 var textInputs = document.querySelectorAll('input[type="text"]');
-let lastObject;
+let lastObject; // get values to parse in fetch
+let actualObject; // reset values when "x" is clicked
 
 var materials = document.querySelectorAll('.material-list');
 var activeMaterials = document.querySelector('.active-materials');
@@ -25,8 +26,7 @@ var objectCountText = document.querySelector('.available-text');
 var objectCount = document.querySelectorAll('.object').length;
 if (objectCount >= 10) addObject.classList = 'unavailable';
 
-let materialList = {};
-let actualObject;
+let materialList = [];
 
 var check = document.querySelector('.no-materials');
 
@@ -46,6 +46,13 @@ textInputs.forEach(x => {
     });
 });
 
+objectProbability.addEventListener('focusout', () => {
+    if (objectProbability.value > 100) objectProbability.value = '100'
+        if (objectProbability.value < 0) objectProbability.value = '0';
+        if (!Number.isInteger(objectProbability.value)) objectProbability.value = Math.floor(objectProbability.value);
+        resizeInput.call(objectProbability);
+});
+
 saveButton.addEventListener('click', () => {
     var alert = document.createElement('p');
     alert.classList = 'alert success';
@@ -57,12 +64,15 @@ saveButton.addEventListener('click', () => {
     let obj = [];
     objList.forEach(x => obj.push(JSON.parse(x.value)));
 
-    var selected = obj.find(x => x.name == lastObject);
+    var selected = obj.find(x => x.id == lastObject);
 
     selected.name = objectName.value;
-    selected.description = objectDescription.value;
+    selected.description = objectDescription.value.length ? objectDescription.value : undefined;
     selected.probability = Number(objectProbability.value);
     selected.materials = materialList;
+    selected.id = lastObject;
+
+    console.log(selected);
 
     object.data = obj;
 
@@ -100,7 +110,7 @@ deleteButton.addEventListener('click', () => {
     let obj = [];
     objList.forEach(x => obj.push(JSON.parse(x.value)));
 
-    var selected = obj.find(x => x.name == lastObject);
+    var selected = obj.find(x => x.id == lastObject);
     obj.splice(obj.indexOf(selected), 1);
 
     fetch(window.location.href, {
@@ -133,17 +143,18 @@ addObject.addEventListener('click', () => {
     var newObjectDiv = document.getElementById('object-template').cloneNode(true);
     newObjectDiv.classList = 'object';
 
+    var id = generateId();
     var newP = document.createElement('input');
     newP.classList = 'invisible jijiji';
-    newP.id = `info-Sin nombre`;
-    newP.textContent = `{ "name": "Sin nombre" }`;
+    newP.id = `info-${id}`;
+    newP.value = `{ "name": "Sin nombre", "id": ${id} }`;
     newP.hidden = true;
 
     newObjectDiv.appendChild(newP);
-    lastObject = 'Sin nombre';
+    lastObject = id;
     
     newObjectDiv.addEventListener('click', () => {
-        objectInfo.style.width = mobile.matches ? '100%' : '40%';;
+        objectInfo.style.width = mobile.matches ? '100%' : '40%';
         layer.style.opacity = '1';
         layer.style.visibility = 'visible';
     });
@@ -155,42 +166,49 @@ addObject.addEventListener('click', () => {
 
 materials.forEach(x => {
     x.addEventListener('click', () => {
-
-        var name = x.textContent.replace(' ', '');
+        var id = Number(x.id.replace('material-', ''));
         var svg = document.querySelector(`#${x.id} > svg`);
+        
+        var materialInList = materialList.find(k => k.ref_id === id);
 
+        if (!materialInList) {
+            materialList.push({ ref_id: id, amount: 1 });
+            materialInList = materialList.find(k => k.ref_id === id);
+        }
+        
         if (x.parentElement.classList.contains('material-list-list')) {
             svg.style.transform = 'rotate(180deg)';
-
+            
             var amount = document.createElement('input');
             amount.type = 'number';
             amount.value = '1';
             amount.style.width = '1.5ch';
-            amount.id = `object-${name}-amount`;
-
-            materialList[name] = amount.value;
-
-            amount.addEventListener('input', resizeInput);
+            amount.id = `object-${id}-amount`;
+            
+            materialInList.amount = Number(amount.value);
+            
             amount.addEventListener('input', () => {
                 checkNumber.call(amount);
-                materialList[name] = Number(amount.value);
+                resizeInput.call(amount);
+                materialInList.amount = Number(amount.value);
+                
                 saveButton.disabled = false;
             });
-
+            
             var div = document.createElement('div');
-            div.id = `div-${name}`;
-
+            div.id = `div-${x.id}`;
+            
             div.appendChild(x);
             div.appendChild(amount);
             activeMaterials.append(div);
             saveButton.disabled = false;
-
+            
         } else {
             svg.style.transform = 'rotate(0deg)';
             var list = document.querySelector('.material-list-list');
-
-            div = document.getElementById(`div-${name}`);
-            delete materialList[name];
+            
+            div = document.getElementById(`div-${x.id}`);
+            materialList.splice(materialList.indexOf(materialInList), 1);
 
             div.remove();
             list.appendChild(x);
@@ -212,8 +230,8 @@ closeObjectInfo.addEventListener('click', () => {
     objectDescription.value = '';
     objectProbability.value = '0';
 
-    Object.entries(info.materials).forEach(material => {
-        var btn = document.querySelector(`#material-${material[0]}`);
+    info.materials.forEach(material => {
+        var btn = document.querySelector(`#material-${material.ref_id}`);
         btn.click();
     });
 });
@@ -232,17 +250,19 @@ objects.forEach(x => {
         objectName.value = info.name;
         objectDescription.value = info.description;
         objectProbability.value = info.probability;
-        lastObject = info.name;
+        lastObject = info.id;
 
-        Object.entries(info.materials).forEach(material => {
-            var btn = document.querySelector(`#material-${material[0]}`);
+        info.materials.forEach(material => {
+            var btn = document.querySelector(`#material-${material.ref_id}`);
             btn.click();
+            
+            var amount = document.querySelector(`#object-${material.ref_id}-amount`);
+            amount.value = material.amount;
 
-            var amount = document.querySelector(`#object-${material[0]}-amount`);
-            amount.value = material[1];
-
-            materialList[material[0]] = material[1];
+            var materialInList = materialList.find(k => k.ref_id === material.ref_id);
+            materialInList.amount = material.amount;
         });
+
 
         objectDescription.addEventListener('input', resizeInput)
         resizeInput.call(objectProbability);
@@ -261,4 +281,14 @@ function checkNumber() {
     if (!Number.isInteger(Number(this.value))) this.value = Math.floor(this.value);
     if (this.value == '') this.value = '0';
     resizeInput.call(this);
+}
+
+function generateId () {
+    var objects = document.querySelectorAll('.object');
+    let ids = [];
+
+    for (obj of objects) ids.push(Number(obj.id));
+
+    var num = Math.floor(Math.random() * 10) + 10;
+    return (ids.includes(num)) ? generateId() : num;
 }

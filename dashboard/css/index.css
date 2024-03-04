@@ -1,5 +1,3 @@
-
-
 * {
     padding: 0;
     margin: 0;
@@ -8,6 +6,7 @@
 
 body {
     background-color: #151515;
+    color: #fff;
 }
 
 .main-con {
@@ -17,10 +16,23 @@ body {
 }
 
 .desc {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.desc > p {
+    font-size: 1.3rem;
+    color: #959595;
+}
+
+.title {
     color: #fff;
     text-align: center;
     position: relative;
-    font-size: 2.4rem;
+    font-size: 4rem;
 }
 
 .button {

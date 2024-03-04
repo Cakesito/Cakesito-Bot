@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
+const balance = require('../../../base_commands/balance');
 
 module.exports = {
     aliases: ['bal'],
@@ -9,9 +10,13 @@ module.exports = {
 
         if (args[0]) {
 
-            member = message.mentions.members.first() || message.guild.members.cache.filter(m => Number(args[0]) ? m.user.id == args[0] : m.user.username.toLowerCase().startsWith(args.join(' ').toLowerCase()));
+            const cache = message.guild.members.cache.map(x => {
+                return { id: x.id, member: x };
+            });
+
+            member = message.mentions.members.first() || cache.find(x => x.id === args[0])?.member;
             if (!member && Number(args[0])) member = await message.guild.members.fetch(args[0]);
-            if (!member && !Number(args[0])) member = await message.guild.members.search(args[0]);
+            if (!member && !Number(args[0])) member = await message.guild.members.search({ query: args[0] });
 
             if (member.size) {
                 if (member.size > 1) {
@@ -69,24 +74,6 @@ module.exports = {
 
         }
 
-        let bal = await db.get(`e_${member.guild.id}_${member.user.id}`);
-        const convertion = await db.get(`g_${message.guildId}.convertion`);
-        if (!bal) bal = { cash: 0, bank: 0 };
-
-        bal.cash = bal.cash ? bal.cash : 0;
-        bal.bank = bal.bank ? bal.bank : 0;
-
-        let balEmbed = new EmbedBuilder()
-        .setColor(0x0099FF)
-        .setAuthor({ name: member.user.displayName || member.user.username, iconURL: member.user.displayAvatarURL() })
-        .addFields(
-            { name: 'Cash', value: `${bal.cash} ${convertion.cash}`, inline: true },
-            { name: 'Bank', value: `${bal.bank} ${convertion.cash}`, inline: true },
-            { name: 'Total', value: `${bal.cash + bal.bank} ${convertion.cash}`, inline: true }
-        )
-        .setTimestamp();
-
-        return message.reply({ embeds: [balEmbed], allowedMentions: { repliedUser: false } });
-        
+        balance(message, db, { member: member });
     }
 }

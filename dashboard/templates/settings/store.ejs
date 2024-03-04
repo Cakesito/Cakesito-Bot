@@ -39,12 +39,19 @@
                     <p class="title name"><%= item.name %> </p>
                     <p class="desc" style="text-align: center;" ><%= item.description %></p>
                     <p class="secondary">Precio:</p>
-                    <p>x<%= item.price.amount %> <%= item.price.type.replace('inv.', '').replace('cash', 'monedas') %></p>
+                    <p>x<%= item.price.amount %> <%- item.price.type === 'cash' ? settings.convertion.name : settings.craft.items.find(x => x.id === item.price.ref_id)?.name %></p>
                     <p class="secondary">Recompensa:</p>
 
-                    <% let roles = guild.roles.cache.get(item.reward.id); %>
-                    <p><%= item.reward.type == 'cash' ? 'monedas' : item.reward.type.replace('inv.', '') %>: <%- item.reward.id ? `${roles?.name || 'Rol no encontrado'}` : `x${item.reward.amount}` %></p>
-                    <%- item.onlyOnce ? '<p>Solo se puede comprar una vez</p>' : '' %>
+                    <%
+                        var a = guild.roles.cache.map(x => {
+                            return { id: Number(x.id), name: x.name }
+                        });
+
+                        var roles = a.find(x => x.id === item.reward.id);
+                    %>
+
+                    <p><%- item.reward.type === 'inv.' ? settings.craft.items.find(x => x.id === item.reward.ref_id)?.name : item.reward.type.replace('cash', settings.convertion.name).replace('role', 'Rol') %>: <%- item.reward.id ? `${roles?.name || 'Rol no encontrado'}` : `x${item.reward.amount}` %></p>
+                    <%- item.onlyOnce ? '<p style="text-align: center; color: #FFBF00;">Solo se puede comprar una vez</p>' : '' %>
                 </div>
             <% }); %>
         <% } %>
@@ -69,10 +76,10 @@
 
         <div>
             <select id="object-info-price-type">
-                <option value="cash">Monedas</option>
+                <option value="cash"><%= settings.convertion.name %></option>
             <% if (settings.craft.items.length) { %>
                 <% settings.craft.items.forEach(x => { %>
-                    <option value="<%= x.name %>"><%= x.name %></option>
+                    <option value="<%= x.id %>"><%= x.name %></option>
                 <% }); %>
             <% } %>
             </select>
@@ -82,11 +89,11 @@
         <p class="subtitle">Recompensa:</p>
         <div>    
             <select id="object-info-reward-type">
-                <option value="cash">Monedas</option>
+                <option value="cash"><%= settings.convertion.name %></option>
                 <option value="role">Rol</option>
             <% if (settings.craft.items.length) { %>
                 <% settings.craft.items.forEach(x => { %>
-                    <option value="<%= x.name %>"><%= x.name %></option>
+                    <option value="<%= x.id %>"><%= x.name %></option>
                 <% }); %> 
             <% } %>
 

@@ -40,7 +40,7 @@
             <% if (settings.materials.length) { %>
                 <% let descriptions = settings.descriptions %>
                 <% settings.materials.forEach(material => {  %>
-                    <div class="object">
+                    <div class="object" id="<%= material.id %>">
                         <input style="max-width: 80%;" class="title object-name" type="text" value="<%= material.name %>" maxlength="70"></input>
                         <p class="help">Descripción:</p>
                         <input style="max-width: 80%;" class="description object-description" type="text" value="<%= material.description %>" maxlength="70"></input>

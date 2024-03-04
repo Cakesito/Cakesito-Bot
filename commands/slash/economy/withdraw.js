@@ -1,4 +1,5 @@
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
+const withdraw = require('../../../base_commands/withdraw');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,15 +21,6 @@ module.exports = {
         if (isNaN(Number(amount))) interaction.reply({ content: 'Cantidad inválida', ephemeral: true });
         if(current <= 0 || amount > current) return interaction.reply({ content: `Parece que no tienes suficiente.\nFaltante: ${amount - current} ${convertion.cash}`, ephemeral: true});
 
-        await db.add(`e_${interaction.guildId}_${interaction.user.id}.cash`, amount);
-        await db.sub(`e_${interaction.guildId}_${interaction.user.id}.bank`, amount);
-
-        let embed = new EmbedBuilder()
-        .setAuthor({ name: interaction.user.tag, iconURL: interaction.member.displayAvatarURL()})
-        .setColor(0x56bb74)
-        .setDescription(`Depositado ${amount} ${convertion.cash} a tu banco!`)
-        .setTimestamp();
-
-        return interaction.reply({ embeds: [embed]});
+        withdraw(interaction, db, { amount: amount });
     }
 }

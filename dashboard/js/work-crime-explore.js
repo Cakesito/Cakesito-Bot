@@ -24,6 +24,7 @@ var exploreProb = document.getElementById('input-explore-probability');
 var numberInputs = document.querySelectorAll('input[type="number"]');
 
 var amounts = [[workMin, workMax], [objectMin, objectMax], [materialMin, materialMax], [crimeSuccessMin, crimeSuccessMax], [crimeFailMin, crimeFailMax]];
+var max = document.getElementById('input-explore-max');
 
 var workCooldown = document.getElementById('input-work-cooldown');
 var exploreCooldown = document.getElementById('input-explore-cooldown');
@@ -93,10 +94,8 @@ saveExplore.addEventListener('click', () => {
     alert.classList = 'alert success';
     alert.textContent = 'Cambios guardados.';
 
-    var explore = { setting: 'explore', data: { materials: {}, txt: {} } };
+    var explore = { setting: 'explore', data: { materials: [], txt: {} } };
     explore.data.cooldown = ms(exploreCooldown.value, { toString: false });
-
-    var max = document.getElementById('input-explore-max');
 
     var materials = document.querySelectorAll('.material');
     materials.forEach(div => {
@@ -104,7 +103,7 @@ saveExplore.addEventListener('click', () => {
         var max = document.getElementById(`max-${div.id}`);
 
         if (min.value == '0' && max.value == '0') return;
-        explore.data.materials[div.id] = [min.value, max.value];
+        explore.data.materials.push({ ref_id: div.id, amount: [min.value, max.value] });
     });
 
     var successTexts = Array.from(document.querySelectorAll('#custom-text-2 > div > div > textarea')).map(x => x.value);
@@ -227,10 +226,17 @@ cooldowns.forEach(cd => {
     });
 });
 
+max.addEventListener('focusout', () => {
+    if (max.value > 10) max.value = '10';
+});
+
 numberInputs.forEach(prob => {
+    if (prob.id.includes('max') || prob.id.includes('min')) return;
+    
     prob.addEventListener('focusout', () => {
         if (prob.value > 100) prob.value = '100'
         if (prob.value < 0) prob.value = '0';
+        if (!Number.isInteger(prob.value)) prob.value = Math.floor(prob.value);
         resizeInput.call(prob);
     });
 });

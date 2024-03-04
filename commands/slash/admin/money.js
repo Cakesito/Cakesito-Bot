@@ -1,4 +1,5 @@
-const { EmbedBuilder, SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField } = require('discord.js');
+const money = require('../../../base_commands/money');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,14 +31,7 @@ module.exports = {
 
         if (member.user.bot) return interaction.reply({ content: 'El usuario seleccionado es un bot', ephemeral: true });
 
-        await db.add(`e_${interaction.guildId}_${member.user.id}.${type}`, amount);
-
-        let embed = new EmbedBuilder()
-        .setDescription(`${amount} a ${member.user.tag} (${type})`)
-        .setTimestamp()
-        .setColor(0x0099FF);
-
-        return interaction.reply({ embeds: [embed] });
         
+        money(interaction, db, { member: member, type: type, amount: amount });
     }
 }

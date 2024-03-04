@@ -91,15 +91,25 @@ saveButton.addEventListener('click', () => {
     selected.name = objectName.value;
     selected.description = objectDescription.value;
     selected.onlyOnce = objectOnlyOnce.checked;
-    selected.price.type = objectPriceType.value == 'cash'|| objectPriceType.value == 'role' ? objectPriceType.value : 'inv.' + objectPriceType.value;
+    selected.price.type = 'cash';
     selected.price.amount = objectPrice.value;
-    selected.reward.type = objectRewardType.value !== 'cash' || objectRewardType.value !== 'role' ? objectRewardType.value : 'inv.' + objectRewardType.value;
-    
+    selected.reward.type = 'cash';
+    selected.reward.amount = objectReward.value;
+
+    if (Number(objectPriceType.value)) {
+        selected.price.type = 'inv.';
+        selected.price.ref_id = Number(objectPriceType.value);
+    }
+
+    if (Number(objectRewardType.value)) {
+        selected.reward.type = 'inv.';
+        selected.reward.ref_id = Number(objectRewardType.value);
+    }
+
     if (objectRewardType.value == 'role') {
+        selected.reward.type = 'role';
         selected.reward.id = objectReward.value;
-    } else {
-        selected.reward.amount = objectReward.value;
-        delete selected.reward.id;
+        delete selected.reward.amount;
     }
 
     object.data = obj;
@@ -116,7 +126,7 @@ saveButton.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 
@@ -152,7 +162,7 @@ deleteButton.addEventListener('click', () => {
             alert.innerHTML = data.message.join('<br>');
             alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
             alertCon.appendChild(alert);
-            location.reload();
+            if (res.ok) location.reload();
         });
     });
 
@@ -223,10 +233,10 @@ objects.forEach(x => {
         objectName.value = info.name;
         objectDescription.value = info.description;
         objectOnlyOnce.checked = info.onlyOnce;
-        objectPriceType.value = info.price.type.replace('inv.', '');
+        objectPriceType.value = info.price.type === 'inv.' ? info.price.ref_id : info.price.type;
         objectPrice.value = info.price.amount;
-        objectRewardType.value = info.reward.type;
-        objectReward.value = info.reward.amount ?? info.reward.id;
+        objectRewardType.value = info.reward.type === 'inv.' ? info.reward.ref_id : info.reward.type;
+        objectReward.value = info.reward.id ?? info.reward.amount;
 
         lastObject = info.name;
 

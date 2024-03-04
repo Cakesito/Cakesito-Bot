@@ -1,3 +1,4 @@
+const setPrefix = require('../../../base_commands/set-prefix');
 
 module.exports = {
     memberPermissions: ['MANAGE_SERVER'],
@@ -6,8 +7,6 @@ module.exports = {
 
         let prefix = args[0];
         if (!prefix) return message.reply('¿Cuál es el nuevo prefix?');
-
-        await db.set(`g_${message.guildId}.prefix`, prefix);
-        return message.reply('Mi nuevo prefix en este servidor es: `' + prefix + '`');
+        setPrefix(message, db, { prefix: prefix });
     }
 }

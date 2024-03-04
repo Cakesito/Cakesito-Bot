@@ -25,26 +25,34 @@
     <br><button class="save" id="save-prefix">Guardar Prefix</button>
     <br>
     <br>
-
+    
     <div class="divider divider-special" style="justify-content: flex-start;">
       <div>
         <p class="title">Divisa</p>
-        <p class="description">Lo que aparecerá al lado derecho de la cantidad.</p><br>
-        <p class="description">Para indicar un emoji: <p class="marked description"><:nombre:id></p> o <p class="marked description"></p> si es animado.</p><br>
-        <p class="description">El emoji no aparecerá si el bot no está en el servidor del emoji.</p><br>
-        <input id="currency" value="<%= settings.convertion.cash %>"></input>
-        <img class="symbol" style="width: 1.5rem; height: auto; display: inline-block; position: relative; top: 5px;"></img><p class="description" id="add"></p><br>
+        <p class="subtitle">Emoji</p>
+        <p class="description">Aparecerá al lado izquierdo de la cantidad.</p><br>
+        <p class="description">Para indicar un emoji: <p class="marked description"><:nombre:id></p> o <p class="marked description"></p> si es animado.</p>
+        <input id="currency-emoji" value="<%= settings.convertion.emoji %>"><br><br>
+        
+        <p class="subtitle">Nombre</p>
+        <p class="description">Aparecerá al lado derecho de la cantidad.</p><br>
+
+        <input id="currency-name" value="<%= settings.convertion.name %>"></input><br>
+        <img class="symbol" style="width: 1.5rem; height: auto; display: inline-block; position: relative; top: 5px;"></img>
+        <p class="description" style="color: #959595">100</p>
+        <p class="description" id="add"></p><br>
         <br><button class="save" id="save-currency">Guardar Divisa</button>
       </div>
 
       <div>
         <p class="title">¿Cómo obtengo el emoji?</p>
-        <p class="description">Puedes agregar <p class="description marked">\</p> frente al emoji y enviar el mensaje.</p><br>
+        <p class="description">Puedes agregar <p class="description marked">\</p> frente al emoji y enviar el mensaje.</p>
+        <p class="description">El emoji no aparecerá si el bot no está en el servidor del emoji.</p><br><br>
         <img src="/others/emoji.gif" style="max-width: 100%;"></img>
       </div>
     </div>
 
-  </div>
+  </div><br>
 </div>
 
 <script type="text/javascript" src="/general.js"></script>

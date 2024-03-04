@@ -1,20 +1,22 @@
-const { EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ActionRowBuilder } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
+const inventory = require('../../../base_commands/inventory');
 
 module.exports = {
     aliases: ['inv'],
     run: async (client, message, args) => {
 
         const db = client.db.get('db');
-        const materials = await db.get(`g_${message.guildId}.materials`);
-        const items = await db.get(`g_${message.guildId}.craft.items`);
-
         let member = message.member;
 
         if (args[0]) {
 
-            member = message.mentions.members.first() || message.guild.members.cache.filter(m => Number(args[0]) ? m.user.id == args[0] : m.user.username.toLowerCase().startsWith(args.join(' ').toLowerCase()));
+            const cache = message.guild.members.cache.map(x => {
+                return { id: x.id, member: x };
+            });
+
+            member = message.mentions.members.first() || cache.find(x => x.id === args[0])?.member;
             if (!member && Number(args[0])) member = await message.guild.members.fetch(args[0]);
-            if (!member && !Number(args[0])) member = await message.guild.members.search(args[0]);
+            if (!member && !Number(args[0])) member = await message.guild.members.search({ query: args[0] });
 
             if (member.size) {
                 if (member.size > 1) {
@@ -72,86 +74,7 @@ module.exports = {
 
         }
 
-        var id = client.collectors.get('active') || 0;
-        client.collectors.set('active', id + 1);
+        inventory(message, db, { member: member, client: client });
 
-        const materialsOption = new StringSelectMenuOptionBuilder()
-            .setLabel('Materiales')
-            .setValue('materials')
-            .setDefault(true)
-        
-        const objectOption = new StringSelectMenuOptionBuilder()
-            .setLabel('Objetos')
-            .setValue('objects')
-
-        const select = new StringSelectMenuBuilder()
-            .setPlaceholder('Selecciona')
-            .setCustomId(`cake-i-${id}`)
-            .addOptions(materialsOption, objectOption);
-
-        let inv = await db.get(`e_${member.guild.id}_${member.user.id}.inv`);
-
-        let invEmbed = new EmbedBuilder()
-        .setColor(0x0099FF)
-        .setAuthor({ name: member.user.displayName || member.user.username, iconURL: member.user.displayAvatarURL() })
-        .setTimestamp();
-
-        let invMaterialsText = [];
-        let invObjectsText = [];
-
-        if(inv) {
-            Object.entries(inv).forEach(e => {
-                if (e[1] === 0) return;
-
-                let material = materials.find(x => x.name === e[0]) || items.find(x => x.name === e[0]);
-                if (!material) return;
-                var field = { name: `x${e[1]} **${e[0]}**`, value: material?.description == "" ? '_Este objeto no tiene descripción_' : material?.description };
-
-                if (material) {
-                    invMaterialsText.push(field);
-                } else invObjectsText.push(field);
-
-            });
-
-            invEmbed.setFields(invMaterialsText);
-
-        } else invEmbed.setDescription('Parece que no hay nada...');
-
-        const filter = (i) => i.customId === `cake-i-${id}` && i.user.id === message.author.id;
-        const collector = message.channel.createMessageComponentCollector({ filter, time: 300_000 });
-
-        collector.on('collect', async i => {
-            if (i.values[0] === 'objects') {
-                materialsOption.setDefault(false);
-                objectOption.setDefault(true);
-
-                if (invObjectsText.length) {
-                    invEmbed.setFields(invObjectsText);
-                    invEmbed.setDescription(null);
-                } else {
-                    invEmbed.setDescription('Parece que no hay nada...');
-                    invEmbed.setFields([]);
-                }
-
-            } else {
-                materialsOption.setDefault(true);
-                objectOption.setDefault(false);
-                
-                if (invMaterialsText.length) {
-                    invEmbed.setDescription(null);
-                    invEmbed.setFields(invMaterialsText);
-                } else {
-                    invEmbed.setDescription('Parece que no hay nada...');
-                    invEmbed.setFields([]);
-                }
-            }
-
-            await i.update({ embeds: [invEmbed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(select)] })
-        });
-
-        collector.on('end', () => client.collectors.set('active', id - 1));
-
-        return message.reply({ embeds: [invEmbed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(select)] });
-        
     }
 }

@@ -1,4 +1,5 @@
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
+const balance = require('../../../base_commands/balance');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,25 +16,7 @@ module.exports = {
         
         if (member.user.bot) return interaction.reply({ content: 'El usuario seleccionado es un bot', ephemeral: true });
         
-        let bal = await db.get(`e_${member.guild.id}_${member.user.id}`);
-        if (!bal) bal = { cash: 0, bank: 0 };
+        balance(interaction, db, { member: member })
 
-        const convertion = await db.get(`g_${interaction.guildId}.convertion`);
-
-        bal.cash = bal.cash ? bal.cash : 0;
-        bal.bank = bal.bank ? bal.bank : 0;
-
-        let balEmbed = new EmbedBuilder()
-        .setColor(0x0099FF)
-        .setAuthor({ name: member.user.displayName || member.user.username, iconURL: member.user.displayAvatarURL() })
-        .addFields(
-            { name: 'Cash', value: `${bal.cash} ${convertion.cash}`, inline: true },
-            { name: 'Bank', value: `${bal.bank} ${convertion.cash}`, inline: true },
-            { name: 'Total', value: `${bal.cash + bal.bank} ${convertion.cash}`, inline: true }
-        )
-        .setTimestamp();
-
-        return interaction.reply({ embeds: [balEmbed] });
-        
     }
 }

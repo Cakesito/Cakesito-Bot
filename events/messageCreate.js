@@ -1,3 +1,4 @@
+const { date } = require('yup');
 const { default_prefix, ownerId, dailyFrom } = require('../config.json');
 
 module.exports = {
@@ -47,9 +48,8 @@ module.exports = {
             let lastDaily = await db.get(`d_${message.guildId}_${message.author.id}`) || undefined;
 
             if (lastDaily) {
-                lastDaily = new Date(lastDaily);
 
-                if (!isAvailable(lastDaily, availableFrom)) {
+                if (lastDaily > availableFrom.getTime()) {
                     return message.reply(`Espera hasta <t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t> (<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>) para usar ${command.name}.`);
                     
                 } else { 
@@ -76,14 +76,4 @@ function parseTime(timeString) {
     date.setHours(parseInt(hours));
     date.setMinutes(parseInt(minutes));
     return date;
-}
-
-function isAvailable(date1, date2) {
-    return date1.getFullYear() <= date2.getFullYear() &&
-        date1.getMonth() <= date2.getMonth() &&
-        date1.getDate() <= date2.getDate() && 
-        
-        (date1.getHours() < date2.getHours() || 
-        (date1.getHours() === date2.getHours() && 
-        date1.getMinutes() <= date2.getMinutes()))
 }

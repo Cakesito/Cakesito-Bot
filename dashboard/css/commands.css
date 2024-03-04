@@ -67,3 +67,13 @@ body {
     background-color: #3a3b3c;
     color: #fff;
 }
+
+.footer {
+    position: relative;
+}
+
+@media only screen and (max-width: 600px) {
+    .head {
+        flex-direction: column;
+    }
+}

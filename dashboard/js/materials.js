@@ -24,6 +24,7 @@ saveButton.addEventListener('click', () => {
     let lastMaterial;
     objects.forEach(material => {
         var item = {};
+        item.id = material.id;
 
         material.childNodes.forEach(node => {
             if (node.classList) {
@@ -70,9 +71,9 @@ addObject.addEventListener('click', () => {
     var availableObjectsDiv = document.querySelector('.objects-available');
     var newObjectDiv = document.getElementById('object-template').cloneNode(true);
     newObjectDiv.classList = 'object';
+    newObjectDiv.id = generateId();
 
     availableObjectsDiv.appendChild(newObjectDiv);
-
     var newRemoveObjectBtn;
 
     newObjectDiv.childNodes.forEach(x => {
@@ -84,16 +85,6 @@ addObject.addEventListener('click', () => {
         
         objectCount--;
         objectCountText.textContent = `Materiales disponibles (${objectCount}/10)`;
-    });
-    
-    numberInputs = document.querySelectorAll('input[type="number"]');
-    numberInputs.forEach(btn => {
-        btn.addEventListener('focusout', () => {
-            if (btn.classList.contains('object-probability') && btn.value > 100) btn.value = 100;
-            if (btn.value < 0) btn.value = 0;
-            if (!Number.isInteger(btn.value)) btn.value = Math.floor(btn.value);
-            resizeInput.call(btn);
-        });
     });
 
     input = document.querySelectorAll('input');
@@ -115,15 +106,6 @@ removeObject.forEach(btn => {
     });
 });
 
-numberInputs.forEach(btn => {
-    btn.addEventListener('focusout', () => {
-        if (btn.classList.contains('object-probability') && btn.value > 100) btn.value = 100;
-        if (btn.value < 0) btn.value = 0;
-        if (!Number.isInteger(btn.value)) btn.value = Math.floor(btn.value);
-        resizeInput.call(btn);
-    });
-});
-
 input.forEach(x => {
     x.addEventListener('input', resizeInput);
     resizeInput.call(x);
@@ -132,4 +114,14 @@ input.forEach(x => {
 function resizeInput() {
     if (this.value.length >= 20) return;
     this.style.width = (this.value.length + 0.5) + "ch";
+}
+
+function generateId () {
+    var objects = document.querySelectorAll('.object');
+    let ids = [];
+
+    for (obj of objects) ids.push(Number(obj.id));
+
+    var num = Math.floor(Math.random() * 9);
+    return (ids.includes(num)) ? generateId() : num;
 }

@@ -1,7 +1,9 @@
 var savePrefix = document.getElementById('save-prefix');
 var prefix = document.getElementById('prefix');
 var saveCurrency = document.getElementById('save-currency');
-var currency = document.getElementById('currency');
+var currencyEmoji = document.getElementById('currency-emoji');
+var currencyName = document.getElementById('currency-name');
+
 var currencySymbol = document.querySelector('.symbol');
 var info = document.querySelectorAll('.marked')[1];
 var add = document.getElementById('add');
@@ -15,12 +17,13 @@ alert.textContent = 'Cambios guardados.';
 
 var alertCon = document.querySelector('.alert-container');
 
-updateEmoji(currencySymbol, currency.value);
+add.innerHTML = currencyName.value.replace(' ', '&nbsp;');
+updateEmoji(currencySymbol, currencyEmoji.value);
 
-currency.addEventListener('focusout', () => updateEmoji(currencySymbol, currency.value));
+currencyEmoji.addEventListener('focusout', () => updateEmoji(currencySymbol, currencyEmoji.value));
+currencyName.addEventListener('input', () => add.innerHTML = currencyName.value.replaceAll(' ', '&nbsp;'));
 
 saveCurrency.addEventListener('click', () => {
-  
   fetch(window.location.href, {
     method: 'POST',
     headers: {
@@ -28,8 +31,8 @@ saveCurrency.addEventListener('click', () => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      "setting": "convertion.cash",
-      "data": currency.value || ""
+      "setting": "convertion",
+      "data": { emoji: currencyEmoji.value || '', name: currencyName.value || '' }
     })
 
   }).then(res => {
@@ -76,10 +79,7 @@ savePrefix.addEventListener('click', () => {
 function updateEmoji (img, string) {
   var animated = string.split(':')[0].includes('a');
   var id = string.split(':')[2]?.split('>')[0];
-  var additionalText = string.split('>')[1] ?? string.split('>')[0];
 
-  add.innerHTML = additionalText?.replace(' ', '&nbsp;') ?? ''
-  if (id) return img.src = `https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'webp'}`;
-
-  img.src = '';
+  if (!id) return img.src = '';
+  img.src = `https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'webp'}`;
 }

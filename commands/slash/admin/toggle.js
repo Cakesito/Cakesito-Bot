@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionsBitField, SlashCommandStringOption } = require("discord.js");
+const toggle = require('../../../base_commands/toggle');
 
 let options = new SlashCommandStringOption()
 .setRequired(true)
@@ -22,16 +23,9 @@ module.exports = {
 
     run: async (client, interaction) => {
         const db = client.db.get('db');
-        const available = ['claim', 'craft', 'crime', 'daily', 'explore', 'work'];
         let selection = interaction.options.getString('comando');
+        if (!selection) return interaction.reply({ content: '¿Qué comando?', ephemeral: true });
         
-        if (!available.includes(selection)) return message.reply({ content: 'El comando `' + selection + '` no existe o no se puede deshabilitar.', ephemeral: true });
-
-        let status = await db.get(`n_${interaction.guildId}_${command.name}`) || false
-        let newStatus = status == true ? false : true;
-
-        await db.set(`n_${interaction.guildId}_${command.name}`, newStatus);
-
-        return interaction.reply('`' + command.name + '`:' + ` ${newStatus == true ? 'desactivado' : 'activado'}`);
+        toggle(interaction, db, { command: selection });
     }
 }

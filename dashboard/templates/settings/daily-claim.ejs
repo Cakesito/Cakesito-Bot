@@ -28,33 +28,33 @@
             </div>
             
             <div id="<%= settings.daily.reward.type == 'inv.' ? 'daily-selected' : '' %>" <%- (settings.craft.items.length || settings.materials.length) ? `class=" div-objects-daily markable daily-markable"` : 'class="div-objects-daily markable disabled"' %> >
-                <p class="subtitle">Materiales</p>
+                <p class="subtitle">Objetos / Materiales</p>
     
                 <% if (settings.craft.length || settings.materials.length) { %>
                   
                   <% var selectedMaterials = [];
                   if (settings.daily.reward.type == 'inv.') {
-                    Object.entries(settings.daily.reward.materials).forEach(x => selectedMaterials.push(x[0]));
+                    settings.daily.reward.materials.forEach(x => selectedMaterials.push(x.ref_id));
                   } %>
-                  
+
                   <% if (settings.craft.items.length) { %>
                     <% let selectedObject; %>
                     <select id="select-objects-daily">
                       <option value="Nada">Nada</option>
                       <% settings.craft.items.forEach(x => { %>
-                        <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedObject = x.name %>
-                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% if (selectedMaterials.includes(x.id)) { %>
+                          <% selectedObject = x.id %>
+                          <option selected value="<%= x.id %>"><%= x.name %></option>
                         <% } else { %>
-                          <option value="<%= x.name %>"><%= x.name %></option>
+                          <option value="<%= x.id %>"><%= x.name %></option>
                         <% } %>
                       <% }); %>
                     </select>
-    
+                        
                     <p class="help">: de </p>
-                    <input id="object-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.[selectedObject] ? settings.daily.reward.materials[selectedObject][0] : 0  %>">
+                    <input id="object-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id == selectedObject)?.amount[0] ?? '0' %>">
                     <p class="help"> a </p>
-                    <input id="object-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.[selectedObject] ? settings.daily.reward.materials[selectedObject][1] : 0  %>">
+                    <input id="object-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id == selectedObject)?.amount[1] ?? '0' %>">
                     <br>
                   <% } %>
                   
@@ -63,19 +63,19 @@
                     <select id="select-materials-daily">
                       <option value="Nada">Nada</option>
                       <% settings.materials.forEach(x => { %>
-                        <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedMaterial = x.name %>
-                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% if (selectedMaterials.includes(x.id)) { %>
+                          <% selectedMaterial = x.id %>
+                          <option selected value="<%= x.id %>"><%= x.name %></option>
                         <% } else { %>
-                          <option value="<%= x.name %>"><%= x.name %></option>
+                          <option value="<%= x.id %>"><%= x.name %></option>
                         <% } %>
                       <% }); %>
                     </select>
     
                     <p class="help">: de </p>
-                    <input  id="material-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][0] : 0  %>">
+                    <input id="material-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[0] ?? '0' %>">
                     <p class="help"> a </p>
-                    <input id="material-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.[selectedMaterial] ? settings.daily.reward.materials[selectedMaterial][1] : 0  %>">
+                    <input id="material-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[1] ?? '0' %>">
                     <br>
     
                   <% } %>
@@ -96,6 +96,7 @@
         <p class="title">Daily - Texto Personalizado</p>
 
         <%- include("../partials/texts/money.ejs") %>
+        <%- include("../partials/texts/materials.ejs") %>
         <%- include("../partials/texts/objects.ejs") %>
         <%- include("../partials/texts/timestamp.ejs") %>
 
@@ -139,27 +140,27 @@
                   
                   <% var selectedMaterials = [];
                   if (settings.claim.reward.type == 'inv.') {
-                    Object.entries(settings.claim.reward.materials).forEach(x => selectedMaterials.push(x[0]));
+                    settings.claim.reward.materials.forEach(x => selectedMaterials.push(x.ref_id));
                   } %>
-                  
+
                   <% if (settings.craft.items.length) { %>
                     <% let selectedObject; %>
                     <select id="select-objects-claim">
                       <option value="Nada">Nada</option>
                       <% settings.craft.items.forEach(x => { %>
-                        <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedObject = x.name %>
-                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% if (selectedMaterials.includes(x.id)) { %>
+                          <% selectedObject = x.id %>
+                          <option selected value="<%= x.id %>"><%= x.name %></option>
                         <% } else { %>
-                          <option value="<%= x.name %>"><%= x.name %></option>
+                          <option value="<%= x.id %>"><%= x.name %></option>
                         <% } %>
                       <% }); %>
                     </select>
-      
+    
                     <p class="help">: de </p>
-                    <input id="object-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.[selectedObject] ? settings.claim.reward.materials[selectedObject][0] : 0 %>">
+                    <input id="object-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedObject)?.amount[0] ?? '0' %>">
                     <p class="help"> a </p>
-                    <input id="object-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.[selectedObject] ? settings.claim.reward.materials[selectedObject][1] : 0  %>">
+                    <input id="object-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedObject)?.amount[1] ?? '0' %>">
                     <br>
                   <% } %>
                   
@@ -168,23 +169,23 @@
                     <select id="select-materials-claim">
                       <option value="Nada">Nada</option>
                       <% settings.materials.forEach(x => { %>
-                        <% if (selectedMaterials.includes(x.name)) { %>
-                          <% selectedMaterial = x.name %>
-                          <option selected value="<%= x.name %>"><%= x.name %></option>
+                        <% if (selectedMaterials.includes(x.id)) { %>
+                          <% selectedMaterial = x.id %>
+                          <option selected value="<%= x.id %>"><%= x.name %></option>
                         <% } else { %>
-                          <option value="<%= x.name %>"><%= x.name %></option>
+                          <option value="<%= x.id %>"><%= x.name %></option>
                         <% } %>
                       <% }); %>
                     </select>
-      
+    
                     <p class="help">: de </p>
-                    <input  id="material-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][0] : 0  %>">
+                    <input id="material-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[0] ?? '0' %>">
                     <p class="help"> a </p>
-                    <input id="material-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.[selectedMaterial] ? settings.claim.reward.materials[selectedMaterial][1] : 0  %>">
+                    <input id="material-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[1] ?? '0' %>">
                     <br>
-      
+    
                   <% } %>
-      
+    
                 <% } else { %>
                     <select disabled>
                         <option>No disponible</option>
@@ -200,6 +201,7 @@
       <div style="width: 65%;">
         <p class="title">Claim - Texto Personalizado</p>
         <%- include("../partials/texts/money.ejs") %>
+        <%- include("../partials/texts/materials.ejs") %>
         <%- include("../partials/texts/objects.ejs") %>
         <%- include("../partials/texts/timestamp.ejs") %>
         

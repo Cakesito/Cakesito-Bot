@@ -43,7 +43,7 @@ async function updateCommand (data, guild) {
     if (guildCommand) {
         guild.commands.edit(guildCommand.id, slashCommandData);
     } else {
-        guild.commands.create([slashCommandData]);
+        guild.commands.create(slashCommandData);
     }
 
 }

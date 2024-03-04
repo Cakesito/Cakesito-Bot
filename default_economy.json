@@ -2,7 +2,8 @@
     "prefix": ",",
     "materials": [],
     "convertion": {
-        "cash": "<star:991110840780599336:> monedas"
+        "name": "monedas",
+        "emoji": "<star:991110840780599336:>"
     },
 
     "shop": {
@@ -62,7 +63,8 @@
     "explore": {
         "cooldown": 600000,
         "probability": 75,
-        "materials": {},
+        "maxMaterials": 0,
+        "materials": [],
         "txt": {
             "success": ["**🔍 Has explorado la zona.**\n`◽ | Materiales:` **{reward}**\n\n*Vuelve en **⏳ 10 minutos** para explorar la hermosa fauna que te pierdes en la vida real.*"],
             "fail": ["No encontraste nada, qué mala suerte."]

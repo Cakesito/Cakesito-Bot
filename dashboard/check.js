@@ -4,7 +4,7 @@ var max = 1_000_000;
 let info;
 
 async function validate (options, db) {
-    var validOptions = ['daily', 'claim', 'work', 'crime', 'explore', 'craft.items', 'materials', 'shop.items', 'prefix', 'convertion.cash'];
+    var validOptions = ['daily', 'claim', 'work', 'crime', 'explore', 'craft.items', 'materials', 'shop.items', 'prefix', 'convertion'];
     var requiresUpdate = ['craft.items', 'shop.items'];
     if (!validOptions.includes(options.setting)) return { valid: false, parsed: {}, err: ['invalid setting type'] };
 
@@ -23,7 +23,10 @@ async function validate (options, db) {
 const validations = {
     'prefix': string().required().min(1).max(20),
 
-    'convertion.cash': string().required().max(100),
+    'convertion': object({
+        emoji: string().optional().max(max),
+        name: string().optional().max(max)
+    }).required().noUnknown(),
 
     'daily': object({
         txt: string().optional().max(2000),
@@ -35,32 +38,21 @@ const validations = {
                 then: () => number().required().min(0).max(max)
             }),
 
-            materials: object().when('type', {
+            materials: array().when('type', {
                 is: 'inv.',
-                then: () => object().test({
-                    test: (value) => {
-                        const values = Object.values(value)[0];
-                        const objects = Object.keys(value);
-
-                        var validObject = true;
-                        for (x of objects) {
-                            let obj = info.materials.find(k => k.name === x) || info.craft.items.find(k => k.name === x);
-                            if (!obj) {
-                                validObject = false;
-                                break;
-                            }
-                        }
-
-                        if (!validObject) return false;
-                        if (values.length !== 2) return false;
-                        let [value1, value2] = values;
-			            value1 = Number(value1);
-			            value2 = Number(value2);
-                        if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
-                        return typeof value1 === 'number' && typeof value2 === 'number' && value1 <= value2;
-                    },
-                    message: "amount or object not valid"
-                }),
+                then: () => array().required().max(2).of(object({
+                    ref_id: number().required().min(0).max(19).integer().required().test({
+                        test: (value) => {
+                            const obj = info.craft.items.find(x => x.id === value) || info.materials.find(x => x.id === value);
+                            return obj ? true : false;
+                        },
+                        message: "invalid object or material"
+                    }),
+                    amount: array().required().min(2).max(2).of(number().min(0).max(max).integer()).test({
+                        test: (value) => value[0] <= value[1],
+                        message: "amount not valid"
+                    })
+                }).noUnknown()),
                 otherwise: () => mixed().notRequired()
             })
     
@@ -83,35 +75,24 @@ const validations = {
                 is: 'cash',
                 then: () => number().required().min(0).max(max)
             }),
-            materials: object().when('type', {
+            materials: array().when('type', {
                 is: 'inv.',
-                then: () => object().required().test({
-                    test: value => {
-                        const values = Object.values(value)[0];
-                        const objects = Object.keys(value);
-
-                        var validObject = true;
-                        for (x of objects) {
-                            let obj = info.materials.find(k => k.name === x) || info.craft.items.find(k => k.name === x);
-                            if (!obj) {
-                                validObject = false;
-                                break;
-                            }
-                        }
-
-                        if (!validObject) return false;
-                        if (values.length !== 2) return false;
-                        let [value1, value2] = values;
-			            value1 = Number(value1);
-                        value2 = Number(value2);
-                        if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
-                        return typeof value1 === 'number' && typeof value2 === 'number' && value1 >= 0 && value1 <= value2;
-                    },
-                    message: "amount or object not valid"
-                }),
+                then: () => array().required().max(2).of(object({
+                    ref_id: number().required().min(0).max(19).integer().required().test({
+                        test: (value) => {
+                            const obj = info.craft.items.find(x => x.id === value) || info.materials.find(x => x.id === value);
+                            return obj ? true : false;
+                        },
+                        message: "invalid object or material"
+                    }),
+                    amount: array().required().min(2).max(2).of(number().min(0).max(max).integer()).test({
+                        test: (value) => value[0] <= value[1],
+                        message: "amount not valid"
+                    })
+                }).noUnknown()),
                 otherwise: () => mixed().notRequired()
             })
-    
+
         }).required().test({
             exclusive: true,
             name: 'at-least-one',
@@ -154,54 +135,40 @@ const validations = {
         cooldown: number().required().min(1).integer(),
         maxMaterials: number().required().max(10).integer(),
         probability: number().required().min(0).max(100).integer(),
-        materials: object().required().test({
-            test: (value) => {
-                const values = Object.values(value)[0];
-                const objects = Object.keys(value);
-
-                var validObject = true;
-                for (x of objects) {
-                    let obj = info.materials.find(k => k.name === x);
-                    if (!obj) {
-                        validObject = false;
-                        break;
-                    }
+        materials: array().max(10).required().of(object({
+            ref_id: number().required().min(0).max(10).integer().test({
+                test: (value) => {
+                    const material = info.materials.find(x => x.id === value);
+                    return material ? true : false;
                 }
-
-                if (!validObject) return false;
-                if (values.length !== 2) return false;
-                let [value1, value2] = values;
-		        value1 = Number(value1);
-		        value2 = Number(value2);
-                if (!Number.isInteger(value1) || !Number.isInteger(value2)) return false;
-                return typeof value1 === 'number' && typeof value2 === 'number' && value1 >= 0 && value1 <= value2;
-            },
-            message: "amount or object not valid"
-        })
+            }),
+            amount: array().min(2).max(2).of(number().min(0).max(max).integer()).required().test({
+                test: (value) => value[0] <= value[1],
+                message: "amount not valid"
+            })
+        }).noUnknown())
     }).noUnknown(),
 
     'craft.items': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
         description: string().min(1).max(70).optional(),
         probability: number().min(0).max(100).required().integer(),
+        id: number().min(10).max(19).integer().required(),
     
-        materials: object().required().test({
-            test: (value) => {
-                const material = Object.values(value);
-                var valid = true;
-                material.forEach(amount => {
-		        amount = Number(amount);
-                if (isNaN(amount) || !Number.isInteger(Number(amount)) || amount < 0 || amount > max) valid = false;
-                })
-                return valid;
-            },
-            message: "amount not valid"
-        })
+        materials: array().required().max(10).of(object({
+            ref_id: number().min(0).max(10).integer().required().test({
+                test: (value) => {
+                    const material = info.materials.find(x => x.id === value);
+                    return material ? true : false;
+                },
+            }),
+            amount: number().min(1).max(max).integer().required()
+        }).noUnknown())
     }).noUnknown()).test({
         test: (value) => {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
-                  if (value[i].name === value[j].name) {
+                  if (value[i].id === value[j].id) {
                     return false;
                   }
                 }
@@ -215,12 +182,13 @@ const validations = {
 
     'materials': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
+        id: number().required().min(0).max(9).integer(),
         description: string().min(1).max(70).optional()
     }).noUnknown()).test({
         test: (value) => {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
-                  if (value[i].name === value[j].name) {
+                  if (value[i].id === value[j].id) {
                     return false;
                   }
                 }
@@ -238,32 +206,43 @@ const validations = {
         onlyOnce: boolean().optional().default(false),
     
         price: object({
-            type: string().required().matches(/(^cash$|^inv.{4,70}$)/).test({
-                test: (value) => {
-                    if (value === 'cash') return true;
-                    return info.craft.items.find(x => x.name == value.replace('inv.', '')) ? true : false;
-                }
-            }),
-            amount: number().when('type', {
-                is: (value) => value === 'cash' || value.startsWith('inv.'),
-                then: () => number().required().min(0).max(max).integer()
-            }),
+            type: string().required().oneOf(['cash', 'inv.']),
+            amount: number().required().min(1).max(max).integer(),
+            ref_id: number().when('type', {
+                is: 'inv.',
+                then: () => number().required().min(10).max(19).integer().test({
+                    test: (value) => {
+                        const material = info.craft.items.find(x => x.id === value);
+                        return material ? true : false;
+                    },
+                    message: "invalid object"
+                })
+            })
 
-        }).required().test({ test: (value) => value.amount !== undefined || value.id !== undefined, message: "missing amount or id" }).noUnknown(),
+        }).required().noUnknown(),
+
         reward: object({
-            type: string().required().matches(/(^cash$|^role$|^inv.{4,70}$)/).test({
-                test: (value) => {
-                    if (value === 'cash' || value === 'role') return true;
-                    return info.craft.items.find(x => x.name == value.replace('inv.', '')) ? true : false;
-                }
-            }),
+            type: string().required().oneOf(['cash', 'inv.', 'role']),
             amount: number().when('type', {
-                is: (value) => value === 'cash' || value.startsWith('inv.'),
-                then: () => number().required().min(0).max(max).integer()
+                is: (value) => value === 'cash' || value === 'inv.',
+                then: () => number().required().min(0).max(max).integer(),
+                otherwise: () => mixed().notRequired()
+            }),
+            ref_id: number().when('type', {
+                is: 'inv.',
+                then: () => number().required().min(10).max(19).integer().test({
+                    test: (value) => {
+                        const material = info.craft.items.find(x => x.id === value);
+                        return material ? true : false;
+                    },
+                    message: "invalid object"
+                }),
+                otherwise: () => mixed().notRequired()
             }),
             id: number().when('type', {
                 is: 'role',
-                then: () => number().required().min(0).integer()
+                then: () => number().required().min(0).integer(),
+                otherwise: () => mixed().notRequired()
             })
         }).required().noUnknown()
 
