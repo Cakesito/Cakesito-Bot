@@ -25,7 +25,7 @@ module.exports = async (message, db) => {
             .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + crime.cooldown) / 1000)}:t>`)
             .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + crime.cooldown) / 1000)}:R>`));
         embed.setColor(0x56bb74);
-        await db.add(`e_${message.guild.id}_${message.author.id}.cash`, randomMoney);
+        await db.add(`e_${message.guild.id}_${message.user.id}.cash`, randomMoney);
         
     } else {
         randomMoney = random(crime.fail.min, crime.fail.max);

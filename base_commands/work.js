@@ -14,7 +14,7 @@ module.exports = async (message, db) => {
     let randomText = work.txt[Math.floor(Math.random() * work.txt.length)];
 
     let embed = new EmbedBuilder()
-    .setAuthor({ name: message.member.displayName || message.author.username, iconURL: message.author.displayAvatarURL() })
+    .setAuthor({ name: message.member.displayName || message.user.username, iconURL: message.user.displayAvatarURL() })
     .setColor(0x56bb74)
     .setDescription(randomText
         .replace('{money}', `${convertion.emoji} ${randomMoney} ${convertion.name}`)
@@ -22,7 +22,7 @@ module.exports = async (message, db) => {
         .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + work.cooldown) / 1000)}:R>`))
     .setTimestamp();
 
-    await db.add(`e_${message.guild.id}_${message.author.id}.cash`, randomMoney);
+    await db.add(`e_${message.guild.id}_${message.user.id}.cash`, randomMoney);
 
     return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
 }
