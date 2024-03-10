@@ -9,7 +9,7 @@
         <div>
             <p class="command-type selected" id="all">Todos</p>
             <p class="command-type" id="economy">Economía</p>
-            <p class="command-type" id="admin">Solo Administrador</p>
+            <p class="command-type" id="admin">Administración</p>
         </div>
 
         <div class="help">
@@ -22,28 +22,9 @@
         </div>
     </div>
 
-    <div class="commands">
-        <% commands.forEach(x => { %>
-            <% 
-            var categories = {
-                "admin": "Admin: ",
-                "economy": "Economía"
-            }
-            %>
-
-            <div class="command <%= x.category %>">
-                <p class="name title description"><%= x.name %></p>
-                <p class="description secondary"><%- categories[x.category] + (x.memberPermission ?? '') %></p>
-                <br>
-                <p class="description">Descripción: <%= x.description %></p><br>
-                <p class="description">Uso: </p>
-                <p class="description marked"><%= x.usage %></p>
-            </div>
-
-        <% }) %>
-    </div>
+    <div class="commands"></div>
 </div>
 
-<script type="text/javascript" src="/commands.js"></script>
+<script type="module" src="/commands.js"></script>
 
 <%- include("partials/footer.ejs", { bot }) %>

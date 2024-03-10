@@ -1,10 +1,3 @@
-cambiar formato de db:
-    yup: done
-    dashboard/js: done
-    commands: working on it, fix lb+
-    
-hacer los comandos un solo archivo: working on it
-
 fancy embed (usar un json)
 
-cambiar de db
+cambiar de db (prob usar mysql)

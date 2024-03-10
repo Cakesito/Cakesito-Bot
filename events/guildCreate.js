@@ -2,7 +2,7 @@ const defaultEconomy = require('../default_economy.json');
 
 module.exports = {
     run: async (client, guild) => {
-        const db = client.db.get('db');
+        const db = client.db;
         await db.set(`g_${guild.id}`, defaultEconomy);
     }
 }

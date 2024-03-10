@@ -1,7 +1,7 @@
 module.exports = {
     run: async (client, interaction) => {
 
-        const db = client.db.get('db');
+        const db = client.db;
 
         if (!interaction.isChatInputCommand() && !interaction.isUserContextMenuCommand()) return;
         if (!interaction.guild) return;
@@ -11,10 +11,10 @@ module.exports = {
         let command;
 
         if (interaction.isChatInputCommand()) {
-            command = client.slash_commands.get(interaction.commandName);
+            command = client.commands.get(interaction.commandName);
             if (!command) return;
     
-            if(await db.get(`n_${interaction.guildId}_${command.data.name}`)) return interaction.reply({ content: 'Este comando está deshabilitado en este servidor.', ephemeral: true });
+            if(await db.get(`n_${interaction.guildId}_${interaction.commandName}`)) return interaction.reply({ content: 'Este comando está deshabilitado en este servidor.', ephemeral: true });
             
             if(command.requiresCooldown) {
                 let cooldown = await db.get(`g_${interaction.guildId}.${command.data.name}.cooldown`);
@@ -31,7 +31,7 @@ module.exports = {
                 if (lastDaily) {
                     lastDaily = new Date(lastDaily);
     
-                    if (!isAvailable(lastDaily, availableFrom)) {
+                    if (lastDaily > availableFrom.getTime()) {
                         return interaction.reply(`Espera hasta <t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t> (<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>) para usar ${command.name}.`);
                         
                     } else { 
@@ -51,7 +51,7 @@ module.exports = {
         }
 
         try {
-            command.run(client, interaction);
+            command.runSlash(client, interaction);
         } catch (err) {
             interaction.reply({ content: 'Ocurrió un error con el bot. No eres tú, soy yo :(', ephemeral: true });
             console.error(err);

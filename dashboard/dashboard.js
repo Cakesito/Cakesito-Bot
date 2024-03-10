@@ -9,7 +9,6 @@ const url = require("url");
 const defaultEconomy = require('../default_economy.json');
 const helmet = require('helmet');
 const { existsSync } = require('node:fs');
-const commands = require('../commands.json');
 const { PermissionsBitField, Client, GatewayIntentBits } = require('discord.js');
 const { clientSecret, clientId, discordInvite, token, domain } = require('../config.json');
 const { validate } = require('./check');
@@ -103,9 +102,7 @@ const checkAuth = (req, res, next) => {
 
 app.get('/others/:file', (req, res) => res.sendFile(path.resolve(__dirname + `/others/${req.params.file}`)));
 
-app.get('/commands', (req, res) => {
-    renderTemplate(res, req, 'commands.ejs', { commands: commands });
-})
+app.get('/commands', (req, res) => renderTemplate(res, req, 'commands.ejs'));
 
 app.get('/login', (req, res, next) => {
     if (req.session.backURL) {
@@ -194,8 +191,7 @@ app.get("/dashboard/:guildId/:setting", checkAuth, async (req, res) => {
 
     renderTemplate(res, req, `/settings/${req.params.setting}.ejs`, {
         guild,
-        settings: storedSettings ?? defaultEconomy,
-        alert: null
+        settings: storedSettings ?? defaultEconomy
     });
 
 });

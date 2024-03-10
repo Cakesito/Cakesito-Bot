@@ -113,6 +113,8 @@ deleteButton.addEventListener('click', () => {
     var selected = obj.find(x => x.id == lastObject);
     obj.splice(obj.indexOf(selected), 1);
 
+    object.data = obj;
+
     fetch(window.location.href, {
         method: 'POST',
         headers: {
