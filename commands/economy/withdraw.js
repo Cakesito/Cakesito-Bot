@@ -24,15 +24,15 @@ module.exports = {
     run: async (message, db, data = { amount }) => {
         message = fix(message);
 
-        const convertion = await db.get(`g_${interaction.guildId}.convertion`)
-        const current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.cash`) || 0;
+        const convertion = await db.get(`g_${message.guildId}.convertion`)
+        const current = await db.get(`e_${message.guildId}_${message.user.id}.cash`) || 0;
 
         if (!data.amount) return message.reply({ content: '¿Cuánto?', ephemeral: true });
         if (!Number(data.amount) && (data.amount !== 'all' || data.amount !== 'max')) return message.reply({ content: 'Cantidad inválida', ephemeral: true });
 
         if (data.amount === 'all' || data.amount === 'max') data.amount = current;
         
-        if(current <= 0 || Number(data.amount) < current) return interaction.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${convertion.emoji} ${amount - current} ${convertion.name}`, ephemeral: true});
+        if(current <= 0 || Number(data.amount) < current) return message.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${convertion.emoji} ${amount - current} ${convertion.name}`, ephemeral: true});
     
         await db.sub(`e_${message.guild.id}_${message.userId}.bank`, data.amount);
         await db.add(`e_${message.guild.id}_${message.userId}.cash`, data.amount);
