@@ -25,7 +25,8 @@ module.exports = {
 
     runPrefix: async (client, message, args) => {
 
-        var member = await require('../util/selectMember')(message, args);
+        const member = await require('../util/selectMember')(message, args, 1);
+        if (!member) return message.reply('No pude encontrar el usuario.');
 
         let amount = args[1];
         let type = args[2] || 'cash';

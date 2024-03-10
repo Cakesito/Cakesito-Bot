@@ -1,5 +1,5 @@
 module.exports = {
-    ownerOnly: true,
+    onlyOwner: true,
     runPrefix: (client, message) => module.exports.run(client, message),
     
     run: async (client, message) => {

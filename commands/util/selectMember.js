@@ -1,17 +1,15 @@
-module.exports = async (message, args) => {
+const { EmbedBuilder } = require('discord.js');
+
+module.exports = async (message, args, limit = 10) => {
     let member = message.member;
 
         if (args[0]) {
 
-            const cache = message.guild.members.cache.map(x => {
-                return { id: x.id, member: x };
-            });
+            member = message.mentions.members.first();
+            if (!member && Number(args[0])) member = await message.guild.members.resolve(args[0]);
+            if (!member && !Number(args[0])) member = await message.guild.members.search({ query: args[0], limit: limit });
 
-            member = message.mentions.members.first() || cache.find(x => x.id === args[0])?.member;
-            if (!member && Number(args[0])) member = await message.guild.members.fetch(args[0]);
-            if (!member && !Number(args[0])) member = await message.guild.members.search({ query: args[0] });
-
-            if (member.size) {
+            if (member?.size) {
                 if (member.size > 1) {
 
                     let users = [];
@@ -19,13 +17,16 @@ module.exports = async (message, args) => {
                     let i = 0;
 
                     member.forEach(m => {
+                        if (m.user.bot) return;
                         users.push(m);
                         desc.push(`${i + 1}. ${m.user.displayName} ` + '(`' + m.user.tag + '`)');
                         i++;
                     });
 
+                    if (users.length === 1) return member.first();
+
                     let embed = new EmbedBuilder()
-                    .setDescription(`He encontrado ${desc.length} usuarios:\n\n${desc.slice(0, 9).join('\n')}\nSeleccione un usuario (un número) o escribe cancelar.`)
+                    .setDescription(`He encontrado ${desc.length} usuarios:\n\n${desc.slice(0, 9).join('\n')}\nSelecciona un usuario (un número) o escribe cancelar.`)
                     .setColor(0x0099FF)
                     .setTimestamp();
 
@@ -48,7 +49,7 @@ module.exports = async (message, args) => {
 
                     let number = await message.channel.awaitMessages({ filter, time: 20_000, errors: ['time'], max: 1 });
 
-                    if (number.first().content.toLowerCase().startsWith('cancelar')) return;
+                    if (number.first().content.toLowerCase().startsWith('cancelar')) return 'cancel';
 
                     message = number.first();
                     member = member.at(number.first().content - 1);
@@ -60,12 +61,10 @@ module.exports = async (message, args) => {
     
                 }
 
-            } 
-
-            if(!member.user) return message.reply('No pude encontrar el usuario.');
-            if(member.user.bot) return message.reply('El usuario elegido es un bot.');
-
+            }
         }
 
-        return member;
+    if(member?.user.bot) return message.reply('El usuario elegido es un bot.');
+    
+    return member;
 }

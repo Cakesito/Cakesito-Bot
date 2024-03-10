@@ -12,8 +12,9 @@ module.exports = {
     ),
 
     runPrefix: async (client, message, args) => {
-        const selectMember = require('../util/selectMember');
-        const member = await selectMember(message, args);
+        const member = await require('../util/selectMember')(message, args);
+        if (member === 'cancel') return;
+        if (!member) return message.reply('No pude encontrar el usuario.');
 
         module.exports.run(message, client.db, { client: client, member: member });
     },
