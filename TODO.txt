@@ -1,3 +1,5 @@
 fancy embed (usar un json)
+añadir comandos de pm2
+poder actualizar varios comandos a la vez?
 
 cambiar de db (prob usar mysql)

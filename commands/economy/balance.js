@@ -47,6 +47,6 @@ module.exports = {
         )
         .setTimestamp();
     
-        return message.reply({ embeds: [balEmbed] });
+        return message.reply({ embeds: [balEmbed], allowedMentions: { repliedUser: false } });
     }
 }

@@ -50,7 +50,7 @@ module.exports = {
             await db.sub(`e_${message.guildId}_${message.user.id}.cash`, randomMoney);
         }
     
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 }
 

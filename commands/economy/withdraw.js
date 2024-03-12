@@ -27,6 +27,8 @@ module.exports = {
         const convertion = await db.get(`g_${message.guildId}.convertion`)
         const current = await db.get(`e_${message.guildId}_${message.user.id}.bank`) || 0;
 
+        if (current === 0) return message.reply({ content: 'Parece que no tienes dinero...', ephemeral: true });
+
         if (!data.amount) return message.reply({ content: '¿Cuánto?', ephemeral: true });
         if (data.amount == 'all' || data.amount == 'max') data.amount = current;
         
@@ -43,6 +45,6 @@ module.exports = {
         .setDescription(`Has retirado ${convertion.emoji} ${data.amount} ${convertion.name} del banco!`)
         .setTimestamp();
     
-        return message.reply({ embeds: [embed]});
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 }

@@ -13,6 +13,8 @@ module.exports = {
     runSlash: async (client, interaction) => {
         const db = client.db;
         const current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.cash`) || 0;
+        
+        if (current === 0) return message.reply({ content: 'Parece que no tienes dinero...', ephemeral: true });
 
         let amount = interaction.options.getString('cantidad') || current;
         module.exports.run(interaction, db, { amount: amount });
@@ -23,6 +25,8 @@ module.exports = {
 
         const convertion = await db.get(`g_${message.guildId}.convertion`)
         const current = await db.get(`e_${message.guildId}_${message.user.id}.cash`) || 0;
+        
+        if (current === 0) return message.reply({ content: 'Parece que no tienes dinero...', ephemeral: true });
 
         if (!data.amount) return message.reply({ content: '¿Cuánto?', ephemeral: true });
         if (data.amount == 'all' || data.amount == 'max') data.amount = current;
@@ -40,6 +44,6 @@ module.exports = {
         .setDescription(`Has depositado ${convertion.emoji} ${data.amount} ${convertion.name} a tu banco!`)
         .setTimestamp();
     
-        return message.reply({ embeds: [embed]});
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 }

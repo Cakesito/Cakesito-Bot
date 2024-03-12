@@ -72,7 +72,7 @@ module.exports = {
                 .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>`));
         }
     
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 }
 

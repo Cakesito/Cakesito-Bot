@@ -14,12 +14,6 @@ module.exports = {
 
         const category = path.split('/').slice(-2)[0];
 
-        const clean = (text) => {
-            return text
-              .replace(/`/g, "`" + String.fromCharCode(8203))
-              .replace(/@/g, "@" + String.fromCharCode(8203));
-        }
-
         const file = createWriteStream(path);
         https.get(message.attachments.first().url, (res) => {
             res.pipe(file);
@@ -27,11 +21,11 @@ module.exports = {
             file.on('finish', () => { 
                 file.close(() => {
                     var content = readFileSync(path, 'utf-8');
-                    content = clean(content);
                     content = thingy(content, category, name);
-        
+                    content = eval(content);
+                    
                     try {
-                        eval(`client.commands.set("${name}", ${content})`);
+                        client.commands.set(name, content);
                         message.reply(`updated: ${category}, ${name}`);
                     } catch (err) {
                         console.log(err);

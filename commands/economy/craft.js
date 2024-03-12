@@ -94,6 +94,6 @@ module.exports = {
         .setDescription(craft.txt[n].replace('{item}', data.item.name))
         .setTimestamp();
     
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 }

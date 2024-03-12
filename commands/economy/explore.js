@@ -76,7 +76,7 @@ module.exports = {
         .setDescription(randomText)
         .setColor(success ? 0x56bb74 : 0xec5454);
                 
-        return message.reply({ embeds: [embed] });
+        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });
     }
 }
 
