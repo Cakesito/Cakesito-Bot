@@ -22,7 +22,8 @@ module.exports = {
 
     run: async (message, db, data = { amount }) => {
         message = fix(message);
-
+        
+        if (Number(data.amount) && data.amount < 0) return message.reply({ content: '¿Cuánto?...', ephemeral: true });
         const convertion = await db.get(`g_${message.guildId}.convertion`)
         const current = await db.get(`e_${message.guildId}_${message.user.id}.cash`) || 0;
         

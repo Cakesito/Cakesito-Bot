@@ -22,15 +22,16 @@ module.exports = {
                 file.close(() => {
                     var content = readFileSync(path, 'utf-8');
                     content = thingy(content, category, name);
-                    content = eval(content);
                     
                     try {
+                        content = eval(content);
                         client.commands.set(name, content);
-                        message.reply(`updated: ${category}, ${name}`);
+                        return message.reply(`updated: ${category}, ${name}`);
                     } catch (err) {
                         console.log(err);
                         return message.reply('err');
                     }
+
                 });
             });
         });
