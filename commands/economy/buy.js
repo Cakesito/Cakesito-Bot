@@ -84,7 +84,7 @@ module.exports = {
             let embed = new EmbedBuilder()
             .setAuthor({ name: message.member.displayName || message.user.username, iconURL: message.member.displayAvatarURL() })
             .setColor(0xec5454)
-            .setDescription(`Parece que no lo puedes comprar.\nFaltante: ${data.item.price.type === 'cash' ? convertion.emoji : '' } x${item.price.amount - current} ${data.item.price.type === 'cash' ? convertion.name : data.item.name }`)
+            .setDescription(`Parece que no lo puedes comprar.\nFaltante: ${data.item.price.type === 'cash' ? convertion.emoji : '' } x${data.item.price.amount - current} ${data.item.price.type === 'cash' ? convertion.name : data.item.name }`)
             .setTimestamp()
             return message.reply({ embeds: [embed], ephemeral: true });
         }

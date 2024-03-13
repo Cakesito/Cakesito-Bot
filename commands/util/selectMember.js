@@ -1,70 +1,76 @@
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (message, args, limit = 10) => {
+    var found = true;
     let member = message.member;
+    var bot = false;
 
-        if (args[0]) {
+    if (args[0]) {
 
-            member = message.mentions.members.first();
-            if (!member && Number(args[0])) member = await message.guild.members.resolve(args[0]);
-            if (!member && !Number(args[0])) member = await message.guild.members.search({ query: args[0], limit: limit });
+        member = message.mentions.members.first();
+        if (!member && Number(args[0])) member = await message.guild.members.resolve(args[0]);
+        if (!member && !Number(args[0])) member = await message.guild.members.search({ query: args[0], limit: limit });
 
-            if (member?.size) {
-                if (member.size > 1) {
+        if (!member?.size) found = false;
 
-                    let users = [];
-                    let desc = [];
-                    let i = 0;
+        if (member?.size) {
+            if (member.size > 1) {
 
-                    member.forEach(m => {
-                        if (m.user.bot) return;
-                        users.push(m);
-                        desc.push(`${i + 1}. ${m.user.displayName} ` + '(`' + m.user.tag + '`)');
-                        i++;
-                    });
+                let users = [];
+                let desc = [];
+                let i = 0;
 
-                    if (users.length === 1) return member.first();
+                member.forEach(m => {
+                    if (m.user.bot) return;
+                    users.push(m);
+                    desc.push(`${i + 1}. ${m.user.displayName} ` + '(`' + m.user.tag + '`)');
+                    i++;
+                });
 
-                    let embed = new EmbedBuilder()
-                    .setDescription(`He encontrado ${desc.length} usuarios:\n\n${desc.slice(0, 9).join('\n')}\nSelecciona un usuario (un número) o escribe cancelar.`)
-                    .setColor(0x0099FF)
-                    .setTimestamp();
+                if (users.length === 1) return { found: true, member: member.first(), bot: false };
 
-                    message.reply({ embeds: [embed] });
+                let embed = new EmbedBuilder()
+                .setDescription(`He encontrado ${desc.length} usuarios:\n\n${desc.slice(0, 9).join('\n')}\nSelecciona un usuario (un número) o escribe cancelar.`)
+                .setColor(0x0099FF)
+                .setTimestamp();
 
-                    let filter = function (m) {
-                        if (m.author.id == message.author.id) {
-                            if (m.content.toLowerCase().startsWith('cancelar')) return m.reply('Cancelado.');
+                message.reply({ embeds: [embed] });
 
-                            if (isNaN(Number(m.content)) || Number(m.content) > desc.length) {
-                                m.reply(`Escribe un número entre 1 y ${desc.length}`);
-                                return false;
-                            }
+                let filter = function (m) {
+                    if (m.author.id == message.author.id) {
+                        if (m.content.toLowerCase().startsWith('cancelar')) return m.reply('Cancelado.');
 
-                            return true;
+                        if (isNaN(Number(m.content)) || Number(m.content) > desc.length) {
+                            m.reply(`Escribe un número entre 1 y ${desc.length}`);
+                            return false;
                         }
 
-                        return false;
+                        return true;
                     }
 
-                    let number = await message.channel.awaitMessages({ filter, time: 20_000, errors: ['time'], max: 1 });
-
-                    if (number.first().content.toLowerCase().startsWith('cancelar')) return 'cancel';
-
-                    message = number.first();
-                    member = member.at(number.first().content - 1);
-                    
-                } else {
-
-                    member = member.first();
-                    if(member.user.bot) return message.reply('El usuario elegido es un bot.');
-    
+                    return false;
                 }
 
-            }
-        }
+                let number = await message.channel.awaitMessages({ filter, time: 20_000, errors: ['time'], max: 1 });
 
-    if(member?.user.bot) return message.reply('El usuario elegido es un bot.');
+                if (number.first().content.toLowerCase().startsWith('cancelar')) found = false;
+
+                message = number.first();
+                member = member.at(number.first().content - 1);
+                found = true;
+                
+            } else {
+
+                member = member.first();
+                found = true;
+
+            }
+
+        }
+    }
+
+    if (!member) found = false;
+    if (member?.user?.bot) bot = true;
     
-    return member;
+    return { found, member, bot };
 }

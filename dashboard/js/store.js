@@ -89,7 +89,7 @@ saveButton.addEventListener('click', () => {
     selected.reward = {}
 
     selected.name = objectName.value;
-    selected.description = objectDescription.value;
+    selected.description = objectDescription.value != '' ? objectDescription.value : undefined;
     selected.onlyOnce = objectOnlyOnce.checked;
     selected.price.type = 'cash';
     selected.price.amount = objectPrice.value;

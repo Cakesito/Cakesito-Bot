@@ -241,7 +241,7 @@ const validations = {
             }),
             id: number().when('type', {
                 is: 'role',
-                then: () => number().required().min(0).integer(),
+                then: () => string().required(),
                 otherwise: () => mixed().notRequired()
             })
         }).required().noUnknown()

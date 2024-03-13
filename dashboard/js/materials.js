@@ -35,7 +35,7 @@ saveButton.addEventListener('click', () => {
                     item.name = node.value;
                 }
                 
-                if (node.classList.contains('object-description') && lastMaterial != '-') item.description = node.value;
+                if (node.classList.contains('object-description') && lastMaterial != '-' && node.textContent != '') item.description = node.value;
             }
         });
 

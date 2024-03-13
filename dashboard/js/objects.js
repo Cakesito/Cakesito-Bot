@@ -67,12 +67,10 @@ saveButton.addEventListener('click', () => {
     var selected = obj.find(x => x.id == lastObject);
 
     selected.name = objectName.value;
-    selected.description = objectDescription.value.length ? objectDescription.value : undefined;
+    selected.description = objectDescription.value != '' ? objectDescription.value : undefined;
     selected.probability = Number(objectProbability.value);
     selected.materials = materialList;
     selected.id = lastObject;
-
-    console.log(selected);
 
     object.data = obj;
 

@@ -65,7 +65,7 @@
         "maxMaterials": 0,
         "materials": [],
         "txt": {
-            "success": ["**🔍 Has explorado la zona.**\n`◽ | Materiales:` [x{materialAmount} **{materialName}**\n]*Vuelve en {timestampLeft} ({timestampUntil}) para explorar la hermosa fauna que te pierdes en la vida real.*"],
+            "success": ["**🔍 Has explorado la zona.**\n`◽ | Materiales:` [x{materialAmount} **{materialName}**\n]*Vuelve en {timestampLeft} ({timestampUntil}) para explorar de nuevo.*"],
             "fail": ["No encontraste nada :("]
         }
     }

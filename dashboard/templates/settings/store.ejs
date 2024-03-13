@@ -47,7 +47,7 @@
                             return { id: Number(x.id), name: x.name }
                         });
 
-                        var roles = a.find(x => x.id === item.reward.id);
+                        var roles = a.find(x => x.id == item.reward.id);
                     %>
 
                     <p><%- item.reward.type === 'inv.' ? settings.craft.items.find(x => x.id === item.reward.ref_id)?.name : item.reward.type.replace('cash', settings.convertion.name).replace('role', 'Rol') %>: <%- item.reward.id ? `${roles?.name || 'Rol no encontrado'}` : `x${item.reward.amount}` %></p>
