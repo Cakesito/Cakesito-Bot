@@ -32,7 +32,8 @@ module.exports = {
 
         if (isNaN(Number(data.amount))) return message.reply({ content: 'Cantidad inválida', ephemeral: true });
         
-        if(current <= 0 || Number(data.amount) > current) return message.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${convertion.emoji} ${data.amount - current} ${convertion.name}`, ephemeral: true});
+        if (current <= 0) return message.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${convertion.emoji} ${current * -1} ${convertion.name}`, ephemeral: true});
+        if(Number(data.amount) > current) return message.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${convertion.emoji} ${data.amount - current} ${convertion.name}`, ephemeral: true});
         
         await db.add(`e_${message.guild.id}_${message.userId}.bank`, data.amount);
         await db.sub(`e_${message.guild.id}_${message.userId}.cash`, data.amount);

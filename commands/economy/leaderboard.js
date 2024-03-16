@@ -19,6 +19,8 @@ module.exports = {
     runPrefix: (client, message, args) => module.exports.run(message, client.db, { mode: args[0], client: client }),
 
     runSlash: (client, interaction) => {
+        interaction.deferReply().then(() => {});
+        
         var category = interaction.options.getString('categoría') || 'total';
         module.exports.run(interaction, client.db, { mode: category, client: client });
     },
@@ -45,38 +47,56 @@ module.exports = {
     
             default: 
                 all.forEach(x => lb.push({ username: x.id.split('_')[2], value: (x.value.cash || 0) + (x.value.bank || 0) }));
-                break;;
+                break;
         }
     
         lb.sort((a, b) => b.value - a.value);
         
-        var userRank = 0;
-        var currentPage = 0;
-        var maxPerPage = 10;                                // idk how it works but you need to add 1 if its odd
-        var maxPages = Math.floor(lb.length / maxPerPage) + (maxPerPage % 2 === 1 ? 1 : 0); 
-    
+        var userRank = 0;    
         const cache = message.guild.members.cache.map(x => {
             return { id: x.id, member: x };
         });
-    
-        for (user of lb) {
+
+        for (var i = 0; i < lb.length; i++) {
+            var user = lb[i];
             var member = cache.find(x => x.id == user.username)?.member;
-            if (!member) member = await message.guild.members.fetch(user.username);
+
+            if (!member) member = await message.guild.members.fetch({ user: user.username, cache: true }).catch(() => {});
+            if (!member) {
+                lb.splice(lb.indexOf(user), 1);
+                i--;
+                continue;
+            }
+            
             if (member.user?.id === message.user.id) userRank = lb.indexOf(user) + 1;
-    
-            lb[lb.indexOf(user)] = { username: member.displayName || member.user.username, value: user.value };
+            lb[lb.indexOf(user)] = { username: member.displayName || member.user.username, value: user.value, position: i + 1 };
         }
-    
-        if (maxPerPage >= lb.length) maxPerPage = lb.length + 1;
+
+        var maxPerPage = 10;
+        var pages = [];
+        var temp = [];
+        var count = 0;
+
+        lb.forEach((item, i) => {
+            count++;
+            if (temp.length < maxPerPage && !lb[i + 1]) pages.push(temp);
+            temp.push(item);
+
+            if (count === maxPerPage) {
+                pages.push(temp);
+                temp = [];
+                count = 0;
+            }
+        });
         
+        var currentPage = 0;
         let embed = new EmbedBuilder()
         .setAuthor({ name: `${message.guild.name} Leaderboard`, iconURL: message.guild.iconURL() })
         .setColor(0x0099FF)
-        .setDescription(lb
-                .slice(0, maxPerPage + (maxPerPage % 2 === 1 ? 1 : 0))
-                .map((x, i) => `${i + 1}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
+        .setDescription(pages[currentPage]
+                .map(x => `${x.position}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
                 .join('\n'))
-        .setFooter({ text: `Página 1/${maxPages  + (maxPerPage % 2 === 1 ? 1 : 0)} · Tu posición: ${userRank}` });
+        .setFooter({ text: `Página 1/${pages.length} · Tu posición: ${userRank}` });
     
         var id = data.client.collectors.get('active') || 0;
         data.client.collectors.set('active', id + 1);
@@ -91,7 +111,7 @@ module.exports = {
         .setCustomId(`cake-n-${id}`)
         .setLabel('>>')
         .setStyle('Primary')
-        .setDisabled(currentPage + 1 >= maxPages ? true : false);
+        .setDisabled(pages.length > (currentPage + 1) ? false : true);
     
         if (lb.length > maxPerPage) {
             const filter = (i) => (i.customId == `cake-${id}` || i.customId == `cake-n-${id}`) && i.user.id == message.userId;
@@ -101,14 +121,13 @@ module.exports = {
                 i.customId == `cake-${id}` ? currentPage-- : currentPage++;
     
                 previousBtn.setDisabled(currentPage === 0 ? true : false);
-                nextBtn.setDisabled(currentPage + 1 >= maxPages ? true : false);
+                nextBtn.setDisabled(pages.length > (currentPage + 1) ? false : true);
     
-                embed.setDescription(lb
-                    .slice(currentPage * maxPerPage, (currentPage * maxPerPage) + maxPerPage)
-                    .map((x, i) => `${i + 1}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
+                embed.setDescription(pages[currentPage]
+                    .map(x => `${x.position}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
                     .join('\n'));
     
-                embed.setFooter({ text: `Página ${currentPage + 1}/${maxPages + (maxPerPage % 2 === 1 ? 1 : 0)} · Tu posición: ${userRank}` })
+                embed.setFooter({ text: `Página ${currentPage + 1}/${pages.length} · Tu posición: ${userRank}` })
                 
                 await i.update({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
     
