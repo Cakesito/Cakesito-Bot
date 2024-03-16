@@ -73,7 +73,7 @@ module.exports = {
         .setAuthor({ name: `${message.guild.name} Leaderboard`, iconURL: message.guild.iconURL() })
         .setColor(0x0099FF)
         .setDescription(lb
-                .slice(0, maxPerPage)
+                .slice(0, maxPerPage + (maxPerPage % 2 === 1 ? 1 : 0))
                 .map((x, i) => `${i + 1}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
                 .join('\n'))
         .setFooter({ text: `Página 1/${maxPages  + (maxPerPage % 2 === 1 ? 1 : 0)} · Tu posición: ${userRank}` });
@@ -108,7 +108,7 @@ module.exports = {
                     .map((x, i) => `${i + 1}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
                     .join('\n'));
     
-                embed.setFooter({ text: `Página ${currentPage + 1}/${maxPages  + (maxPerPage % 2 === 1 ? 1 : 0)} · Tu posición: ${userRank}` })
+                embed.setFooter({ text: `Página ${currentPage + 1}/${maxPages + (maxPerPage % 2 === 1 ? 1 : 0)} · Tu posición: ${userRank}` })
                 
                 await i.update({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
     

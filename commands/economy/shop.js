@@ -26,7 +26,7 @@ module.exports = {
     
         shop.forEach(item => {
             let price;
-            if (item.price.type === 'inv.') price = `x${item.price.amount} **${items.find(x => x.id === item.ref_id)?.name}**`;
+            if (item.price.type === 'inv.') price = `x${item.price.amount} **${items.find(x => x.id === item.price.ref_id)?.name}**`;
             if (item.price.type === 'cash') price = `${convertion.emoji} ${item.price.amount} ${convertion.name}`;
             if (!price) return;
     
