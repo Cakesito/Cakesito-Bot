@@ -3,7 +3,6 @@ const { dailyFrom } = require('../../config.json');
 const fix = require('../util/fix');
 
 module.exports = {
-    daily: true,
     data: new SlashCommandBuilder()
     .setName('daily')
     .setDescription('Reclama una recompensa diaria'),
@@ -15,14 +14,26 @@ module.exports = {
     run: async (message, db) => {
         message = fix(message);
 
+        const availableFrom = parseTime(dailyFrom);
+        const lastDaily = await db.get(`e_${message.guildId}_${message.user.id}.lastDaily`) || 0;
+
+        var notAvailableText = `Espera hasta <t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t> (<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>) para usar daily.`;
+        if (lastDaily < availableFrom.getTime()) {
+            if (new Date(lastDaily).getDate() === availableFrom.getDate()) {
+                return message.reply({ content: notAvailableText, ephemeral: true });
+            }
+            
+        } else {
+            return message.reply({ content: notAvailableText, ephemeral: true });
+        }
+
+        await db.set(`e_${message.guildId}_${message.user.id}.lastDaily`, Date.now());
         const settings = await db.get(`g_${message.guildId}`);
     
         const daily = settings.daily;
         const materials = settings.materials;
         const convertion = settings.convertion;
         const items = settings.craft.items;
-    
-        const availableFrom = parseTime(dailyFrom);
         
         let embed = new EmbedBuilder()
         .setAuthor({ name: message.member.displayName || message.user.username, iconURL: message.member.displayAvatarURL() })

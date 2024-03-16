@@ -45,24 +45,6 @@ module.exports = {
             client.cooldowns.set(`c_${message.guild.id}_${message.author.id}_${command.name}`, Date.now());
         }
 
-        if (command.daily) {
-            const availableFrom = parseTime(dailyFrom);
-            let lastDaily = await db.get(`d_${message.guildId}_${message.author.id}`) || undefined;
-
-            if (lastDaily) {
-
-                if (lastDaily > availableFrom.getTime()) {
-                    return message.reply(`Espera hasta <t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t> (<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>) para usar ${command.name}.`);
-                    
-                } else { 
-                    await db.set(`d_${message.guildId}_${message.author.id}`, Date.now());
-                }
-                
-            } else { 
-                await db.set(`d_${message.guildId}_${message.author.id}`, Date.now());
-            }
-        }
-
         try {
             command.runPrefix(client, message, args);
         } catch (err) {
@@ -70,14 +52,6 @@ module.exports = {
             console.error(err);
         }
     }
-}
-
-function parseTime(timeString) {
-    const [hours, minutes] = timeString.split(':');
-    const date = new Date();
-    date.setHours(parseInt(hours));
-    date.setMinutes(parseInt(minutes));
-    return date;
 }
 
 function getPermName(bitfield = 0) {
