@@ -58,8 +58,8 @@ module.exports = {
         var path = 'cash';
         let rewardText;
         const current = await db.get(`e_${message.guildId}_${message.user.id}.inv.objects._${data.item.id}`) || 0;
-        if (current <= 0) return message.reply({ content: `Parece que no tienes ${data.item.name}`, ephemeral: true });
-        if (current < data.amount) return message.reply({ content: `Te falta x${data.amount - current} ${data.item.name}.`, ephemeral: true });
+        if (current <= 0) return message.reply({ content: `Parece que no tienes **${data.item.name}**`, ephemeral: true });
+        if (current < data.amount) return message.reply({ content: `Te falta x${data.amount - current} **${data.item.name}**.`, ephemeral: true });
 
         const convertion = await db.get(`g_${message.guildId}.convertion`);
 

@@ -12,13 +12,13 @@ async function updateCommand (data, guild) {
 
     let options = new SlashCommandStringOption()
     .setRequired(true);
-
-    data.data.forEach(item => options.addChoices({ name: item.name, value: '' + item.id }));
-
+    
     let toUpdate = [];
-
+    
     switch (command) {
         case 'craft':
+            data.data.forEach(item => options.addChoices({ name: item.name, value: '' + item.id }));
+
             options.setName('objeto')
             .setDescription('Nombre del objeto a crear');
 
@@ -50,6 +50,8 @@ async function updateCommand (data, guild) {
             break;
 
         case 'buy':
+            data.data.forEach(item => options.addChoices({ name: item.name, value: '' + item.name }));
+
             options.setName('objeto')
             .setDescription('Nombre del objeto a comprar');
 

@@ -57,7 +57,7 @@ module.exports = {
     
         const n = Math.floor(Math.random() * 100) <= data.item.probability ? 'success' : 'fail';
     
-        const inv = await db.get(`e_${message.guildId}_${message.user.id}.inv.materials`);
+        const inv = await db.get(`e_${message.guildId}_${message.user.id}.inv.materials`) || {};
         var missing = [];
     
         // Quick.db doesn't work in forEach
