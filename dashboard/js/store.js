@@ -114,24 +114,7 @@ saveButton.addEventListener('click', () => {
 
     object.data = obj;
 
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(object)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
-
+    sendData(object, alert, alertCon);
 });
 
 deleteButton.addEventListener('click', () => {
@@ -150,24 +133,7 @@ deleteButton.addEventListener('click', () => {
 
     object.data = obj;
 
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(object)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
-    
+    sendData(object);
 });
 
 addObject.addEventListener('click', () => {
@@ -256,4 +222,25 @@ function checkNumber() {
     if (!Number.isInteger(Number(this.value))) this.value = Math.floor(this.value);
     if (this.value == '') this.value = '0';
     resizeInput.call(this);
+}
+
+function sendData (data, alert, alertCon) {
+
+    fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(res => {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
+            alertCon.appendChild(alert);
+            if (res.ok) location.reload();
+        });
+    });
+
+    setTimeout(() => alert.remove(), 6000);
 }

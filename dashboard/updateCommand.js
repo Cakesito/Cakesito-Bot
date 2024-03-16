@@ -13,10 +13,12 @@ async function updateCommand (data, guild) {
     let options = new SlashCommandStringOption()
     .setRequired(true);
 
-    data.data.forEach(item => options.addChoices({ name: item.name, value: item.name }));
+    data.data.forEach(item => options.addChoices({ name: item.name, value: '' + item.id }));
+
+    let toUpdate = [];
 
     switch (command) {
-        case 'craft':        
+        case 'craft':
             options.setName('objeto')
             .setDescription('Nombre del objeto a crear');
 
@@ -24,6 +26,27 @@ async function updateCommand (data, guild) {
             .setDescription('Crea algo')
             .addStringOption(options)
             .addIntegerOption(option => option.setName('cantidad').setDescription('Cantidad a crear'));
+
+            toUpdate.push({ name: 'craft', data: slashCommandData, delete: options.choices ? false : true });
+
+            
+            var useOptions = new SlashCommandStringOption()
+                .setName('objeto')
+                .setDescription('Nombre del objeto a usar')
+                .setRequired(true);
+                
+            data.data.forEach(item => {
+                if (item.use?.type) useOptions.addChoices({ name: item.name, value: '' + item.id });
+            });
+
+            let useCommand = new SlashCommandBuilder()
+                .setName('use')
+                .setDescription('Usa un objeto')
+                .addStringOption(useOptions)
+                .addIntegerOption(option => option.setName('cantidad').setDescription('Cantidad de objetos a usar'));
+            
+            toUpdate.push({ name: 'use', data: useCommand, delete: useOptions.choices ? false : true });
+
             break;
 
         case 'buy':
@@ -34,18 +57,26 @@ async function updateCommand (data, guild) {
             .setDescription('Compra algo en la tienda')
             .addStringOption(options)
             .addIntegerOption(option => option.setName('cantidad').setDescription('Cantidad a comprar'));
+
+            toUpdate.push({ name: 'buy', data: slashCommandData, delete: options.choices ? false : true });
             break;
-    }
 
+        default: throw new Error();
+    }
+    
     await guild.commands.fetch();
-    let guildCommand = guild.commands.cache.find(x => x.name === command);
+    for (var cmd of toUpdate) await update(cmd.name, cmd.data, cmd.delete);
 
-    if (guildCommand) {
-        guild.commands.edit(guildCommand.id, slashCommandData);
-    } else {
-        guild.commands.create(slashCommandData);
+    async function update(name, data, remove) {
+        var guildCommand = guild.commands.cache.find(x => x.name === name);
+        
+        if (guildCommand) {
+            if (remove) return await guild.commands.delete(guildCommand.id);
+            await guild.commands.edit(guildCommand.id, data);
+        } else {
+            await guild.commands.create(data);
+        }
     }
-
 }
 
 module.exports = { updateCommand };

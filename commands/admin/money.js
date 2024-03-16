@@ -37,7 +37,7 @@ module.exports = {
 
         if (type != 'cash' && type != 'bank') return message.reply('Señala una ubicación válida para el dinero (cash/bank).');
 
-        module.exports.run(message, client.db, { member: member, type: type, amount: amount });
+        module.exports.run(message, client.db, { member: member.member, type: type, amount: amount });
         
     },
 

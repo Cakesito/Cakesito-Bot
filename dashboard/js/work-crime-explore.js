@@ -65,26 +65,7 @@ saveCrime.addEventListener('click', () => {
     crime.data.success.txt = successTexts;
     crime.data.fail.txt = failTexts;
 
-    alertCon.appendChild(alert);
-
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(crime)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
-
+    sendData(crime, alert, alertCon);
 });
 
 saveExplore.addEventListener('click', () => {
@@ -114,24 +95,7 @@ saveExplore.addEventListener('click', () => {
     explore.data.maxMaterials = max.value;
     explore.data.probability = exploreProb.value;
 
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(explore)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
-    
+    sendData(explore, alert, alertCon);
 });
 
 saveWork.addEventListener('click', () => {
@@ -150,25 +114,7 @@ saveWork.addEventListener('click', () => {
     var texts = Array.from(document.querySelectorAll('#custom-text-1 > div > div > textarea')).map(x => x.value);
     work.data.txt = texts;
 
-    alertCon.appendChild(alert);
-
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(work)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
+    sendData(work, alert, alertCon);
 });
 
 deleteCustomTextBtn.forEach(btn => {
@@ -281,4 +227,25 @@ function isValidCooldown (element) {
         return true;
     }
     return true;
+}
+
+function sendData (data, alert, alertCon) {
+
+    fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(res => {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
+            alertCon.appendChild(alert);
+            if (res.ok) location.reload();
+        });
+    });
+
+    setTimeout(() => alert.remove(), 6000);
 }

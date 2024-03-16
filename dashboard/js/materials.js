@@ -35,30 +35,14 @@ saveButton.addEventListener('click', () => {
                     item.name = node.value;
                 }
                 
-                if (node.classList.contains('object-description') && lastMaterial != '-' && node.textContent != '') item.description = node.value;
+                if (node.classList.contains('object-description') && lastMaterial != '-' && node.value !== '') item.description = node.value;
             }
         });
 
         materials.data.push(item);
     });
 
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(materials)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
+    sendData(materials, alert, alertCon);
 
 });
 
@@ -124,4 +108,25 @@ function generateId () {
 
     var num = Math.floor(Math.random() * 9);
     return (ids.includes(num)) ? generateId() : num;
+}
+
+function sendData (data, alert, alertCon) {
+
+    fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(res => {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
+            alertCon.appendChild(alert);
+            if (res.ok) location.reload();
+        });
+    });
+
+    setTimeout(() => alert.remove(), 6000);
 }

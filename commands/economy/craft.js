@@ -41,7 +41,7 @@ module.exports = {
         if (!items.length) return interaction.reply({ content: 'Este comando no está disponible en este servidor.', ephemeral: true });
 
         var selected = interaction.options.getString('objeto');
-        let item = items.find(x => x.name == selected);
+        let item = items.find(x => x.id == selected);
         let amount = interaction.options.getInteger('cantidad') || 1;
 
         if (!item) return interaction.reply({ content: 'No encontré el objeto `' + selected + '`.', ephemeral: true });

@@ -16,7 +16,7 @@ module.exports = {
         if (member.bot) return message.reply('El usuario elegido es un bot.');
         if (!member.found) return message.reply('No pude encontrar el usuario.');
 
-        module.exports.run(message, client.db, { client: client, member: member });
+        module.exports.run(message, client.db, { client: client, member: member.member });
     },
 
     runSlash: (client, interaction) => {
@@ -73,7 +73,7 @@ module.exports = {
             if (mat) {
                 invMaterialsText.push({ 
                     name: `x${material[1]} **${mat.name}**`,
-                    value: !mat.description || mat.description === '' ? '_Este objeto no tiene descripción_' : mat.description
+                    value: !mat.description || mat.description === '' ? '_Este material no tiene descripción_' : mat.description
                 });
             }
         });

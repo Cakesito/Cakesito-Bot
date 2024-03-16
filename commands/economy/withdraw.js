@@ -15,7 +15,7 @@ module.exports = {
 
     runSlash: async (client, interaction) => {
         const db = client.db;
-        const current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.cash`) || 0;
+        const current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.bank`) || 0;
 
         let amount = interaction.options.getString('cantidad') || current;
         module.exports.run(interaction, db, { amount: amount });

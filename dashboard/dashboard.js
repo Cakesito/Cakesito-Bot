@@ -218,8 +218,9 @@ app.post("/dashboard/:guildId/:setting", checkAuth, limiter, async (req, res) =>
                 await updateCommand(req.body, guild);
                 res.status(200).json({ message: ["Cambios guardados."] });
                 
-            } catch {
-                res.status(424).json({ message: ["Error al intentar actualizar los comandos (/) del servidor.", "Los cambios SÍ fueron guardados por el bot."] });
+            } catch (err) {
+                console.log(err);
+                res.status(424).json({ message: ["Error al intentar actualizar los comandos (/) del servidor.", "Los cambios sí fueron guardados por el bot."] });
             }
 
         } else res.status(200).json({ message: ['Cambios guardados.'] });

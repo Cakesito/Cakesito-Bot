@@ -14,8 +14,6 @@ module.exports = {
         const db = client.db;
         const current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.cash`) || 0;
         
-        if (current === 0) return message.reply({ content: 'Parece que no tienes dinero...', ephemeral: true });
-
         let amount = interaction.options.getString('cantidad') || current;
         module.exports.run(interaction, db, { amount: amount });
     },

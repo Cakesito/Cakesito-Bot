@@ -18,61 +18,29 @@ alert.textContent = 'Cambios guardados.';
 var alertCon = document.querySelector('.alert-container');
 
 add.innerHTML = currencyName.value.replace(' ', '&nbsp;');
-updateEmoji(currencySymbol, currencyEmoji.value);
+
+try {
+  updateEmoji(currencySymbol, currencyEmoji.value);
+} catch {}
 
 currencyEmoji.addEventListener('focusout', () => updateEmoji(currencySymbol, currencyEmoji.value));
 currencyName.addEventListener('input', () => add.innerHTML = currencyName.value.replaceAll(' ', '&nbsp;'));
 
 saveCurrency.addEventListener('click', () => {
-  fetch(window.location.href, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      "setting": "convertion",
-      "data": { emoji: currencyEmoji.value || '', name: currencyName.value || '' }
-    })
 
-  }).then(res => {
-    res.json().then(data => {
-      alert.innerHTML = data.message.join('<br>');
-      alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-      alertCon.appendChild(alert);
-
-      if (res.ok) location.reload();
-    });
-  });
-
-  setTimeout(() => alert.remove(), 6000);
+  sendData({
+    "setting": "convertion",
+    "data": { emoji: currencyEmoji.value || '', name: currencyName.value || '' }
+  }, alert, alertCon);
 
 })
 
 savePrefix.addEventListener('click', () => {
 
-  fetch(window.location.href, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      "setting": "prefix",
-      "data": prefix.value
-    })
-
-  }).then(res => {
-    res.json().then(data => {
-      alert.innerHTML = data.message.join('<br>');
-      alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-      alertCon.appendChild(alert);
-
-      if (res.ok) location.reload();
-    });
-  });
-
-  setTimeout(() => alert.remove(), 6000);
+  sendData({
+    "setting": "prefix",
+    "data": prefix.value
+  }, alert, alertCon);
 
 });
 
@@ -82,4 +50,25 @@ function updateEmoji (img, string) {
 
   if (!id) return img.src = '';
   img.src = `https://cdn.discordapp.com/emojis/${id}.${animated ? 'gif' : 'webp'}`;
+}
+
+function sendData (data, alert, alertCon) {
+
+  fetch(window.location.href, {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+  }).then(res => {
+      res.json().then(data => {
+          alert.innerHTML = data.message.join('<br>');
+          alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
+          alertCon.appendChild(alert);
+          if (res.ok) location.reload();
+      });
+  });
+
+  setTimeout(() => alert.remove(), 6000);
 }

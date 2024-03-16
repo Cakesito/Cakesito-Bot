@@ -8,6 +8,8 @@ var objectInfo = document.querySelector('.object-info');
 var objectName = document.getElementById('object-info-name');
 var objectDescription = document.getElementById('object-info-description');
 var objectProbability = document.getElementById('object-info-probability');
+var objectUseType = document.getElementById('use-type');
+var objectUse = document.getElementById('use-amount');
 
 var textInputs = document.querySelectorAll('input[type="text"]');
 let lastObject; // get values to parse in fetch
@@ -46,6 +48,8 @@ textInputs.forEach(x => {
     });
 });
 
+objectUse.addEventListener('input', checkNumber);
+
 objectProbability.addEventListener('focusout', () => {
     if (objectProbability.value > 100) objectProbability.value = '100'
         if (objectProbability.value < 0) objectProbability.value = '0';
@@ -67,34 +71,21 @@ saveButton.addEventListener('click', () => {
     var selected = obj.find(x => x.id == lastObject);
 
     selected.name = objectName.value;
-    selected.description = objectDescription.value != '' ? objectDescription.value : undefined;
+    selected.description = objectDescription.value !== '' ? objectDescription.value : undefined;
     selected.probability = Number(objectProbability.value);
     selected.materials = materialList;
     selected.id = lastObject;
-
+    selected.use = {};
+    
+    if (objectUseType.value != 'Nada') {
+        selected.use.type = objectUseType.value;
+        selected.use.amount = objectUse.value;
+    }
+    
     object.data = obj;
 
     if (check) return;
-
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(object)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    alertCon.appendChild(alert);
-    setTimeout(() => alert.remove(), 6000);
-
+    sendData(object, alert, alertCon);
 });
 
 deleteButton.addEventListener('click', () => {
@@ -113,24 +104,7 @@ deleteButton.addEventListener('click', () => {
 
     object.data = obj;
 
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(object)
-    }).then((res) => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
-    
+    sendData(object, alert, alertCon);
 });
 
 addObject.addEventListener('click', () => {
@@ -229,6 +203,8 @@ closeObjectInfo.addEventListener('click', () => {
     objectName.value = '';
     objectDescription.value = '';
     objectProbability.value = '0';
+    objectUse.value = '0';
+    objectUseType.value = 'Nada';
 
     info.materials.forEach(material => {
         var btn = document.querySelector(`#material-${material.ref_id}`);
@@ -250,6 +226,8 @@ objects.forEach(x => {
         objectName.value = info.name;
         objectDescription.value = info.description;
         objectProbability.value = info.probability;
+        objectUse.value = info.use?.amount ?? '0';
+        objectUseType.value = info.use?.type ?? 'Nada';
         lastObject = info.id;
 
         info.materials.forEach(material => {
@@ -277,7 +255,7 @@ function resizeInput() {
 }
 
 function checkNumber() {
-    if (this.value < 0) this.value = 0;
+    if (this.value < 0) this.value = '0';
     if (!Number.isInteger(Number(this.value))) this.value = Math.floor(this.value);
     if (this.value == '') this.value = '0';
     resizeInput.call(this);
@@ -291,4 +269,25 @@ function generateId () {
 
     var num = Math.floor(Math.random() * 10) + 10;
     return (ids.includes(num)) ? generateId() : num;
+}
+
+function sendData (data, alert, alertCon) {
+
+    fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(res => {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
+            alertCon.appendChild(alert);
+            if (res.ok) location.reload();
+        });
+    });
+
+    setTimeout(() => alert.remove(), 6000);
 }

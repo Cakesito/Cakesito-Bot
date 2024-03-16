@@ -151,9 +151,18 @@ const validations = {
 
     'craft.items': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
-        description: string().min(1).max(70).optional(),
+        description: string().optional().min(1).max(70),
         probability: number().min(0).max(100).required().integer(),
         id: number().min(10).max(19).integer().required(),
+        use: object({
+            type: string().oneOf(['cash']).optional(),
+
+            amount: number().when('type', {
+                is: 'cash',
+                then: () => number().required().min(1).max(max),
+                otherwise: () => mixed().notRequired()
+            })
+        }).required().noUnknown(),
     
         materials: array().required().max(10).of(object({
             ref_id: number().min(0).max(10).integer().required().test({
@@ -183,7 +192,7 @@ const validations = {
     'materials': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
         id: number().required().min(0).max(9).integer(),
-        description: string().min(1).max(70).optional()
+        description: string().optional().min(1).max(70)
     }).noUnknown()).test({
         test: (value) => {
             for (let i = 0; i < value.length; i++) {
@@ -202,7 +211,7 @@ const validations = {
 
     'shop.items': array().max(10).required().of(object({
         name: string().max(70).min(3).required(),
-        description: string().min(1).max(70).optional(),
+        description: string().optional().min(1).max(70),
         onlyOnce: boolean().optional().default(false),
     
         price: object({

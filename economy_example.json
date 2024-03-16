@@ -79,7 +79,8 @@
 
         "txt": {
             "success": "**🧱 Crafteaste un item correctamente**\n`» | Item crafteado:` {item}",
-            "fail": "**🧱 Algo salió mal en el proceso...**\n`◽ | Item:` Nada :("
+            "fail": "**🧱 Algo salió mal en el proceso...**\n`◽ | Item:` Nada :(",
+            "use": "a: {reward}"
         }
     },
  

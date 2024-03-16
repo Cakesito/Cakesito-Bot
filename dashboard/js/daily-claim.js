@@ -88,24 +88,7 @@ dailySaveBtn.addEventListener('click', () => {
         if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials.push({ ref_id: materialSelected.value, amount: [dailyMaterialMin.value, dailyMaterialMax.value] });
     }
     
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(daily)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
-
+    sendData(daily, alert, alertCon);
 });
 
 claimSaveBtn.addEventListener('click', () => {
@@ -145,24 +128,7 @@ claimSaveBtn.addEventListener('click', () => {
         if (materialSelected && materialSelected.value != 'Nada') daily.data.reward.materials.push({ ref_id: materialSelected.value, amount: [claimMaterialMin.value, claimMaterialMax.value] });
     }
     
-    fetch(window.location.href, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(daily)
-    }).then(res => {
-        res.json().then(data => {
-            alert.innerHTML = data.message.join('<br>');
-            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
-            alertCon.appendChild(alert);
-            if (res.ok) location.reload();
-        });
-    });
-
-    setTimeout(() => alert.remove(), 6000);
-
+    sendData(daily, alert, alertCon);
 });
 
 input.forEach(x => {
@@ -182,4 +148,25 @@ function isValidCooldown (element) {
     }
 
     return true;
+}
+
+function sendData (data, alert, alertCon) {
+
+    fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    }).then(res => {
+        res.json().then(data => {
+            alert.innerHTML = data.message.join('<br>');
+            alert.classList = `alert ${!res.ok ? 'alert error' : 'alert success' }`;
+            alertCon.appendChild(alert);
+            if (res.ok) location.reload();
+        });
+    });
+
+    setTimeout(() => alert.remove(), 6000);
 }

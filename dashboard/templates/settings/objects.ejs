@@ -40,8 +40,9 @@
                     <p class="desc" style="text-align: center;" ><%= item.description %></p>
                     <p class="secondary prob">Prob. de éxito: <%= item.probability %> %</p>
                     <% item.materials.forEach(material => { %>
-                        <p class="secondary">x<%- material.amount %> <%= settings.materials.find(x => x.id === material.ref_id)?.name %></p>
+                        <p class="secondary">x<%= material.amount %> <%= settings.materials.find(x => x.id === material.ref_id)?.name %></p>
                     <% }) %>
+                    <%- item.use?.type ? '<p>Usable</p>' : '' %>
                 </div>
             <% }); %>
         <% } %>
@@ -73,14 +74,23 @@
                 <% settings.materials.forEach(material => { %>
                     <p class="material-list" id="material-<%= material.id %>" ><%= material.name %> <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" class="down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/></svg></p>
                 <% }); %>
-            <% } else { %>
-                <p style="color: #959595">No hay materiales</p>
+                <% } else { %>
+                    <p style="color: #959595">No hay materiales</p>
             <% } %>
-        <br>
+            <br>
         </div><br>
+        <div class="object-info-use">
+            <p class="subtitle">Uso</p>
+            <select id="use-type">
+                <option default value="Nada">Nada</option>
+                <option value="cash"><%= settings.convertion.name %></option>
+            </select>
+            <input type="number" id="use-amount">
+        </div><br>
+
         <button class="save <%= settings.materials.length ? '' : 'no-materials'  %>" id="save" <%= settings.materials.length ? '' : 'disabled'  %> >Guardar cambios</button><br><br>
         <button class="caution" id="delete-object">Eliminar</button>
-        <br>
+        <br><br><br>
                 
     </div>
 
