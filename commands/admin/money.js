@@ -24,6 +24,7 @@ module.exports = {
     ),
 
     runPrefix: async (client, message, args) => {
+        if (!args[0]) return message.reply('Indica un usuario.');
 
         const member = await require('../util/selectMember')(message, args, 1);
         if (member.bot) return message.reply('El usuario elegido es un bot.');

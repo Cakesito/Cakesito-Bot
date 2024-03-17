@@ -20,7 +20,7 @@ module.exports = {
     },
 
     runSlash: (client, interaction) => {
-        var prefix = interaction.getString('prefix');
+        var prefix = interaction.options.getString('prefix');
         if (!prefix) return interaction.reply({ content: '¿Cuál es el nuevo prefix?', ephemeral: true });
 
         module.exports.run(interaction, client.db, { prefix: prefix });

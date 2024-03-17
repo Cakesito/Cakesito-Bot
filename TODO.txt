@@ -1,5 +1,3 @@
-arreglar el update xd
-poder actualizar varios comandos a la vez?
 fancy embed (usar un json)
 
 cambiar de db (prob usar mysql)

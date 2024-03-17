@@ -1,4 +1,4 @@
-const { default_prefix, ownerId, dailyFrom } = require('../config.json');
+const { default_prefix, ownerId } = require('../config.json');
 const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
@@ -26,11 +26,6 @@ module.exports = {
         if(await db.get(`n_${message.guild.id}_${command.name}`)) return message.reply({ content: 'Este comando está deshabilitado en este servidor.' })
 
         if (command.onlyOwner && message.author.id !== ownerId) return;
-
-        // if (command.botPermissions) {
-        //     let permissions = command.botPermissions.filter(x => !message.guild.me.permissions.has(x)).map(x => "`" + x + "`");
-        //     if (permissions.length) return message.reply(`Necesito ${permissions.length > 1 ? 'los permisos' : 'el permiso'}: ${Permissions.join(", ")}.`);
-        // }
 
         if (command.data?.default_member_permissions) {
             if (!message.member.permissions.has(command.data.default_member_permissions)) 

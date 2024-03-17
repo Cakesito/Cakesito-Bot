@@ -14,11 +14,8 @@ module.exports = {
     runPrefix: (client, message, args) => module.exports.run(message, client.db, { amount: args[0] }),
 
     runSlash: async (client, interaction) => {
-        const db = client.db;
-        const current = await db.get(`e_${interaction.guildId}_${interaction.user.id}.bank`) || 0;
-
-        let amount = interaction.options.getString('cantidad') || current;
-        module.exports.run(interaction, db, { amount: amount });
+        let amount = interaction.options.getString('cantidad') || 'all';
+        module.exports.run(interaction, client.db, { amount: amount });
     },
 
     run: async (message, db, data = { amount }) => {
@@ -35,7 +32,7 @@ module.exports = {
         
         if (isNaN(Number(data.amount))) return message.reply({ content: 'Cantidad inválida', ephemeral: true });
         
-        if (current <= 0) return message.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${convertion.emoji} ${current * -1} ${convertion.name}`, ephemeral: true});
+        if (current <= 0) return message.reply({ content: `Parece que tienes dinero negativo.\nTienes ${convertion.emoji} ${current} ${convertion.name}`, ephemeral: true});
         if(Number(data.amount) > current) return message.reply({ content: `Parece que no tienes dinero suficiente.\nFaltante: ${convertion.emoji} ${data.amount - current} ${convertion.name}`, ephemeral: true});
     
         await db.sub(`e_${message.guild.id}_${message.userId}.bank`, data.amount);

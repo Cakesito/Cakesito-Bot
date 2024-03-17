@@ -5,18 +5,21 @@ module.exports = {
     onlyOwner: true,
     runPrefix: (client, message) => module.exports.run(client, message),
 
-    run: (client, message) => {
+    run: async (client, message) => {
         let commands = [];
 
+        await message.guild.commands.fetch();
         client.commands.every(cmd => {
             if (cmd.category === 'owner') return false;
+            let extra;
+            if (cmd.deactivated) extra = message.guild.commands.cache.find(x => x.name === cmd.data?.name || cmd.name) || {};
 
             let pull = {
-                name: cmd.data?.name || cmd.name,
-                description: cmd.data?.description,
+                name: cmd.data?.name || cmd.name || extra.name,
+                description: cmd.data?.description || extra.description,
                 category: cmd.category,
-                memberPermission: getPermName(cmd.data?.default_member_permissions),
-                usage: usage(cmd.data?.name || cmd.name, cmd.data?.options)
+                memberPermission: getPermName(cmd.data?.default_member_permissions || extra?.default_member_permissions || []),
+                usage: usage(cmd.data?.name || cmd.name || extra.name, cmd.data?.options || extra.options, cmd.deactivated)
             }
 
             commands.push(pull);
@@ -36,12 +39,12 @@ module.exports = {
     }
 }
 
-function usage (name, options = []) {
+function usage (name, options = [], deactivated = false) {
     var usage = "";
     options.forEach(opt => {
         var choicesText = "";
 
-        if (opt.choices) {
+        if (opt.choices && !deactivated) {
             choicesText = `${opt.name}: ` + opt.choices.map(x => x.name).join(' | ');
         } else choicesText = opt.name;
         
