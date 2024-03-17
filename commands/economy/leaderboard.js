@@ -18,9 +18,7 @@ module.exports = {
 
     runPrefix: (client, message, args) => module.exports.run(message, client.db, { mode: args[0], client: client }),
 
-    runSlash: (client, interaction) => {
-        interaction.deferReply().then(() => {});
-        
+    runSlash: (client, interaction) => {        
         var category = interaction.options.getString('categoría') || 'total';
         module.exports.run(interaction, client.db, { mode: category, client: client });
     },
@@ -49,8 +47,15 @@ module.exports = {
                 all.forEach(x => lb.push({ username: x.id.split('_')[2], value: (x.value.cash || 0) + (x.value.bank || 0) }));
                 break;
         }
+
+        if (!lb.length) return message.reply({ content: 'No hay clasificación!', ephemeral: true });
     
         lb.sort((a, b) => b.value - a.value);
+        lb = lb.slice(0, 50);
+
+        if (lb.length > 10) {
+            if (message.options) await message.deferReply();
+        }
         
         var userRank = 0;    
         const cache = message.guild.members.cache.map(x => {
@@ -136,6 +141,11 @@ module.exports = {
             collector.on('end', () => data.client.collectors.set('active', id - 1));
         }
     
-        return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+        if (message.deferred) {
+            await message.followUp({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+        } else {
+            await message.reply({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
+        }
+
     }
 }
