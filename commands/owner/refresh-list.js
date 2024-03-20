@@ -12,7 +12,7 @@ module.exports = {
         client.commands.every(cmd => {
             if (cmd.category === 'owner') return false;
             let extra;
-            if (cmd.deactivated) extra = message.guild.commands.cache.find(x => x.name === cmd.data?.name || cmd.name) || {};
+            if (cmd.deactivated) extra = message.guild.commands.cache.find(x => x.name === cmd.name) || {};
 
             let pull = {
                 name: cmd.data?.name || cmd.name || extra.name,

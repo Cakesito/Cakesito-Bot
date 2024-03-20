@@ -1,3 +1,4 @@
+lotería? añadir juegos
 fancy embed (usar un json)
 
 cambiar de db (prob usar mysql)

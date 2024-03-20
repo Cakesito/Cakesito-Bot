@@ -51,6 +51,8 @@ module.exports = {
 
     run: async (message, db, data = { item, amount }) => {
         message = fix(message);
+
+        if (!data.item.materials.length) return message.reply({ content: 'Este objeto no se puede crear.', ephemeral: true });
         
         const craft = await db.get(`g_${message.guildId}.craft`);
         const materials = await db.get(`g_${message.guildId}.materials`);
