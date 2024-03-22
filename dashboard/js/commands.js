@@ -4,7 +4,8 @@ var commandsDiv = document.querySelector('.commands');
 
 var categories = {
     'admin': 'Admin: ',
-    'economy': 'Economía'
+    'economy': 'Economía',
+    'other': 'Otros'
 }
 
 commands.forEach(cmd => {
