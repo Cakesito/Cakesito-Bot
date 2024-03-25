@@ -6,19 +6,23 @@ module.exports = {
     requiresCooldown: true,
     data: new SlashCommandBuilder()
     .setName('explore')
-    .setDescription('Explora la zona'),
+    .setDescription('Explora la zona')
+    .setDescriptionLocalizations({
+        "en-GB": "Explore the zone",
+        "en-US": "Explore the zone"
+    }),
 
-    runPrefix: (client, message) => module.exports.run(message, client.db),
+    runPrefix: (client, comments, message) => module.exports.run(message, comments, client.db),
 
-    runSlash: (client, interaction) => module.exports.run(interaction, client.db),
+    runSlash: (client, comments, interaction) => module.exports.run(interaction, comments, client.db),
 
-    run: async (message, db) => {
+    run: async (message, comments, db) => {
         message = fix(message);
     
         const explore = await db.get(`g_${message.guildId}.explore`);
         const materials = await db.get(`g_${message.guildId}.materials`);
     
-        if (!explore.materials.length) return message.reply('Este comando no está disponible en este servidor.');
+        if (!explore.materials.length) return message.reply(comments.commandNotAvailable);
     
         if (!explore.txt?.success?.length) explore.txt.success = default_economy.explore.txt.success;
         if (!explore.txt?.fail?.length) explore.txt.fail = default_economy.explore.txt.fail;
@@ -35,8 +39,9 @@ module.exports = {
                 if (amount === 0) continue;
         
                 var mat = materials.find(x => x.id === material.ref_id);
-                if (mat) reward.push({ name: mat.name, amount: amount });
-                
+
+                if (!mat) continue;
+                reward.push({ name: mat.name, amount: amount });
                 await db.add(`e_${message.guildId}_${message.user.id}.inv.materials._${mat.id}`, amount);
             }
         }

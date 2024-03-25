@@ -25,7 +25,7 @@
           <div class="card-body">
             <%- guild.icon ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}" class="card-img-top">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png" class="card-img-top">` %>
             <h5 class="card-title"><%= guild.name %></h5>
-            <a href="/dashboard/<%- guild.id %>" class="button">Ajustes</a>
+            <a href="/dashboard/<%- guild.id %>" class="button"><%= __("dashboard.settings") %></a>
           </div>
         </div>
       <% }); %>
@@ -35,7 +35,7 @@
           <div class="card-body">
             <%- x.icon ? `<img src="https://cdn.discordapp.com/icons/${x.id}/${x.icon}" class="card-img-top">` : `<img src="https://cdn.discordapp.com/embed/avatars/0.png" class="card-img-top">` %>
             <h5 class="card-title"><%= x.name %></h5>
-            <a href="<%= `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent('https://cakesito.xyz/callback')}`  %>" class="button invite">Invitar Bot</a>
+            <a href="<%= `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&guild_id=${guild.id}&response_type=code&redirect_uri=${encodeURIComponent('https://cakesito.xyz/callback')}`  %>" class="button invite"><%= __("dashboard.invite") %></a>
           </div>
         </div>
       <% }); %>

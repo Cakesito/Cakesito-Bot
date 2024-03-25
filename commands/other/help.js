@@ -4,16 +4,19 @@ const fix = require('../util/fix');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('Obtén ayuda: comandos y dashboard'),
+        .setDescription('Obtén ayuda: comandos y dashboard')
+        .setDescriptionLocalizations({
+            "en-GB": "Get help: command list and dashboard",
+            "en-US": "Get help: command list and dashboard"
+        }),
 
-    runPrefix: (client, message) => module.exports.run(message),
+    runPrefix: (client, comments, message) => module.exports.run(message, comments),
     
-    runSlash: (client, interaction) => module.exports.run(interaction),
+    runSlash: (client, comments, interaction) => module.exports.run(interaction, comments),
 
-    run: (message) => {
+    run: (message, comments) => {
         message = fix(message);
-        const msg = `**Lista de comandos:**\nhttps://cakesito.xyz/commands\n\n**Empieza a personalizar desde la dashboard:**\nhttps://cakesito.xyz`;
 
-        return message.reply({ content: msg, allowedMentions: { repliedUser: false }, ephemeral: true });
+        return message.reply({ content: comments.other.help.mainResponse, allowedMentions: { repliedUser: false }, ephemeral: true });
     }
 }

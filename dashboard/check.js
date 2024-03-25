@@ -177,7 +177,7 @@ const validations = {
         test: (value) => {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
-                  if (value[i].id === value[j].id) {
+                  if (value[i].id == value[j].id) {
                     return false;
                   }
                 }
@@ -197,7 +197,7 @@ const validations = {
         test: (value) => {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
-                  if (value[i].id === value[j].id) {
+                  if (value[i].id == value[j].id) {
                     return false;
                   }
                 }
@@ -259,7 +259,7 @@ const validations = {
         test: (value) => {
             for (let i = 0; i < value.length; i++) {
                 for (let j = i + 1; j < value.length; j++) {
-                  if (value[i].name === value[j].name) {
+                  if (value[i].name == value[j].name) {
                     return false;
                   }
                 }

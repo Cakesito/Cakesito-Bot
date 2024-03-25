@@ -3,9 +3,9 @@ const { writeFileSync } = require('node:fs');
 
 module.exports = {
     onlyOwner: true,
-    runPrefix: (client, message) => module.exports.run(client, message),
+    runPrefix: (client, comments, message) => module.exports.run(client, comments, message),
 
-    run: async (client, message) => {
+    run: async (client, comments, message) => {
         let commands = [];
 
         await message.guild.commands.fetch();

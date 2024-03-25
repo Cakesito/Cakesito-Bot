@@ -1,0 +1,23 @@
+{
+    "cooldown": "Wait until <t:{time}:t> (<t:{time}:R>) to use {command}",
+    "error": "An unexpected error occurred",
+
+    "actualPrefix": "My prefix in this server is `{prefix}`",
+
+    "missingPermissions": "Missing permission: `{perm}`",
+
+    "botSelected": "The user selected is a bot.",
+    "userNotFound": "User not found.",
+
+    "commandNotAvailable": "This command is not available on this server.",
+    "commandNotActive": "This command is disabled on this server.",
+
+    "noAmountAndObject": "Specify a quantity and/or an object.",
+    "zeroAmount": "0? Uhm...",
+    "noObject": "You are going to buy a... What?",
+    "invalidObject": "{amount}... What?",
+    "objectNotFound": "Object `{obj}` not found.",
+
+    "missingObjectDescription": "_This object has no description_",
+    "missingMaterialDescription": "_This material has no description_"
+}

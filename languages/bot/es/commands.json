@@ -1,0 +1,104 @@
+{
+    "admin": {
+        "money": {
+            "invalidAmount": "Señala una cantidad válida (puede ser negativa)",
+            "invalidDestination": "Señala una ubicación válida para el dinero (cash/bank).",
+            "mainResponse": "{amount} a {user} ({type})",
+            "noUser": "Indica un usuario"
+        },
+
+        "set-prefix": {
+            "invalidPrefix": "¿Cuál es el nuevo prefix?",
+            "mainResponse": "Mi nuevo prefix en este servidor es: `{prefix}`"
+        },
+
+        "toggle": {
+            "noCommand": "¿Qué comando?",
+            "invalidCommand": "El comando `{command}` no existe o no se puede deshabilitar.",
+            "mainResponse": "{command}: `{status}`"
+        },
+
+        "language": {
+            "mainResponse": {
+                "available": "Mi idioma en este servidor ahora es: Español",
+                "notAvailable": "Mi idioma actual en este servidor es Español. Idiomas disponibles: `{available}`"
+            }
+        }
+    },
+
+    "economy": {
+        "buy": {
+            "alreadyBought": "Ya has comprado este objeto",
+            "onlyOnce": "Solo puedes comprar uno.",
+            "cantBuy": "Parece que no lo puedes comprar.\n**Faltante**: {missing}",
+            "roleNotFound": "No encontré el rol con ID: {id}",
+            "notEnoughPermissions": "No tengo los permisos suficientes para añadir el rol <&{id}>",
+            "mainResponse": "**📦 Compraste en la tienda**\n`» | Compraste: {reward}`",
+            "objectNotFound": "Error: No pude encontrar uno de los objetos necesarios."
+        },
+
+        "craft-list": {
+            "noObjects": "No hay objetos que crear.",
+            "embedAuthor": "Objetos creables"
+        },
+
+        "craft": {
+            "mainResponse": {
+                "success": "**🧱 Creaste objetos correctamente**\n`» | Objetos:` {reward}",
+                "fail": "**🧱 Algo salió mal en el proceso...**\n`◽ | Objetos:` Nada :("
+            },
+            "missingMaterials": "Parece que no tienes los __materiales suficientes__.\n**Faltante**: {missing}",
+            "materialNotFound": "Error: No pude encontrar uno de los materiales necesarios.",
+            "craftUnavailable": "Este objeto no se puede crear."
+        },
+
+        "deposit": {
+            "invalidAmount": "¿Cuánto?...",
+            "noMoney": "Parece que no tienes dinero...",
+            "negativeMoney": "Parece que tienes dinero negativo.\n**Tienes**: {money}",
+            "notEnoughMoney": "Parece que no tienes dinero suficiente.\n**Faltante**: {missing}",
+            "mainResponse": "Has depositado {amount} a tu banco!"
+        },
+
+        "inventory": {
+            "noMaterials": "Parece que no hay materiales...",
+            "noObjects": "Parece que no hay objetos..."
+        },
+
+        "leaderboard": {
+            "noLb": "No hay clasificación que mostrar",
+            "embedFooter": "Página {currentPage}/{maxPages} · Tu posición: {rank}"
+        },
+
+        "material-list": {
+            "noMaterials": "No hay materiales.",
+            "embedAuthor": "Materiales"
+        },
+
+        "shop": {
+            "noShop": "No hay tienda en este servidor.",
+            "onlyOnce": "_Solo se puede comprar una vez_"
+        },
+
+        "use": {
+            "cantUseObject": "Este objeto no se puede usar.",
+            "noObjects": "Parece que no tienes **{obj}**",
+            "notEnoughObjects": "Parece que no tienes suficiente.\n**Faltante**: x{amount} **{obj}**",
+            "mainResponse": "**🧱 Usaste objetos**\n`» | Obtuviste:` {reward}"
+        },
+
+        "withdraw": {
+            "invalidAmount": "¿Cuánto?...",
+            "noMoney": "Parece que no tienes dinero...",
+            "negativeMoney": "Parece que tienes dinero negativo.\n**Tienes**: {money}",
+            "notEnoughMoney": "Parece que no tienes dinero suficiente: **Faltante**: {missing}",
+            "mainResponse": "Has retirado {amount} de tu banco!"
+        }
+    },
+
+    "other": {
+        "help": {
+            "mainResponse": "**Lista de comandos:**\nhttps://cakesito.xyz/commands\n\n**Empieza a personalizar desde la dashboard:**\nhttps://cakesito.xyz"
+        }
+    }
+}

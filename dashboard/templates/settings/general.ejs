@@ -20,34 +20,34 @@
       <p><%= guild.name %></p>
     </div>
     <p class="title">Prefix</p>
-    <p class="description">El prefix se escribe antes del nombre del comando.</p><br>
+    <p class="description"><%= __("general.prefixDesc") %></p><br>
     <input type="text" id="prefix" value="<%= settings.prefix %>" placeholder="Prefix">
-    <br><button class="save" id="save-prefix">Guardar Prefix</button>
+    <br><button class="save" id="save-prefix"><%= __("saveSettingsIn") %> Prefix</button>
     <br>
     <br>
     
     <div class="divider divider-special" style="justify-content: flex-start;">
       <div>
-        <p class="title">Divisa</p>
+        <p class="title"><%= __("general.currency") %></p>
         <p class="subtitle">Emoji</p>
-        <p class="description">Aparecerá al lado izquierdo de la cantidad.</p><br>
-        <p class="description">Para indicar un emoji: <p class="marked description"><:nombre:id></p> o <p class="marked description"></p> si es animado.</p>
+        <p class="description"><%= __("general.emojiDesc") %></p><br>
+        <p class="description"><%= __("general.specifyEmoji_1") %> <p class="marked description"><:nombre:id></p> o <p class="marked description"></p> <%= __("general.specifyEmoji_2") %></p>
         <input id="currency-emoji" value="<%= settings.convertion.emoji %>"><br><br>
         
-        <p class="subtitle">Nombre</p>
-        <p class="description">Aparecerá al lado derecho de la cantidad.</p><br>
+        <p class="subtitle"><%= __("general.name") %></p>
+        <p class="description"><%= __("general.nameDesc") %></p><br>
 
         <input id="currency-name" value="<%= settings.convertion.name %>"></input><br>
         <img class="symbol" style="width: 1.5rem; height: auto; display: inline-block; position: relative; top: 5px;"></img>
         <p class="description" style="color: #959595">100</p>
         <p class="description" id="add"></p><br>
-        <br><button class="save" id="save-currency">Guardar Divisa</button>
+        <br><button class="save" id="save-currency"><%= __("saveSettingsIn") %> <%= __("general.currency") %></button>
       </div>
 
       <div>
-        <p class="title">¿Cómo obtengo el emoji?</p>
-        <p class="description">Puedes agregar <p class="description marked">\</p> frente al emoji y enviar el mensaje.</p>
-        <p class="description">El emoji no aparecerá si el bot no está en el servidor del emoji.</p><br><br>
+        <p class="title"><%= __("general.howToEmoji") %></p>
+        <p class="description"><%= __("general.addSlashBefore") %></p>
+        <p class="description"><%= __("general.emojiWarning") %></p><br><br>
         <img src="/others/emoji.gif" style="max-width: 100%;"></img>
       </div>
     </div>

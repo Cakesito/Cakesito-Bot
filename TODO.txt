@@ -1,4 +1,6 @@
-lotería? añadir juegos
-fancy embed (usar un json)
+Trabajando en idiomas: 
+    bot: hecho
+    web: hecho
+    TODO: command data 
 
-cambiar de db (prob usar mysql)
+lotería? añadir juegos

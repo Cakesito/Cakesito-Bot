@@ -2,9 +2,9 @@ const { AttachmentBuilder } = require('discord.js');
 
 module.exports = {
     onlyOwner: true,
-    runPrefix: (client, message, args) => module.exports.run(client, message, args),
+    runPrefix: (client, comments, message, args) => module.exports.run(client, comments, message, args),
     
-    run: async (client, message, args) => {
+    run: async (client, comments, message, args) => {
 
       const clean = async (text) => {
     

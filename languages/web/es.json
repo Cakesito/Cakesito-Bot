@@ -1,0 +1,128 @@
+{
+	"persText": "Texto personalizable",
+	"leaveBlank": "Dejar en blanco para mostrar el texto por defecto",
+	"objectsMaterials": "Objetos / Materiales",
+	"to": "a",
+	"from": "de",
+	"min": "Mínimo",
+	"max": "Máximo",
+	"notAvailable": "No disponible",
+	"nothing": "Nada",
+	"cash": "Dinero",
+	"saveSettingsIn": "Guardar cambios en",
+	"saveSettings": "Guardar cambios",
+	"or": "o",
+	"and": "y",
+	"description": "Descripción",
+	"delete": "Eliminar",
+	"add": "Añadir",
+	"texts": {
+		"canUse": "Puedes usar",
+		"materialName": "Indica el nombre del material",
+		"materialAmount": "Indica la cantidad de materiales",
+		"objName": "Indica el nombre del objeto",
+		"objAmount": "Indica la cantidad de objetos",
+		"cashAmount": "Indica la cantidad obtenida",
+		"timeUntil": "Indica la hora en la que volverá a estar disponible",
+		"timeLeft": "Indica cuánto tiempo hasta volver a estar disponible",
+		"ifAdds_1": "Si incluyes",
+		"ifAdds_2": "dentro de",
+		"ifAdds_3": "iterarás entre los materiales",
+		"example_1": "Ejemplo:",
+		"example_2": "Recibiste [x{materialAmount} {materialName}, ] ¡Qué suerte!",
+		"example_3": "devolverá:",
+		"example_4": "Recibiste x3 Material, x1 Material 2, ¡Qué suerte!",
+		"leaveBlank": "texts.leaveBlank"
+	},
+	"footer": {
+		"commands": "Comandos",
+		"links": "Enlaces",
+		"addBot": "Añadir bot a Discord",
+		"supportServer": "Servidor de soporte",
+		"suggest": "Sugerencias",
+		"inspired": "Inspirado en"
+	},
+	"index": {
+		"title": "Mejora tu economía",
+		"desc_1": "Creación de objetos personalizables",
+		"desc_2": "Personalización de textos, variables y más"
+	},
+	"dashboard": {
+		"settings": "Ajustes",
+		"invite": "Invitar bot"
+	},
+	"commands": {
+		"all": "Todos",
+		"economy": "Economía",
+		"admin": "Administración",
+		"defaultPrefix": "El prefix por defecto es",
+		"mentionBefore": "Pero funcionará también si mencionas al bot antes de comando.",
+		"showPrefix_1": "Puedes hacer",
+		"showPrefix_2": "para mostrar el prefix en el servidor"
+	},
+	"error": {
+		"goBack": "Volver al inicio"
+	},
+	"daily": {
+		"desc": "Una recompensa diaria de dinero, objetos o materiales."
+	},
+	"claim": {
+		"desc": "Una recompensa de dinero, objetos o materiales cada"
+	},
+	"general": {
+		"prefixDesc": "El prefix se escribe antes del nombre del comando.",
+		"emojiDesc": "Aparecerá al lado izquierdo de la cantidad.",
+		"specifyEmoji_1": "Para indicar un emoji:",
+		"specifyEmoji_2": "si es animado",
+		"name": "Nombre",
+		"nameDesc": "Aparecerá al lado derecho de la cantidad.",
+		"howToEmoji": "¿Cómo obtengo el emoji?",
+		"addSlashBefore": "Puedes agregar \\ frente al emoji y enviar el mensaje.",
+		"emojiWarning": "El emoji no aparecerá si el bot no está en el servidor del emoji.",
+		"currency": "Divisa"
+	},
+	"materials": {
+		"mat": "Materiales",
+		"matDesc": "Los materiales se usan para crear objetos.",
+		"available": "Materiales disponibles"
+	},
+	"objects": {
+		"obj": "Objetos",
+		"objDesc_1": "Los objetos se consguien a través del comando",
+		"objDesc_2": "usando materiales. Los objetos pueden ser usados como divisa en la tienda.",
+		"available": "Objetos disponibles",
+		"noName": "Sin nombre",
+		"prob_1": "Prob. de éxito:",
+		"usable": "Usable",
+		"noAutoSave": "Los cambios NO se guardan automáticamente.",
+		"objName": "Nombre del objeto",
+		"prob_2": "Probabilidad de obtenerlo al crearlo",
+		"matReq": "Materiales necesarios",
+		"matList": "Lista de materiales",
+		"noMat": "No hay materiales",
+		"use": "Uso"
+	},
+	"store": {
+		"shop": "Tienda",
+		"shopDesc": "Los objetos se consiguien a través del comando",
+		"onlyOnce": "Solo se puede comprar una vez",
+		"reward": "Recompensa",
+		"role": "Rol",
+		"price": "Precio"
+	},
+	"work": {
+		"workDesc": "Gana dinero cada",
+		"cashRange": "Rango de dinero",
+		"crimeDesc": "Gana o pierde dinero cada",
+		"winProb": "Probabilidad de ganar:",
+		"onWin": "En caso de ganar",
+		"onFail": "En caso de perder",
+		"exploreDesc_1": "Consigue como máximo",
+		"exploreDesc_2": "tipos de materiales cada",
+		"exploreProb": "Probabilidad de conseguir materiales:",
+		"onLose": "work.onLose"
+	},
+	"showPrefix_2": "showPrefix_2",
+	"rewards": "rewards",
+	"amount": "amount"
+}

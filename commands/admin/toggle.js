@@ -2,49 +2,61 @@ const { PermissionsBitField, SlashCommandBuilder, SlashCommandStringOption } = r
 const fix = require('../util/fix');
 
 const options = new SlashCommandStringOption()
-.setRequired(true)
-.setName('comando')
-.setDescription('Comando a activar/desactivar')
-.addChoices(
-    { name: 'work', value: 'work' },
-    { name: 'crime', value: 'crime' },
-    { name: 'daily', value: 'daily' },
-    { name: 'claim', value: 'claim' },
-    { name: 'craft', value: 'craft' },
-    { name: 'explore', value: 'explore' }
-);
+    .setRequired(true)
+    .setName('comando')
+    .setDescription('Comando a activar/desactivar')
+    .setDescriptionLocalizations({
+        "en-GB": "Command to be enabled/disabled",
+        "en-US": "Command to be enabled/disabled"
+    })
+    .addChoices(
+        { name: 'work', value: 'work' },
+        { name: 'crime', value: 'crime' },
+        { name: 'daily', value: 'daily' },
+        { name: 'claim', value: 'claim' },
+        { name: 'craft', value: 'craft' },
+        { name: 'explore', value: 'explore' }
+    );
 
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('toggle')
     .setDescription('Activa o desactiva un comando')
+    .setDescriptionLocalizations({
+        "en-GB": "Enable or disable a command",
+        "en-US": "Enable or disable a command"
+    })
     .setDefaultMemberPermissions(PermissionsBitField.Flags.ManageGuild)
     .addStringOption(options),
 
-    runPrefix: (client, message, args) => {
-        if (!args[0]) return message.reply('¿Qué comando?');
+    runPrefix: (client, comments, message, args) => {
+        if (!args[0]) return message.reply(comments.admin.toggle.noCommand);
 
-        module.exports.run(message, client.db, { command: args[0] });
+        module.exports.run(message, comments, client.db, { command: args[0] });
     },
     
-    runSlash: (client, interaction) => {
+    runSlash: (client, comments, interaction) => {
         var selection = interaction.options.getString('comando');
-        if (!selection) return interaction.reply({ content: '¿Qué comando?', ephemeral: true });
+        if (!selection) return interaction.reply({ content: comments.admin.toggle.noCommand, ephemeral: true });
 
-        module.exports.run(interaction, client.db, { command: selection });
+        module.exports.run(interaction, comments, client.db, { command: selection });
     },
 
-    run: async (message, db, data = { command }) => {
+    run: async (message, comments, db, { command }) => {
+        comments = comments.admin.toggle;
         message = fix(message);
         
         const available = ['claim', 'craft', 'crime', 'daily', 'explore', 'work'];
     
-        if (!available.includes(data.command)) return message.reply('El comando `' + data.command+ '` no existe o no se puede deshabilitar.');
-        let status = await db.get(`n_${message.guild.id}_${data.command}`) || false;
+        if (!available.includes(command)) return message.reply(comments.invalidCommand.replace('{command}', command));
+        let status = await db.get(`n_${message.guild.id}_${command}`) || false;
         var newStatus = status === true ? false : true;
     
-        await db.set(`n_${message.guild.id}_${data.command}`, newStatus);
+        await db.set(`n_${message.guild.id}_${command}`, newStatus);
     
-        return message.reply('`' + data.command + '`:' + ` ${newStatus == true ? 'desactivado' : 'activado'}`);
+        return message.reply({ content: comments.mainResponse
+            .replace('{command}', command)
+            .replace('{status}', newStatus === true ? 'off' : 'on') });
+
     }
 }

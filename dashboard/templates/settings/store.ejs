@@ -14,10 +14,10 @@
         <p><%= guild.name %></p>
     </div>
 
-    <p class="title">Tienda</p>
+    <p class="title"><%= __("store.shop") %></p>
     <div>
-        <p class="description">Los objetos se consguien a través del comando <p class="description marked">buy</p>.<br>
-        <p class="title available-text">Objetos disponibles (<%= settings.craft.items.length ?? 0 %>/10)</p><br>
+        <p class="description"><%= __("store.shopDesc") %> <p class="description marked">buy</p>.<br>
+        <p class="title available-text"><%= __("objects.available") %> (<%= settings.craft.items.length ?? 0 %>/10)</p><br>
     </div>
 
     <div class="objects-container">
@@ -29,7 +29,7 @@
         </div>
 
         <div class="invisible" id="object-template">
-            <p class="title" style="font-style: italic;">Sin nombre</p>
+            <p class="title" style="font-style: italic;"><%= __("objects.noName") %></p>
         </div>
 
         <% if (settings.shop.items.length) { %>
@@ -38,9 +38,9 @@
                     <input hidden class="invisible jijiji" id="info-<%= item.name %>" value="<%= JSON.stringify(item) %>" ></input>
                     <p class="title name"><%= item.name %> </p>
                     <p class="desc" style="text-align: center;" ><%= item.description %></p>
-                    <p class="secondary">Precio:</p>
+                    <p class="secondary"><%= __("store.price") %>:</p>
                     <p>x<%= item.price.amount %> <%- item.price.type === 'cash' ? settings.convertion.name : settings.craft.items.find(x => x.id === item.price.ref_id)?.name %></p>
-                    <p class="secondary">Recompensa:</p>
+                    <p class="secondary"><%= __("store.reward") %>:</p>
 
                     <%
                         var a = guild.roles.cache.map(x => {
@@ -50,8 +50,8 @@
                         var roles = a.find(x => x.id == item.reward.id);
                     %>
 
-                    <p><%- item.reward.type === 'inv.' ? settings.craft.items.find(x => x.id === item.reward.ref_id)?.name : item.reward.type.replace('cash', settings.convertion.name).replace('role', 'Rol') %>: <%- item.reward.id ? `${roles?.name || 'Rol no encontrado'}` : `x${item.reward.amount}` %></p>
-                    <%- item.onlyOnce ? '<p style="text-align: center; color: #FFBF00;">Solo se puede comprar una vez</p>' : '' %>
+                    <p><%- item.reward.type === 'inv.' ? settings.craft.items.find(x => x.id === item.reward.ref_id)?.name : item.reward.type.replace('cash', settings.convertion.name).replace('role', __("store.role")) %> : <%- item.reward.id ? `${roles?.name || __("store.roleNotFound")}` : `x${item.reward.amount}` %></p>
+                    <%- item.onlyOnce ? `<p style="text-align: center; color: #FFBF00;">${__("store.onlyOnce")}</p>` : '' %>
                 </div>
             <% }); %>
         <% } %>
@@ -64,15 +64,15 @@
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
         </svg>
         
-        <p class="description" style="color: #ec5454">Los cambios NO se guardan automáticamente.</p><br><br>
-        <p class="subtitle">Nombre del objeto</p>
+        <p class="description" style="color: #ec5454"><%= __("objects.noAutoSave") %></p><br><br>
+        <p class="subtitle"><%= __("objects.objName") %></p>
         <input id="object-info-name" type="text">
-        <p class="subtitle">Descripción</p>
+        <p class="subtitle"><%= __("description") %></p>
         <input id="object-info-description" type="text">
-        <p class="subtitle">Solo se compra una vez <input id="object-info-onlyonce" type="checkbox"></p>
+        <p class="subtitle"><%= __("store.onlyOnce") %> <input id="object-info-onlyonce" type="checkbox"></p>
         
         <br>
-        <p class="subtitle">Precio:</p>
+        <p class="subtitle"><%= __("store.price") %>:</p>
 
         <div>
             <select id="object-info-price-type">
@@ -86,11 +86,11 @@
             <input id="object-info-price" type="number"></input>
         </div>
 
-        <p class="subtitle">Recompensa:</p>
+        <p class="subtitle"><%= __("store.reward") %>:</p>
         <div>    
             <select id="object-info-reward-type">
                 <option value="cash"><%= settings.convertion.name %></option>
-                <option value="role">Rol</option>
+                <option value="role"><%= __("store.role") %></option>
             <% if (settings.craft.items.length) { %>
                 <% settings.craft.items.forEach(x => { %>
                     <option value="<%= x.id %>"><%= x.name %></option>
@@ -102,8 +102,8 @@
         </div>
         
         <br>
-        <button class="save" id="save">Guardar cambios</button><br><br>
-        <button class="caution" id="delete-object">Eliminar</button>
+        <button class="save" id="save"><%= __("saveSettings") %></button><br><br>
+        <button class="caution" id="delete-object"><%= __("delete") %></button>
     </div>
 
 

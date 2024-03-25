@@ -1,17 +1,17 @@
 <div class="footer">
     <div class="bot">
         <img class="image" src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png">
-        <a href="<%= bot.discordInvite %>">Añadir a Discord</a>
+        <a href="<%= bot.discordInvite %>"><%= __("footer.addBot") %></a>
     </div>
     <div>
-        <p>Enlaces</p>
+        <p><%= __("footer.links") %></p>
         <div class="links">
-            <p><a href="/commands">Comandos</a></p>
-            <p><a href="https://discord.gg/JPSWu7AB">Servidor de soporte</a></p>
-            <p><a href="mailto:sugget@cakesito.xyz">Sugerencias</a></p>
+            <p><a href="/commands"><%= __("footer.commands") %></a></p>
+            <p><a href="https://discord.gg/JPSWu7AB"><%= __("footer.supportServer") %></a></p>
+            <p><a href="mailto:sugget@cakesito.xyz"><%= __("footer.suggest") %></a></p>
         </div>
     </div>
     <div>
-        <p>Bot inspirado en <a href="https://unbelievaboat.com/">UnbelievaBoat</a> y <a href="https://nekotina.com/">Nekotina</a></p>
+        <p><%= __("footer.inspired") %> <a href="https://unbelievaboat.com/">UnbelievaBoat</a> <%= __("and") %> <a href="https://nekotina.com/">Nekotina</a></p>
     </div>
 </div>

@@ -8,6 +8,7 @@ const path = require('path');
 const url = require("url");
 const defaultEconomy = require('../default_economy.json');
 const helmet = require('helmet');
+const i18n = require('i18n');
 const { existsSync } = require('node:fs');
 const { PermissionsBitField, Client, GatewayIntentBits } = require('discord.js');
 const { clientSecret, clientId, discordInvite, token, domain } = require('../config.json');
@@ -50,8 +51,22 @@ const limiter = rateLimit({
     limit: 100,
     standardHeaders: 'draft-6',
     legacyHeaders: false,
-    message: { message: ["Inténtelo de nuevo más tarde"] }
+    message: { message: ["Try again later"] }
 });
+
+// I dont like doing translations this way
+// Maybe this gets changed (it wont happen)
+i18n.configure({
+    fallbacks: { 
+        'es-*': 'es',
+        'en': 'en-US'
+    },
+    directory: './languages/web',
+    defaultLocale: 'en-US',
+    objectNotation: true,
+    preserveLegacyCase: false,
+    queryParameter: 'l'
+}); 
 
 app.set('trust proxy', 1);
 
@@ -79,18 +94,22 @@ app.use(passport.session());
 app.engine('ejs', ejs.renderFile);
 app.set('view engine', 'ejs');
 
+app.use(i18n.init);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const renderTemplate = (res, req, template, data = {}) => {
     const directory = path.resolve(__dirname + `/templates/${template}`);
+    if (!existsSync(directory)) return res.status(404);
+    
     const baseData = {
         bot: client,
         path: req.path,
-        user: req.isAuthenticated() ? req.user : null
+        user: req.isAuthenticated() ? req.user : null,
+        __: res.__
     }
 
-    if (!existsSync(directory)) return res.status(404);
     res.render(directory, Object.assign(baseData, data));
 }
 

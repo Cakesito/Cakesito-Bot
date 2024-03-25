@@ -5,26 +5,30 @@ module.exports = {
     aliases: ['mat-list'],
     data: new SlashCommandBuilder()
         .setName('material-list')
-        .setDescription('Mira la lista de materiales'),
+        .setDescription('Mira la lista de materiales')
+        .setDescriptionLocalizations({
+            "en-GB": "View the server's material list",
+            "en-US": "View the server's material list"
+        }),
 
-    runPrefix: (client, message) => module.exports.run(message, client.db),
+    runPrefix: (client, comments, message) => module.exports.run(message, comments, client.db),
 
-    runSlash: (client, interaction) => module.exports.run(interaction, client.db),
+    runSlash: (client, comments, interaction) => module.exports.run(interaction, comments, client.db),
 
-    run: async (message, db) => {
+    run: async (message, comments, db) => {
         message = fix(message);
 
         const materials = await db.get(`g_${message.guildId}.materials`);
-        if(!materials.length) return message.reply({ content: 'No hay materiales.', ephemeral: true });
+        if(!materials.length) return message.reply({ content: comments.economy['material-list'].noMaterials, ephemeral: true });
         
         let embed = new EmbedBuilder()
-        .setAuthor({ name: `${message.guild.name} Materiales` })
+        .setAuthor({ name: `${message.guild.name} ${comments.economy['material-list'].embedAuthor}` })
         .setColor(0x0099FF)
     
         materials.forEach(mat => {
             return embed.addFields({ 
                 name: mat.name,
-                value: `${(!mat.description || mat.description === '') ? '_Este material no tiene descripción_' : mat.description}` 
+                value: `${(!mat.description || mat.description === '') ? comments.missingMaterialDescription : mat.description}` 
             });
         });
     

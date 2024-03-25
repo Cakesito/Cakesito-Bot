@@ -14,10 +14,10 @@
         <p><%= guild.name %></p>
     </div>
 
-    <p class="title">Materiales</p>
+    <p class="title"><%= __("materials.mat") %></p>
     <div>
-        <p class="description">Los materiales se usan para crear objetos.</p><br><br>
-        <p class="title available-text">Materiales disponibles (<%= settings.materials.length ?? 0 %>/10)</p><br>
+        <p class="description"><%= __("materials.matDesc") %></p><br><br>
+        <p class="title available-text"><%= __("materials.available") %> (<%= settings.materials.length ?? 0 %>/10)</p><br>
     </div>
 
     <div class="objects-container">
@@ -31,10 +31,10 @@
         <div class="objects-available">
             
             <div class="invisible" id="object-template">
-                <input style="max-width: 80%;" class="title object-name" type="text" value="Mi material" maxlength="70"></input>
-                <p class="help">Descripción:</p>
-                <input style="max-width: 80%,;" class="description object-description" type="text" value="Descripción divertida" maxlength="70"></input>
-                <br><button class="caution remove-object">Eliminar</button>
+                <input style="max-width: 80%;" class="title object-name" type="text" value="Material" maxlength="70"></input>
+                <p class="help"><%= __("description") %>:</p>
+                <input style="max-width: 80%,;" class="description object-description" type="text" value="<%= __('description') %>" maxlength="70"></input>
+                <br><button class="caution remove-object"><%= __("delete") %></button>
             </div>
 
             <% if (settings.materials.length) { %>
@@ -42,9 +42,9 @@
                 <% settings.materials.forEach(material => {  %>
                     <div class="object" id="<%= material.id %>">
                         <input style="max-width: 80%;" class="title object-name" type="text" value="<%= material.name %>" maxlength="70"></input>
-                        <p class="help">Descripción:</p>
+                        <p class="help"><%= __("description") %>:</p>
                         <input style="max-width: 80%;" class="description object-description" type="text" value="<%= material.description %>" maxlength="70"></input>
-                        <br><button class="caution remove-object">Eliminar</button>
+                        <br><button class="caution remove-object"><%= __("delete") %></button>
                     </div>
                 <% }); %>
             <% } %>
@@ -52,7 +52,7 @@
 
     </div><br>
 
-    <button class="save" id="save">Guardar cambios</button><br><br>
+    <button class="save" id="save"><%= __("saveSettings") %></button><br><br>
 
 </div>
 <script type="text/javascript" src="/materials.js"></script>

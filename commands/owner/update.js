@@ -3,11 +3,11 @@ const https = require('node:https');
 
 module.exports = {
     onlyOwner: true,
-    runPrefix: (client, message, args) => {
-        module.exports.run(client, message, args);
+    runPrefix: (client, comments, message, args) => {
+        module.exports.run(client, comments, message, args);
     },
     
-    run: (client, message, args) => {
+    run: (client, comments, message, args) => {
         if (!message.attachments?.first()) return message.reply('att');
 
         const path = args[0];

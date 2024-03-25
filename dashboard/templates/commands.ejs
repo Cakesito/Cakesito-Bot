@@ -7,18 +7,18 @@
 <div class="main-con">
     <div class="head">
         <div>
-            <p class="command-type selected" id="all">Todos</p>
-            <p class="command-type" id="economy">Economía</p>
-            <p class="command-type" id="admin">Administración</p>
+            <p class="command-type selected" id="all"><%= __("commands.all") %></p>
+            <p class="command-type" id="economy"><%= __("commands.economy") %></p>
+            <p class="command-type" id="admin"><%= __("commands.admin") %></p>
         </div>
 
         <div class="help">
-            <p class="description">El prefix por defecto es</p>
+            <p class="description"><%= __("commands.defaultPrefix") %></p>
             <p class="description marked">,</p><br>
-            <p class="description">Pero funcionará también si mencionas el bot antes del comando.</p><br>
-            <p class="description">Puedes hacer</p>
+            <p class="description"><%= __("commands.mentionBefore") %></p><br>
+            <p class="description"><%= __("commands.showPrefix_1") %></p>
             <p class="description marked">@Cakesito prefix</p>
-            <p class="description">para mostrar el prefix en el servidor.</p><br>
+            <p class="description"><%= __("commands.showPrefix_2") %></p><br>
         </div>
     </div>
 

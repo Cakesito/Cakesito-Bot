@@ -10,9 +10,10 @@ client.commands = new Collection();
 client.aliases = new Collection();
 client.cooldowns = new Collection();
 client.collectors = new Collection();
+client.languages = new Collection();
 
 client.db = db;
 
-for(let handler of  ["command", "menu_command", "event"]) require(`./handler/${handler}`)(client);
+for(let handler of  ["command", "menu_command", "event", "language"]) require(`./handler/${handler}`)(client);
 
 client.login(token);

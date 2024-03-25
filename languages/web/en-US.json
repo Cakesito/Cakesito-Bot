@@ -1,0 +1,126 @@
+{
+	"persText": "Customizable text",
+	"leaveBlank": "Leave it blank or delete all to show default messages",
+	"objectsMaterials": "Objects / Materials",
+	"to": "to",
+	"from": "from",
+	"min": "Minimun",
+	"max": "Maximun",
+	"notAvailable": "Not Available",
+	"nothing": "Nothing",
+	"cash": "Cash",
+	"saveSettingsIn": "Save changes in",
+	"saveSettings": "Save",
+	"or": "or",
+	"and": "and",
+	"description": "Description",
+	"delete": "Delete",
+	"add": "Add",
+	"texts": {
+		"canUse": "You can use",
+		"materialName": "Shows material name",
+		"materialAmount": "Shows amount of materials",
+		"objName": "Shows object name",
+		"objAmount": "Shows amount of objects",
+		"cashAmount": "Shows the amount obtained",
+		"timeUntil": "Shows time at which it will be available",
+		"timeLeft": "Shows how much time at which it will be available",
+		"ifAdds_1": "If you add",
+		"ifAdds_2": "inside of",
+		"ifAdds_3": "you will iterate between materials",
+		"example_1": "For example:",
+		"example_2": "You got [x{materialAmount} {materialName}, ] How lucky!",
+		"example_3": "devolverá:",
+		"example_4": "You got x1 Material, x3 SecondMaterial, How lucky!",
+		"leaveBlank": "texts.leaveBlank"
+	},
+	"footer": {
+		"commands": "Commands",
+		"links": "Links",
+		"addBot": "Add bot to Discord",
+		"supportServer": "Support server",
+		"suggest": "Suggestions",
+		"inspired": "Inspired by"
+	},
+	"index": {
+		"title": "Improve your economy",
+		"desc_1": "Creation of customizable objects",
+		"desc_2": "Customization of texts, variables and more"
+	},
+	"dashboard": {
+		"settings": "Settings",
+		"invite": "Invite bot"
+	},
+	"commands": {
+		"all": "All",
+		"economy": "Economy",
+		"admin": "Admin.",
+		"defaultPrefix": "The default prefix is",
+		"mentionBefore": "But it will also work if you mention the bot before the command.",
+		"showPrefix_1": "You can do",
+		"showPrefix_2": "to show prefix in server"
+	},
+	"error": {
+		"goBack": "Go back"
+	},
+	"daily": {
+		"desc": "A daily reward of money, objects or materials."
+	},
+	"claim": {
+		"desc": "A reward of money, objects or materials every"
+	},
+	"general": {
+		"prefixDesc": "Prefix is written before command.",
+		"emojiDesc": "Will appear on the left side of the amount.",
+		"specifyEmoji_1": "To specify an emoji:",
+		"specifyEmoji_2": "if it is animated",
+		"name": "Name",
+		"nameDesc": "Will appear on the right side of the amount",
+		"howToEmoji": "How do I get the emoji?",
+		"addSlashBefore": "You can add \\ before the emoji and send the message",
+		"emojiWarning": "Emoji will not show if the bot is not in the eomji server",
+		"currency": "Currency"
+	},
+	"materials": {
+		"mat": "Materials",
+		"matDesc": "Materials are used to create objects",
+		"available": "Available materials"
+	},
+	"objects": {
+		"obj": "Objects",
+		"objDesc_1": "Objects can be crafted using the",
+		"objDesc_2": "command using materials. Objects can be used as currency in the store",
+		"available": "Available objects",
+		"noName": "No name",
+		"prob_1": "Success prob:",
+		"usable": "Usable",
+		"noAutoSave": "Changes are NOT automatically saved",
+		"objName": "Name of the object",
+		"prob_2": "Probability of success when crafting",
+		"matReq": "Materials needed",
+		"matList": "Material list",
+		"noMat": "There are no materials",
+		"use": "Use"
+	},
+	"store": {
+		"shop": "Store",
+		"shopDesc": "Objects are obtained using",
+		"onlyOnce": "One-time purchase only",
+		"reward": "Reward",
+		"role": "Role",
+		"price": "Price"
+	},
+	"work": {
+		"workDesc": "Earn money every",
+		"cashRange": "Money range",
+		"crimeDesc": "Earn or lose money every",
+		"winProb": "Win probability:",
+		"onWin": "If you win",
+		"onFail": "If you lose",
+		"exploreDesc_1": "Earn at most",
+		"exploreDesc_2": "types of materials every",
+		"exploreProb": "Probability of obtaining materials"
+	},
+	"rewards": "rewards",
+	"amount": "amount"
+}

@@ -6,34 +6,42 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('inventory')
     .setDescription('Mira tu inventario o el de un usuario')
+    .setDescriptionLocalizations({
+        "en-GB": "View your inventory or an user's inventory",
+        "en-US": "View your inventory or an user's inventory"
+    })
     .addUserOption(option => 
         option.setName('usuario')
         .setDescription('Mira el inventario de un usuario')
+        .setDescriptionLocalizations({
+            "en-GB": "View an user's inventory",
+            "en-US": "View an user's inventory"
+        })
     ),
 
-    runPrefix: async (client, message, args) => {
+    runPrefix: async (client, comments, message, args) => {
         const member = await require('../util/selectMember')(message, args);
-        if (member.bot) return message.reply('El usuario elegido es un bot.');
-        if (!member.found) return message.reply('No pude encontrar el usuario.');
+        if (member.bot) return message.reply(comments.botSelected);
+        if (!member.found) return message.reply(comments.userNotFound);
 
-        module.exports.run(message, client.db, { client: client, member: member.member });
+        module.exports.run(message, comments, client.db, { client: client, member: member.member });
     },
 
-    runSlash: (client, interaction) => {
+    runSlash: (client, comments, interaction) => {
         const member = interaction.options.getMember('usuario') || interaction.member;
-        if (member.user.bot) return interaction.reply({ content: 'El usuario seleccionado es un bot', ephemeral: true });
+        if (member.user.bot) return interaction.reply({ content: comments.botSelected, ephemeral: true });
 
-        module.exports.run(interaction, client.db, { client: client, member: member });
+        module.exports.run(interaction, comments, client.db, { client, member });
     },
 
-    run: async (message, db, data = { client, member }) => {
+    run: async (message, comments, db, { client, member }) => {
         message = fix(message);
     
         const materials = await db.get(`g_${message.guildId}.materials`);
         const items = await db.get(`g_${message.guildId}.craft.items`);
     
-        var id = data.client.collectors.get('active') || 0;
-        data.client.collectors.set('active', id + 1);
+        var id = client.collectors.get('active') || 0;
+        client.collectors.set('active', id + 1);
     
         const materialsOption = new StringSelectMenuOptionBuilder()
             .setLabel('Materiales')
@@ -49,17 +57,17 @@ module.exports = {
             .setCustomId(`cake-i-${id}`)
             .addOptions(materialsOption, objectOption);
     
-        const materialInv = await db.get(`e_${message.guildId}_${data.member.user.id}.inv.materials`) || {};
-        const objectInv = await db.get(`e_${message.guildId}_${data.member.user.id}.inv.objects`) || {};
+        const materialInv = await db.get(`e_${message.guildId}_${member.user.id}.inv.materials`) || {};
+        const objectInv = await db.get(`e_${message.guildId}_${member.user.id}.inv.objects`) || {};
     
         let materialEmbed = new EmbedBuilder()
             .setColor(0x0099FF)
-            .setAuthor({ name: data.member.user.displayName || data.member.user.username, iconURL: data.member.displayAvatarURL() })
+            .setAuthor({ name: member.user.displayName || member.user.username, iconURL: member.displayAvatarURL() })
             .setTimestamp();
     
         let objectEmbed = new EmbedBuilder()
             .setColor(0x0099FF)
-            .setAuthor({ name: data.member.user.displayName || data.member.user.username, iconURL: data.member.displayAvatarURL() })
+            .setAuthor({ name: member.user.displayName || member.user.username, iconURL: member.displayAvatarURL() })
             .setTimestamp();
     
         var invMaterialsText = [];
@@ -73,7 +81,7 @@ module.exports = {
             if (mat) {
                 invMaterialsText.push({ 
                     name: `x${material[1]} **${mat.name}**`,
-                    value: !mat.description || mat.description === '' ? '_Este material no tiene descripción_' : mat.description
+                    value: !mat.description || mat.description === '' ? comments.missingMaterialDescription : mat.description
                 });
             }
         });
@@ -86,7 +94,7 @@ module.exports = {
             if (obj) {
                 invObjectsText.push({ 
                     name: `x${object[1]} **${obj.name}**`,
-                    value: !obj.description || obj.description === '' ? '_Este objeto no tiene descripción_' : obj.description
+                    value: !obj.description || obj.description === '' ? comments.missingObjectDescription : obj.description
                 });
             }
         });
@@ -94,11 +102,11 @@ module.exports = {
         materialEmbed.setFields(invMaterialsText);
         objectEmbed.setFields(invObjectsText);
     
-        if (!invMaterialsText.length) materialEmbed.setDescription('Parece que no hay nada...');
-        if (!invObjectsText.length) objectEmbed.setDescription('Parece que no hay nada...');
+        if (!invMaterialsText.length) materialEmbed.setDescription(comments.economy.inventory.noMaterials);
+        if (!invObjectsText.length) objectEmbed.setDescription(comments.economy.inventory.noObjects);
     
         const filter = (i) => i.customId === `cake-i-${id}` && i.user.id === message.user.id;
-        const collector = message.channel.createMessageComponentCollector({ filter, time: 300_000 });
+        const collector = message.channel.createMessageComponentCollector({ filter, time: 1_800_000 });
     
         collector.on('collect', async i => {
             if (i.values[0] === 'objects') {
@@ -124,7 +132,7 @@ module.exports = {
     
         });
     
-        collector.on('end', () => data.client.collectors.set('active', id - 1));
+        collector.on('end', () => client.collectors.set('active', id - 1));
     
         return message.reply({ embeds: [materialEmbed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(select)] });
         

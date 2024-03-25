@@ -1,0 +1,23 @@
+{
+    "cooldown": "Espera hasta <t:{time}:t> (<t:{time}:R>) para usar {command}",
+    "error": "Ocurrió un error inesperado, lo sentimos.",
+
+    "actualPrefix": "Mi prefix en este servidor es `{prefix}`",
+
+    "missingPermissions": "Necesitas el permiso: `{perm}` para usar este comando",
+
+    "botSelected": "El usuario seleccionado es un bot.",
+    "userNotFound": "No pude encontrar al usuario.",
+
+    "commandNotAvailable": "Este comando no está disponible en este servidor.",
+    "commandNotActive": "Este comando está deshabilitado en este servidor.",
+
+    "noAmountAndObject": "Indica una cantidad y/o objeto",
+    "zeroAmount": "0? Uhm...",
+    "noObject": "Vas a comprar un... ¿Qué?",
+    "invalidObject": "{amount}... ¿Qué?",
+    "objectNotFound": "No encontré el objeto: `{obj}`",
+
+    "missingObjectDescription": "_Este objeto no tiene descripción_",
+    "missingMaterialDescription": "_Este material no tiene descripción_"
+}

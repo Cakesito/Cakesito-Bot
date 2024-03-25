@@ -14,10 +14,10 @@
         <p><%= guild.name %></p>
     </div>
 
-    <p class="title">Objetos</p>
+    <p class="title"><%= __("objects.obj") %></p>
     <div>
-        <p class="description">Los objetos se consguien a través del comando <p class="description marked">craft</p>usando materiales. Los objetos pueden ser usados como divisa en la tienda.</p><br>
-        <p class="title available-text">Objetos disponibles (<%= settings.craft.items.length ?? 0 %>/10)</p><br>
+        <p class="description"><%= __("objects.objDesc_1") %> <p class="description marked">craft</p><%= __("objects.objDesc_2") %></p><br>
+        <p class="title available-text"><%= __("objects.available") %> (<%= settings.craft.items.length ?? 0 %>/10)</p><br>
     </div>
 
     <div class="objects-container">
@@ -29,7 +29,7 @@
         </div>
 
         <div class="invisible" id="object-template">
-            <p class="title" style="font-style: italic;">Sin nombre</p>
+            <p class="title" style="font-style: italic;"><%= __("objects.noName") %></p>
         </div>
 
         <% if (settings.craft.items.length) { %>
@@ -38,11 +38,11 @@
                     <input hidden class="invisible jijiji" id="info-<%= item.id %>" value="<%= JSON.stringify(item) %>" ></input>
                     <p class="title name"><%= item.name %> </p>
                     <p class="desc" style="text-align: center;" ><%= item.description %></p>
-                    <p class="secondary prob">Prob. de éxito: <%= item.probability %> %</p>
+                    <p class="secondary prob"><%= __("objects.prob_1") %>: <%= item.probability %> %</p>
                     <% item.materials.forEach(material => { %>
                         <p class="secondary">x<%= material.amount %> <%= settings.materials.find(x => x.id === material.ref_id)?.name %></p>
                     <% }) %>
-                    <%- item.use?.type ? '<p>Usable</p>' : '' %>
+                    <%- item.use?.type ? `<p>${__("objects.usable")}</p>` : '' %>
                 </div>
             <% }); %>
         <% } %>
@@ -55,43 +55,43 @@
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
         </svg>
         
-        <p class="description" style="color: #ec5454">Los cambios NO se guardan automáticamente.</p><br><br>
-        <p class="subtitle">Nombre del objeto</p>
+        <p class="description" style="color: #ec5454"><%= __("objects.noAutoSave") %></p><br><br>
+        <p class="subtitle"><%= __("objects.objName") %></p>
         <input id="object-info-name" type="text">
-        <p class="subtitle">Descripción</p>
+        <p class="subtitle"><%= __("description") %></p>
         <input id="object-info-description" type="text">
-        <p class="subtitle">Probabilidad de obtenerlo al crearlo</p>
+        <p class="subtitle"><%= __("objects.prob_2") %></p>
         <input id="object-info-probability" type="number">
         <p class="help">%</p><br>
 
         <div class="active-materials">
-            <p class="subtitle">Materiales necesarios</p>
+            <p class="subtitle"><%= __("objects.matReq") %></p>
         </div>
 
         <div class="material-list-list">
-            <p class="subtitle">Lista de materiales</p>
+            <p class="subtitle"><%= __("objects.matList") %></p>
             <% if (settings.materials.length) { %>
                 <% settings.materials.forEach(material => { %>
                     <p class="material-list" id="material-<%= material.id %>" ><%= material.name %> <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" class="down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/></svg></p>
                 <% }); %>
                 <% } else { %>
-                    <p style="color: #959595">No hay materiales</p>
+                    <p style="color: #959595"><%= __("objects.noMat") %></p>
             <% } %>
             <br>
         </div><br>
         <div class="object-info-use">
-            <p class="subtitle">Uso</p>
+            <p class="subtitle"><%= __("objects.use") %></p>
             <select id="use-type">
-                <option default value="Nada">Nada</option>
+                <option default value="Nada"><%= __("nothing") %></option>
                 <option value="cash"><%= settings.convertion.name %></option>
             </select>
             <input type="number" id="use-amount">
         </div><br>
 
-        <button class="save <%= settings.materials.length ? '' : 'no-materials'  %>" id="save" <%= settings.materials.length ? '' : 'disabled'  %> >Guardar cambios</button><br><br>
-        <button class="caution" id="delete-object">Eliminar</button>
+        <button class="save <%= settings.materials.length ? '' : 'no-materials'  %>" id="save" <%= settings.materials.length ? '' : 'disabled'  %> ><%= __("saveSettings") %></button><br><br>
+        <button class="caution" id="delete-object"><%= __("delete") %></button>
         <br><br><br>
-                
+        
     </div>
 
 </div>

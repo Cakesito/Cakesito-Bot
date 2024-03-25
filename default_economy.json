@@ -1,5 +1,7 @@
 {
     "prefix": ",",
+    "lang": "es",
+    
     "materials": [],
     "convertion": {
         "name": "monedas",
@@ -7,17 +9,11 @@
     },
 
     "shop": {
-        "items": [],
-        "txt": "**📦 Compraste en la tienda**\n`» | Compraste: {reward}`"
+        "items": []
     },
 
     "craft": {
-        "items": [],
-        "txt": {
-            "success": "**🧱 Creaste un objeto correctamente**\n`» | Objeto:` {item}",
-            "fail": "**🧱 Algo salió mal en el proceso...**\n`◽ | Objeto:` Nada :(",
-            "use": "**🧱 Usaste un objeto**\n`» | Obtuviste:` {reward}"
-        }
+        "items": []
     },
  
     "claim": {

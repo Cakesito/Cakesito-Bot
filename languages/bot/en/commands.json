@@ -1,0 +1,103 @@
+{
+    "admin": {
+        "money": {
+            "invalidAmount": "Specify a valid amount (can be negative)",
+            "invalidDestination": "Specify a valid destination for the money (cash/bank)",
+            "mainResponse": "{amount} to {user} ({type})",
+            "noUser": "Specify an user"
+        },
+
+        "set-prefix": {
+            "invalidPrefix": "What is the new prefix?",
+            "mainResponse": "My new prefix is: `{prefix}`"
+        },
+
+        "toggle": {
+            "noCommand": "Which command?",
+            "invalidCommand": "The `{command}` command does not exist or cannot be disabled.",
+            "mainResponse": "{command}: `{status}`"
+        },
+
+        "language": {
+            "mainResponse": {
+                "available": "My new language in this server is: English",
+                "notAvailable": "My current language in this server is English. Available languages: `{available}`"
+            }
+        }
+    },
+
+    "economy": {
+        "buy": {
+            "alreadyBought": "You have already purchased this item",
+            "onlyOnce": "You can only buy one.",
+            "cantBuy": "You can't buy it.\n**You need**: {missing}",
+            "roleNotFound": "Role (ID: `{id}`) not found",
+            "notEnoughPermissions": "I do not have sufficient permissions to add the <&{id}> role.",
+            "mainResponse": "**📦 You bought in the store**\n`» | Bought: {reward}`"
+        },
+
+        "craft-list": {
+            "noObjects": "There are no objects to create.",
+            "embedAuthor": "Available objects"
+        },
+
+        "craft": {
+            "mainResponse": {
+                "success": "**🧱 You have successfully created objects**\n`» | Objects:` {reward}",
+                "fail": "**🧱 Something went wrong in the process...**\n`◽ | Objects:` Nothing :("
+            },
+            "missingMaterials": "You can't craft it.\n**You need**: {missing}",
+            "materialNotFound": "Error: One (or more) of the materials were not found.",
+            "craftUnavailable": "This object cannot be crafted."
+        },
+
+        "deposit": {
+            "invalidAmount": "How much...?",
+            "noMoney": "You don't seem to have any money...",
+            "negativeMoney": "You have negative cash.\n**You have**: {money}",
+            "notEnoughMoney": "You don't have enough money.\n **You need**: {missing}",
+            "mainResponse": "You have deposited {amount} to your bank!"
+        },
+
+        "inventory": {
+            "noMaterials": "There are not materials here...",
+            "noObjects": "There are not objects here..."
+        },
+
+        "leaderboard": {
+            "noLb": "Leaderboard is not available",
+            "embedFooter": "Page {currentPage}/{maxPages} · Your position: {rank}"
+        },
+
+        "material-list": {
+            "noMaterials": "There are not materials.",
+            "embedAuthor": "Materials"
+        },
+
+        "shop": {
+            "noShop": "Shop is not available in this server.",
+            "onlyOnce": "_You can only buy once_"
+        },
+
+        "use": {
+            "cantUseObject": "This object cannot be used.",
+            "noObjects": "You do not have **{obj}**",
+            "notEnoughObjects": "You don't have enough.\n**You need**: x{amount} **{obj}**",
+            "mainResponse": "**🧱 You used objects**\n`» | You got:` {reward}"
+        },
+
+        "withdraw": {
+            "invalidAmount": "How much...?",
+            "noMoney": "You don't seem to have any money...",
+            "negativeMoney": "You have negative cash.\n**You have**: {money}",
+            "notEnoughMoney": "you don't have enough money: **You need**: {missing}",
+            "mainResponse": "You have withdrawn {amount} from your bank!"
+        }
+    },
+
+    "other": {
+        "help": {
+            "mainResponse": "**Command list:**\nhttps://cakesito.xyz/commands\n\n**Get started in the dashboard:**\nhttps://cakesito.xyz"
+        }
+    }
+}

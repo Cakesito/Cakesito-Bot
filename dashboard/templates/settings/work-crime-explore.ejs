@@ -27,32 +27,32 @@
       <div class="divider divider-special">
         <div style="max-width: 30vw;">
             <p class="title">Work</p>
-            <p style="display: inline;" class="description">Gana dinero cada </p>
+            <p style="display: inline;" class="description"><%= __("work.workDesc") %> </p>
             <input style="display: inline;" type="text" id="input-work-cooldown" value="<%= settings.work.cooldown %>">
             <br>
             <div class="div-money">
-                <p class="subtitle">Rango de dinero</p>
-                <p class="help">De: </p>
-                <input style="display: inline-block;" type="number" id="input-work-min" value="<%= settings.work.min %>" placeholder="Cantidad">
-                <p class="help"> a </p>
-                <input style="display: inline-block;" type="number" id="input-work-max" value="<%= settings.work.max %>" placeholder="Cantidad">
+                <p class="subtitle"><%= __("work.cashRange") %></p>
+                <p class="help"><%= __("from") %>: </p>
+                <input style="display: inline-block;" type="number" id="input-work-min" value="<%= settings.work.min %>" placeholder="<%= __('amount') %>">
+                <p class="help"> <%= __("to") %> </p>
+                <input style="display: inline-block;" type="number" id="input-work-max" value="<%= settings.work.max %>" placeholder="<%= __('amount') %>">
             </div>
         </div>
   
       <div style="width: 65%;">
-          <p class="title">Work - Texto Personalizado</p>
+          <p class="title">Work - <%= __("persText") %></p>
           <%- include("../partials/texts/money.ejs") %>
           <%- include("../partials/texts/timestamp.ejs") %>
           
-          <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
+          <p class="description"><%= __("leaveBlank") %></p><br><br>
 
           <div class="custom-text-text" id="custom-text-1">
-            <button id="work-add-text" class="save add-text">Añadir</button><br>
+            <button id="work-add-text" class="save add-text"><%= __("add") %></button><br>
             <div class="custom-text">
               <% settings.work.txt.forEach(x => { %>
                 <div class="yet-another-div">
                   <textarea rows="5" maxlength="2000"><%= x %></textarea>
-                  <button class="caution remove-text">Eliminar</button>
+                  <button class="caution remove-text"><%= __("delete") %></button>
                 </div>
               <% }) %>
             </div>
@@ -60,78 +60,78 @@
       </div>  
     </div>
 
-    <button class="save" id="save-work">Guardar cambios en Work</button>
+    <button class="save" id="save-work"><%= __("saveSettingsIn") %> Work</button>
     <br>
     <br>
 
   <div class="divider divider-special">
     <div style="max-width: 30vw;">
         <p class="title">Crime</p>
-        <p class="description">Gana o pierde dinero cada </p>
+        <p class="description"><%= __("work.crimeDesc") %> </p>
         <input style="display: inline; margin: 3px 0 3px 0" type="text" id="input-crime-cooldown" value="<%= settings.crime.cooldown %>"><br>
-        <p class="description">Probabilidad de ganar: </p>
+        <p class="description"><%= __("work.winProb") %>: </p>
         <input style="display: inline; margin: 3px 0 3px 0" type="number" id="input-crime-probability" value="<%= settings.crime.probability %>">
         <p class="description">%</p>
         <br>
         <div class="div-money">
-            <p class="subtitle">En caso de ganar</p>
-            <p class="help">De: </p>
-            <input style="display: inline-block;" type="number" id="input-crime-success-min" value="<%= settings.crime.success.min %>" placeholder="Cantidad">
-            <p class="help"> a </p>
-            <input style="display: inline-block;" type="number" id="input-crime-success-max" value="<%= settings.crime.success.max %>" placeholder="Cantidad">
+            <p class="subtitle"><%= __("work.onWin") %></p>
+            <p class="help"><%= __("from") %>: </p>
+            <input style="display: inline-block;" type="number" id="input-crime-success-min" value="<%= settings.crime.success.min %>" placeholder="<%= __('amount') %>">
+            <p class="help"> <%= __("to") %> </p>
+            <input style="display: inline-block;" type="number" id="input-crime-success-max" value="<%= settings.crime.success.max %>" placeholder="<%= __('amount') %>">
 
-            <p class="subtitle">En caso de perder</p>
-            <p class="help">De: </p>
-            <input style="display: inline-block;" type="number" id="input-crime-fail-min" value="<%= settings.crime.fail.min %>" placeholder="Cantidad">
-            <p class="help"> a </p>
-            <input style="display: inline-block;" type="number" id="input-crime-fail-max" value="<%= settings.crime.fail.max %>" placeholder="Cantidad">
+            <p class="subtitle"><%= __("work.onFail") %></p>
+            <p class="help"><%= __("from") %>: </p>
+            <input style="display: inline-block;" type="number" id="input-crime-fail-min" value="<%= settings.crime.fail.min %>" placeholder="<%= __('amount') %>">
+            <p class="help"> <%= __("to") %> </p>
+            <input style="display: inline-block;" type="number" id="input-crime-fail-max" value="<%= settings.crime.fail.max %>" placeholder="<%= __('amount') %>">
 
         </div>
     </div>
 
     <div style="width: 65%;">
-      <p class="title">Crime - Texto Personalizado</p>
+      <p class="title">Crime - <%= __("persText") %></p>
 
       <%- include("../partials/texts/money.ejs") %>
       <%- include("../partials/texts/timestamp.ejs") %>
 
-      <p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br><br>
+      <p class="description"><%= __("leaveBlank") %></p><br><br>
                 
         <div class="custom-text-text" id="custom-text-4">
-            <p class="subtitle">En caso de ganar</p>
-            <br><button class="save add-text add-text-success">Añadir</button><br>
+            <p class="subtitle"><%= __("work.onWin") %></p>
+            <br><button class="save add-text add-text-success"><%= __("add") %></button><br>
             <div class="custom-text">
               <% if (settings.crime.success.txt) { %>
                 <% settings.crime.success.txt.forEach(x => { %>
                   <div class="yet-another-div">
                     <textarea rows="5" maxlength="2000"><%= x %></textarea>
-                    <button class="caution remove-text">Eliminar</button>
+                    <button class="caution remove-text"><%= __("delete") %></button>
                   </div>
                 <% }) %>
               <% } else { %>
                 <div class="yet-another-div">
                   <textarea rows="5" maxlength="2000">{}</textarea>
-                  <button class="caution remove-text">Eliminar</button>
+                  <button class="caution remove-text"><%= __("delete") %></button>
                 </div>
               <% } %>
             </div>
         </div>
 
         <div class="custom-text-text" id="custom-text-5">
-          <p class="subtitle">En caso de perder</p>
-          <br><button class="save add-text add-text-success">Añadir</button><br>
+          <p class="subtitle"><%= __("work.onFail") %></p>
+          <br><button class="save add-text add-text-success"><%= __("add") %></button><br>
           <div class="custom-text">
             <% if (settings.crime.fail.txt) { %>
               <% settings.crime.fail.txt.forEach(x => { %>
                 <div class="yet-another-div">
                   <textarea rows="5" maxlength="2000"><%= x %></textarea>
-                  <button class="caution remove-text">Eliminar</button>
+                  <button class="caution remove-text"><%= __("delete") %></button>
                 </div>
               <% }) %>
             <% } else { %>
               <div class="yet-another-div">
                 <textarea rows="5" maxlength="2000">{}</textarea>
-                <button class="caution remove-text">Eliminar</button>
+                <button class="caution remove-text"><%= __("delete") %></button>
               </div>
             <% } %>
           </div>
@@ -139,7 +139,7 @@
       </div>
   </div>  
 
-  <button class="save" id="save-crime">Guardar cambios en Crime</button>
+  <button class="save" id="save-crime"><%= __("saveSettingsIn") %> Crime</button>
   <br>
   <br>
 
@@ -148,17 +148,17 @@
   <div class="divider divider-special">
     <div style="max-width: 25vw;">
         <p class="title">Explore</p>
-        <p class="description">Consigue como máximo</p>
+        <p class="description"><%= __("work.exploreDesc_1") %></p>
         <input style="display: inline-block;" type="number" id="input-explore-max" value="<%= settings.explore.maxMaterials || 0 %>">
-        <p class="description"> tipos de materiales cada </p>
+        <p class="description"> <%= __("work.exploreDesc_2") %> </p>
         <input style="display: inline-block;" type="text" id="input-explore-cooldown" value="<%= settings.explore.cooldown %>"><br>
-        <p class="description">Probabilidad de conseguir materiales: </p>
+        <p class="description"><%= __("work.exploreProb") %>: </p>
         <input style="display: inline; margin: 3px 0 3px 0" type="number" id="input-explore-probability" value="<%= settings.explore.probability %>">
         <p class="description">%</p>
         <br>
 
         <div <%- (settings.craft.items.length || settings.materials.length) ? `class="div-objects-explore"` : 'class="div-objects-explore disabled"' %> >
-          <p class="subtitle">Lista de materiales</p>
+          <p class="subtitle"><%= __("objects.matList") %></p>
 
           <% if (settings.craft.length || settings.materials.length) { %>
             
@@ -170,88 +170,84 @@
               <% settings.materials.forEach(material => { %>
                 <div class="material" id="<%= material.id %>">
                   <p class="subtitle" style="display: inline-block;">▸ <%= material.name %></p>
-                  <p class="description">: de</p>
+                  <p class="description">: <%= __("from") %></p>
                   <input id="min-<%= material.id %>" type="number" placeholder="Mínimo" value="<%= settings.explore.materials?.find(x => x.ref_id === material.id)?.amount[0] ?? '0' %>"></input>
-                  <p class="help"> a </p>
+                  <p class="help"> <%= __("to") %> </p>
                   <input id="max-<%= material.id %>" type="number" placeholder="Máximo" value="<%= settings.explore.materials?.find(x => x.ref_id === material.id)?.amount[1] ?? '0' %>"></input>
                 </div>
               <% }); %>
             <% } %>
 
           <% } else { %>
-              <p disabled>No disponible</p>
+              <p disabled><%= __("notAvailable") %></p>
           <% } %>
       </div>
     </div>
 
   <div style="width: 65%;">
-      <p class="title">Explore - Texto Personalizado</p>
+      <p class="title">Explore - <%= __("persText") %></p>
       
       <%- include("../partials/texts/money.ejs") %>
       <%- include("../partials/texts/materials.ejs") %>
       <br>
       <%- include("../partials/texts/timestamp.ejs") %>
       <br>
-      <p class="description">Si incluyes </p>
+      <p class="description"><%= __("texts.ifAdds_1") %></p>
       <p class="description marked">{materialName}</p>
-      <p class="description"> o </p>
+      <p class="description"> <%= __("or") %> </p>
       <p class="description marked">{materialAmount}</p>
-      <p class="description"> dentro de </p>
+      <p class="description"> <%= __("texts.ifAdds_2") %> </p>
       <p class="description marked">[]</p>
-      <p class="description">iterarás entre los materiales.</p><br><br>
-      <p class="description">Ejemplo: </p>
-      <p class="description marked">Recibiste [x{materialAmount} {materialName}, ] ¡Qué suerte!</p><br>
-      <p class="description">devolverá: </p>
-      <p class="description marked">Recibiste x3 Material, x1 Material 2, ¡Qué suerte!</p><br>
-      <p class="description">pero</p>
-      <p class="description marked">Shhh [top secret]</p><br>
-      <p class="description">devolverá: </p>
-      <p class="description marked">Shhh [top secret]</p><br>
+      <p class="description"><%= __("texts.ifAdds_3") %></p><br><br>
+      <p class="description"><%= __("texts.example_1") %>:</p>
+      <p class="description marked"><%= __("texts.example_2") %></p><br>
+      <p class="description"><%= __("texts.example_3") %>: </p>
+      <p class="description marked"><%= __("texts.example_4") %></p><br>
       
-        <br><p class="description">Eliminar todos o dejar en blanco para usar los mensajes por defecto.</p><br>
+        <br><p class="description"><%= __("texts.leaveBlank") %></p><br>
                 
         <div class="custom-text-text" id="custom-text-2">
-            <p class="subtitle">En caso de ganar</p>
-            <br><button class="save add-text add-text-success">Añadir</button><br>
+            <p class="subtitle"><%= __("work.onWin") %></p>
+            <br><button class="save add-text add-text-success"><%= __("add") %></button><br>
             <div class="custom-text">
               <% if (settings.explore.txt) { %>
                 <% settings.explore.txt.success.forEach(x => { %>
                   <div class="yet-another-div">
                     <textarea rows="5" maxlength="2000"><%= x %></textarea>
-                    <button class="caution remove-text">Eliminar</button>
+                    <button class="caution remove-text"><%= __("delete") %></button>
                   </div>
                 <% }) %>
               <% } else { %>
                 <div class="yet-another-div">
                   <textarea rows="5" maxlength="2000">{}</textarea>
-                  <button class="caution remove-text">Eliminar</button>
+                  <button class="caution remove-text"><%= __("delete") %></button>
                 </div>
               <% } %>
             </div>
         </div>
 
         <div class="custom-text-text" id="custom-text-3">
-          <p class="subtitle">En caso de perder</p>
-          <br><button class="save add-text add-text-success">Añadir</button><br>
+          <p class="subtitle"><%= __("work.onFail") %></p>
+          <br><button class="save add-text add-text-success"><%= __("add") %></button><br>
           <div class="custom-text">
             <% if (settings.explore.txt) { %>
               <% settings.explore.txt.fail.forEach(x => { %>
                 <div class="yet-another-div">
                   <textarea rows="5" maxlength="2000"><%= x %></textarea>
-                  <button class="caution remove-text">Eliminar</button>
+                  <button class="caution remove-text"><%= __("delete") %></button>
                 </div>
               <% }) %>
             <% } else { %>
               <div class="yet-another-div">
                 <textarea rows="5" maxlength="2000">{}</textarea>
-                <button class="caution remove-text">Eliminar</button>
+                <button class="caution remove-text"><%= __("delete") %></button>
               </div>
             <% } %>
           </div>
       </div>
       </div>
   </div>  
-  <button class="save" id="save-explore">Guardar cambios en Explore</button>
+  <button class="save" id="save-explore"><%= __("saveSettingsIn") %> Explore</button>
   <br>
   <br>
 </div>

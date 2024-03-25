@@ -5,19 +5,25 @@ const fix = require('../util/fix');
 module.exports = {
     data: new SlashCommandBuilder()
     .setName('daily')
-    .setDescription('Reclama una recompensa diaria'),
+    .setDescription('Reclama una recompensa diaria')
+    .setDescriptionLocalizations({
+        "en-GB": "Claim your daily reward",
+        "en-US": "Claim your daily reward"
+    }),
 
-    runPrefix: (client, message) => module.exports.run(message, client.db),
+    runPrefix: (client, comments, message) => module.exports.run(message, comments, client.db),
 
-    runSlash: (client, interaction) => module.exports.run(interaction, client.db),
+    runSlash: (client, comments, interaction) => module.exports.run(interaction, comments, client.db),
 
-    run: async (message, db) => {
+    run: async (message, comments, db) => {
         message = fix(message);
 
         const availableFrom = parseTime(dailyFrom);
         const lastDaily = await db.get(`e_${message.guildId}_${message.user.id}.lastDaily`) || 0;
+        let time = Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000);
 
-        var notAvailableText = `Espera hasta <t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t> (<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>) para usar daily.`;
+        var notAvailableText = comments.cooldown.replace(/\{time\}/g, time).replace('{command}', 'daily');
+
         if (lastDaily < availableFrom.getTime()) {
             if (new Date(lastDaily).getDate() === availableFrom.getDate()) {
                 return message.reply({ content: notAvailableText, ephemeral: true });
@@ -72,15 +78,15 @@ module.exports = {
                 .replace('{objectAmount}', objectReward.amount || '')
                 .replace('{materialName}', materialReward.name || '')
                 .replace('{materialAmount}', materialReward.amount || '')
-                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t>`)
-                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>`));
+                .replace('{timestampUntil}', `<t:${time}:t>`)
+                .replace('{timestampLeft}', `<t:${time}:R>`));
             
         } else {
             await db.add(`e_${message.guild.id}_${message.user.id}.cash`, daily.reward.amount);
             embed.setDescription(daily.txt
                 .replace('{money}', `${convertion.emoji} ${daily.reward.amount} ${convertion.name}`)
-                .replace('{timestampUntil}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:t>`)
-                .replace('{timestampLeft}', `<t:${Math.floor((Date.now() + (availableFrom.getTime() - Date.now()) + 86400000) / 1000)}:R>`));
+                .replace('{timestampUntil}', `<t:${time}:t>`)
+                .replace('{timestampLeft}', `<t:${time}:R>`));
         }
     
         return message.reply({ embeds: [embed], allowedMentions: { repliedUser: false } });

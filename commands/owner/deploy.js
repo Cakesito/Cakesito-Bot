@@ -3,9 +3,9 @@ const { token, clientId } = require('../../config.json');
 
 module.exports = {
     onlyOwner: true,
-    runPrefix: (client, message) => module.exports.run(client, message),
+    runPrefix: (client, comments, message) => module.exports.run(client, comments, message),
 
-    run: async (client, message) => {
+    run: async (client, comments, message) => {
         const rest = new REST().setToken(token);
         let commands = [...client.commands.filter(x => !x.deactivated && !x.onlyOwner), ...client.menu_commands];
 

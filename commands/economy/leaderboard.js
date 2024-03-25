@@ -6,31 +6,44 @@ module.exports = {
     data: new SlashCommandBuilder()
     .setName('leaderboard')
     .setDescription('Mira la clasificación del servidor')
+    .setDescriptionLocalizations({
+        "en-GB": "View the server's leaderboard",
+        "en-US": "View the server's leaderboard"
+    })
     .addStringOption(x => 
         x.setName('categoría')
         .setDescription('Una categoría entre: cash, bank o total (por defecto)')
+        .setDescriptionLocalizations({
+            "en-GB": "A category: cash, bank or all (by default)",
+            "en-US": "A category: cash, bank or all (by default)"
+        })
         .addChoices(
-            { name: 'total', value: 'total'},
+            { name: 'total', value: 'total',
+                name_localizations: { 
+                "en-GB": "all", 
+                "en-US": "all" 
+            }},
+            
             { name: 'bank', value: 'bank'},
             { name: 'cash', value: 'cash' }
         )
     ),
 
-    runPrefix: (client, message, args) => module.exports.run(message, client.db, { mode: args[0], client: client }),
+    runPrefix: (client, comments, message, args) => module.exports.run(message, comments, client.db, { mode: args[0], client: client }),
 
-    runSlash: (client, interaction) => {        
+    runSlash: (client, comments, interaction) => {        
         var category = interaction.options.getString('categoría') || 'total';
-        module.exports.run(interaction, client.db, { mode: category, client: client });
+        module.exports.run(interaction, comments, client.db, { mode: category, client: client });
     },
 
-    run: async (message, db, data = { mode, client }) => {
+    run: async (message, comments, db, { mode, client }) => {
         message = fix(message);
     
         const convertion = await db.get(`g_${message.guildId}.convertion`);
         const all = await db.startsWith(`e_${message.guildId}_`);
     
         let lb = [];
-        switch (data.mode) {
+        switch (mode) {
             case 'cash':
                 all.forEach(x => lb.push({ username: x.id.split('_')[2], value: x.value.cash || 0}));
                 break;
@@ -48,7 +61,7 @@ module.exports = {
                 break;
         }
 
-        if (!lb.length) return message.reply({ content: 'No hay clasificación!', ephemeral: true });
+        if (!lb.length) return message.reply({ content: comments.economy.leaderboard.noLb, ephemeral: true });
     
         lb.sort((a, b) => b.value - a.value);
         lb = lb.slice(0, 50);
@@ -101,10 +114,14 @@ module.exports = {
         .setDescription(pages[currentPage]
                 .map(x => `${x.position}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
                 .join('\n'))
-        .setFooter({ text: `Página 1/${pages.length} · Tu posición: ${userRank}` });
+        .setFooter({ text: comments.economy.leaderboard.embedFooter
+            .replace('{currentPage}', '1')
+            .replace('{maxPages}', `${pages.length}`)
+            .replace('{rank}', `${userRank}`)
+        });
     
-        var id = data.client.collectors.get('active') || 0;
-        data.client.collectors.set('active', id + 1);
+        var id = client.collectors.get('active') || 0;
+        client.collectors.set('active', id + 1);
     
         let previousBtn = new ButtonBuilder()
         .setCustomId(`cake-${id}`)
@@ -120,7 +137,7 @@ module.exports = {
     
         if (lb.length > maxPerPage) {
             const filter = (i) => (i.customId == `cake-${id}` || i.customId == `cake-n-${id}`) && i.user.id == message.userId;
-            let collector = message.channel.createMessageComponentCollector({ filter, time: 300_000 });
+            let collector = message.channel.createMessageComponentCollector({ filter, time: 1_800_000 });
     
             collector.on('collect', async i => {
                 i.customId == `cake-${id}` ? currentPage-- : currentPage++;
@@ -132,13 +149,17 @@ module.exports = {
                     .map(x => `${x.position}. ${x.username} · ${convertion.emoji} ${x.value} ${convertion.name}`)
                     .join('\n'));
     
-                embed.setFooter({ text: `Página ${currentPage + 1}/${pages.length} · Tu posición: ${userRank}` })
+                embed.setFooter({ text: comments.economy.leaderboard.embedFooter
+                    .replace('{currentPage}', `${currentPage + 1}`)
+                    .replace('{maxPages}', `${pages.length}`)
+                    .replace('{rank}', `${userRank}`) 
+                })
                 
                 await i.update({ embeds: [embed], allowedMentions: { repliedUser: false }, components: [new ActionRowBuilder().addComponents(previousBtn, nextBtn)] });
     
             });
     
-            collector.on('end', () => data.client.collectors.set('active', id - 1));
+            collector.on('end', () => client.collectors.set('active', id - 1));
         }
     
         if (message.deferred) {

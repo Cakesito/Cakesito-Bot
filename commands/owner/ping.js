@@ -1,8 +1,8 @@
 module.exports = {
     onlyOwner: true,
-    runPrefix: (client, message) => module.exports.run(client, message),
+    runPrefix: (client, comments, message) => module.exports.run(client, comments, message),
     
-    run: async (client, message) => {
+    run: async (client, comments, message) => {
         let time = Date.now();
         const m = await message.reply('...');
 

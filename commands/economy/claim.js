@@ -6,13 +6,17 @@ module.exports = {
     requiresCooldown: true,
     data: new SlashCommandBuilder()
     .setName('claim')
-    .setDescription('Reclama una recompensa'),
+    .setDescription('Reclama una recompensa')
+    .setDescriptionLocalizations({
+        "en-GB": "Claim a reward",
+        "en-US": "Claim a reward"
+    }),
 
-    runPrefix: (client, message) => module.exports.run(message, client.db),
+    runPrefix: (client, comments, message) => module.exports.run(message, comments, client.db),
 
-    runSlash: (client, interaction) => module.exports.run(interaction, client.db),
+    runSlash: (client, comments, interaction) => module.exports.run(interaction, comments, client.db),
 
-    run: async (message, db) => {
+    run: async (message, comments, db) => {
         message = fix(message);
     
         const economy = await db.get(`g_${message.guildId}`);

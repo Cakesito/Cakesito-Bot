@@ -18,7 +18,7 @@
 
       <div style="min-width: 30vw;  max-width: 30vw;">
         <p class="title">Daily</p>
-        <p class="description" >Una recompensa diaria de dinero, objetos o materiales.</p><br><br>
+        <p class="description" ><%= __("daily.desc") %></p><br><br>
 
         <div>
           <div class="select-type">
@@ -28,7 +28,7 @@
             </div>
             
             <div id="<%= settings.daily.reward.type == 'inv.' ? 'daily-selected' : '' %>" <%- (settings.craft.items.length || settings.materials.length) ? `class=" div-objects-daily markable daily-markable"` : 'class="div-objects-daily markable disabled"' %> >
-                <p class="subtitle">Objetos / Materiales</p>
+                <p class="subtitle"><%= __("objectsMaterials") %></p>
     
                 <% if (settings.craft.length || settings.materials.length) { %>
                   
@@ -40,7 +40,7 @@
                   <% if (settings.craft.items.length) { %>
                     <% let selectedObject; %>
                     <select id="select-objects-daily">
-                      <option value="Nada">Nada</option>
+                      <option value="Nada"><%= __("nothing") %></option>
                       <% settings.craft.items.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.id)) { %>
                           <% selectedObject = x.id %>
@@ -51,17 +51,17 @@
                       <% }); %>
                     </select>
                         
-                    <p class="help">: de </p>
-                    <input id="object-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id == selectedObject)?.amount[0] ?? '0' %>">
-                    <p class="help"> a </p>
-                    <input id="object-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id == selectedObject)?.amount[1] ?? '0' %>">
+                    <p class="help">: <%= __("from") %> </p>
+                    <input id="object-min-daily" type="number" placeholder="<%= __('min') %>" value="<%= settings.daily.reward.materials?.find(x => x.ref_id == selectedObject)?.amount[0] ?? '0' %>">
+                    <p class="help"> <%= __("to") %> </p>
+                    <input id="object-max-daily" type="number" placeholder="<%= __('max') %>" value="<%= settings.daily.reward.materials?.find(x => x.ref_id == selectedObject)?.amount[1] ?? '0' %>">
                     <br>
                   <% } %>
                   
                   <% if (settings.materials.length) { %>
                     <% let selectedMaterial; %>
                     <select id="select-materials-daily">
-                      <option value="Nada">Nada</option>
+                      <option value="Nada"><%= __("nothing") %></option>
                       <% settings.materials.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.id)) { %>
                           <% selectedMaterial = x.id %>
@@ -72,17 +72,17 @@
                       <% }); %>
                     </select>
     
-                    <p class="help">: de </p>
-                    <input id="material-min-daily" type="number" placeholder="Mínimo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[0] ?? '0' %>">
-                    <p class="help"> a </p>
-                    <input id="material-max-daily" type="number" placeholder="Máximo" value="<%= settings.daily.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[1] ?? '0' %>">
+                    <p class="help">: <%= __("from") %> </p>
+                    <input id="material-min-daily" type="number" placeholder="<%= __('min') %>" value="<%= settings.daily.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[0] ?? '0' %>">
+                    <p class="help"> <%= __("to") %> </p>
+                    <input id="material-max-daily" type="number" placeholder="<%= __('max') %>" value="<%= settings.daily.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[1] ?? '0' %>">
                     <br>
     
                   <% } %>
     
                 <% } else { %>
                     <select disabled>
-                        <option>No disponible</option>
+                        <option><%= __("notAvailable") %></option>
                     </select>
                 <% } %>
             </div>
@@ -93,14 +93,14 @@
       </div>
 
       <div style="width: 65%;">
-        <p class="title">Daily - Texto Personalizado</p>
+        <p class="title">Daily - <%= __("persText") %></p>
 
         <%- include("../partials/texts/money.ejs") %>
         <%- include("../partials/texts/materials.ejs") %>
         <%- include("../partials/texts/objects.ejs") %>
         <%- include("../partials/texts/timestamp.ejs") %>
 
-        <br><p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
+        <br><p class="description"><%= __("leaveBlank") %></p><br>
 
         <div class="custom-text-text" id="custom-text-1">
           <div class="custom-text">
@@ -115,7 +115,7 @@
     </div>
   
     <br>
-    <button class="save" id="save-daily">Guardar cambios en Daily</button>
+    <button class="save" id="save-daily"><%= __("saveSettingsIn") %> Daily</button>
     <br>
     <br>
 
@@ -123,7 +123,7 @@
 
       <div style="min-width: 30vw; max-width: 30vw;">
         <p class="title">Claim</p>
-        <p class="description claim-description">Una recompensa de dinero, objetos o materiales cada</p>
+        <p class="description claim-description"><%= __("claim.desc") %></p>
         <input type="text" class="claim-input" id="claim-cooldown" value="<%= settings.claim.cooldown %>">
         
         <div>
@@ -134,7 +134,7 @@
             </div>
 
             <div id="<%= settings.claim.reward.type == 'inv.' ? 'claim-selected' : '' %>"  <%- (settings.craft.items.length || settings.materials.length) ? `class="div-objects-claim markable claim-markable"` : 'class="div-objects-claim markable disabled"' %> >
-                <p class="subtitle">Objetos / Materiales</p>
+                <p class="subtitle"><%= __("objectsMaterials") %></p>
       
                 <% if (settings.craft.length || settings.materials.length) { %>
                   
@@ -146,7 +146,7 @@
                   <% if (settings.craft.items.length) { %>
                     <% let selectedObject; %>
                     <select id="select-objects-claim">
-                      <option value="Nada">Nada</option>
+                      <option value="Nada"><%= __("nothing") %></option>
                       <% settings.craft.items.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.id)) { %>
                           <% selectedObject = x.id %>
@@ -157,17 +157,17 @@
                       <% }); %>
                     </select>
     
-                    <p class="help">: de </p>
-                    <input id="object-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedObject)?.amount[0] ?? '0' %>">
-                    <p class="help"> a </p>
-                    <input id="object-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedObject)?.amount[1] ?? '0' %>">
+                    <p class="help">: <%= __("from") %> </p>
+                    <input id="object-min-claim" type="number" placeholder="<%= __('min') %>" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedObject)?.amount[0] ?? '0' %>">
+                    <p class="help"> <%= __("to") %> </p>
+                    <input id="object-max-claim" type="number" placeholder="<%= __('max') %>" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedObject)?.amount[1] ?? '0' %>">
                     <br>
                   <% } %>
                   
                   <% if (settings.materials.length) { %>
                     <% let selectedMaterial; %>
                     <select id="select-materials-claim">
-                      <option value="Nada">Nada</option>
+                      <option value="Nada"><%= __("nothing") %></option>
                       <% settings.materials.forEach(x => { %>
                         <% if (selectedMaterials.includes(x.id)) { %>
                           <% selectedMaterial = x.id %>
@@ -178,17 +178,17 @@
                       <% }); %>
                     </select>
     
-                    <p class="help">: de </p>
-                    <input id="material-min-claim" type="number" placeholder="Mínimo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[0] ?? '0' %>">
-                    <p class="help"> a </p>
-                    <input id="material-max-claim" type="number" placeholder="Máximo" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[1] ?? '0' %>">
+                    <p class="help">: <%= __("from") %> </p>
+                    <input id="material-min-claim" type="number" placeholder="<%= __('min') %>" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[0] ?? '0' %>">
+                    <p class="help"> <%= __("to") %> </p>
+                    <input id="material-max-claim" type="number" placeholder="<%= __('max') %>" value="<%= settings.claim.reward.materials?.find(x => x.ref_id === selectedMaterial)?.amount[1] ?? '0' %>">
                     <br>
     
                   <% } %>
     
                 <% } else { %>
                     <select disabled>
-                        <option>No disponible</option>
+                        <option><%= __("notAvailable") %></option>
                     </select>
                 <% } %>
             </div>
@@ -199,13 +199,13 @@
       </div>
       
       <div style="width: 65%;">
-        <p class="title">Claim - Texto Personalizado</p>
+        <p class="title">Claim - <%= __("persText") %></p>
         <%- include("../partials/texts/money.ejs") %>
         <%- include("../partials/texts/materials.ejs") %>
         <%- include("../partials/texts/objects.ejs") %>
         <%- include("../partials/texts/timestamp.ejs") %>
         
-        <br><p class="description">Dejar en blanco para usar el mensaje por defecto.</p><br>
+        <br><p class="description"><%= __("leaveBlank") %></p><br>
 
         <div class="custom-text-text" id="custom-text-2">
           <div class="custom-text">
@@ -220,7 +220,7 @@
     </div>
     
     <br>
-    <button class="save" id="save-claim">Guardar cambios en Claim</button><br><br>
+    <button class="save" id="save-claim"><%= __("saveSettingsIn") %> Claim</button><br><br>
 </div>
 
 <script src="/daily-claim.js" type="module"></script>

@@ -3,11 +3,11 @@
 </head>
 <div class="sidebar">
     <a id="sidebar-general" href="/dashboard/<%= guild.id %>/general">General</a>
-    <p>Recompensas</p>
+    <p><%= __("rewards") %></p>
     <a id="sidebar-daily-claim" href="/dashboard/<%= guild.id %>/daily-claim">Daily - Claim</a>
     <a id="sidebar-work-crime-explore" href="/dashboard/<%= guild.id %>/work-crime-explore">Work - Crime - Explore</a>
-    <p>Objetos / Materiales</p>
-    <a id="sidebar-objects" href="/dashboard/<%= guild.id %>/objects">Objetos</a>
-    <a id="sidebar-materials" href="/dashboard/<%= guild.id %>/materials">Materiales</a>
-    <a id="sidebar-store" href="/dashboard/<%= guild.id %>/store">Tienda</a>
+    <p><%= __("objectsMaterials") %></p>
+    <a id="sidebar-objects" href="/dashboard/<%= guild.id %>/objects"><%= __("objects.obj") %></a>
+    <a id="sidebar-materials" href="/dashboard/<%= guild.id %>/materials"><%= __("materials.mat") %></a>
+    <a id="sidebar-store" href="/dashboard/<%= guild.id %>/store"><%= __("store.shop") %></a>
 </div>
