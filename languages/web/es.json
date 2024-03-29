@@ -119,7 +119,7 @@
 		"onFail": "En caso de perder",
 		"exploreDesc_1": "Consigue como máximo",
 		"exploreDesc_2": "tipos de materiales cada",
-		"exploreProb": "Probabilidad de conseguir materiales:",
+		"exploreProb": "Probabilidad de conseguir materiales",
 		"onLose": "work.onLose"
 	},
 	"showPrefix_2": "showPrefix_2",

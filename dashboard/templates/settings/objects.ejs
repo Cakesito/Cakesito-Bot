@@ -38,7 +38,7 @@
                     <input hidden class="invisible jijiji" id="info-<%= item.id %>" value="<%= JSON.stringify(item) %>" ></input>
                     <p class="title name"><%= item.name %> </p>
                     <p class="desc" style="text-align: center;" ><%= item.description %></p>
-                    <p class="secondary prob"><%= __("objects.prob_1") %>: <%= item.probability %> %</p>
+                    <p class="secondary prob"><%= __("objects.prob_1") %> <%= item.probability %> %</p>
                     <% item.materials.forEach(material => { %>
                         <p class="secondary">x<%= material.amount %> <%= settings.materials.find(x => x.id === material.ref_id)?.name %></p>
                     <% }) %>

@@ -43,10 +43,9 @@ amounts.forEach(list => {
 var alertCon = document.querySelector('.alert-container');
 
 claimInput.value = ms(claimInput.value, { toString: true });
-claimInput.addEventListener('focusout', () => { 
+claimInput.addEventListener('input', () => { 
 
-    var valid = isValidCooldown(claimInput);
-    if (valid) {
+    if (isValidCooldown(claimInput)) {
         if (isNaN(claimInput.value)) return claimInput.classList = 'claim-input';
         claimInput.value = ms(claimInput.value * 1000, { toString: true });
 
@@ -142,10 +141,13 @@ function resizeInput() {
 
 function isValidCooldown (element) {
     if (element.value.startsWith('-')) return false;
-    if (isNaN(element.value)) {
-        if (isNaN(ms(element.value, { toString: false }))) return false;
-        return true;
-    }
+    let cd = element.value;
+
+    if (isNaN(element.value)) cd = ms(element.value, { toString: false });
+    
+    if (isNaN(cd)) return false;
+    if (cd < 60000) return false;
+    if (cd > 43200000) return false;
 
     return true;
 }

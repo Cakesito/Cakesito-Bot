@@ -1,6 +1,9 @@
 const { object, string, number, array, boolean, mixed } = require('yup');
 
-var max = 1_000_000;
+const max = 1_000_000;
+const max_cd = 43_200_000;
+const min_cd = 60_000;
+
 let info;
 
 async function validate (options, db) {
@@ -67,7 +70,7 @@ const validations = {
 
     'claim': object({
         txt: string().optional().max(2000),
-        cooldown: number().required().min(1).integer(),
+        cooldown: number().required().integer().min(min_cd).max(max_cd),
         reward: object().shape({
             type: string().required().oneOf(['cash', 'inv.']),
     
@@ -104,13 +107,13 @@ const validations = {
 
     'work': object({
         txt: array().optional().max(3).of(string().max(2000)),
-        cooldown: number().required().min(1).integer(),
+        cooldown: number().required().integer().min(min_cd).max(max_cd),
         min: number().required().min(0).max(max).integer(),
         max: number().required().min(0).max(max).integer()
     }).test({ test: (value) => value.min <= value.max, message: "work min is higher than max" }).noUnknown(),
 
     'crime': object({
-        cooldown: number().required().min(1).integer().integer(),
+        cooldown: number().required().integer().min(min_cd).max(max_cd),
         probability: number().required().min(0).max(100).integer(),
         
         success: object({
@@ -132,7 +135,7 @@ const validations = {
             fail: array().optional().max(3).of(string().max(2000))
         }).optional().noUnknown(),
 
-        cooldown: number().required().min(1).integer(),
+        cooldown: number().required().integer().min(min_cd).max(max_cd),
         maxMaterials: number().required().max(10).integer(),
         probability: number().required().min(0).max(100).integer(),
         materials: array().max(10).required().of(object({

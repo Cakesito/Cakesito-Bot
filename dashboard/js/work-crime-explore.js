@@ -222,10 +222,14 @@ function resizeInput() {
 
 function isValidCooldown (element) {
     if (element.value.startsWith('-')) return false;
-    if (isNaN(element.value)) {
-        if (isNaN(ms(element.value, { toString: false }))) return false;
-        return true;
-    }
+    let cd = element.value;
+
+    if (isNaN(element.value)) cd = ms(element.value, { toString: false });
+    
+    if (isNaN(cd)) return false;
+    if (cd < 60000) return false;
+    if (cd > 43200000) return false;
+
     return true;
 }
 
