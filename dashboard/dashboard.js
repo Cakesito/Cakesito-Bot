@@ -123,6 +123,8 @@ app.get('/others/:file', (req, res) => res.sendFile(path.resolve(__dirname + `/o
 
 app.get('/commands', (req, res) => renderTemplate(res, req, 'commands.ejs'));
 
+app.get('/privacy', (req, res) => renderTemplate(res, req, 'privacy.ejs'));
+
 app.get('/login', (req, res, next) => {
     if (req.session.backURL) {
         req.session.backURL = req.session.backURL;

@@ -1,6 +1,1 @@
-Trabajando en idiomas: 
-    bot: hecho
-    web: hecho
-    TODO: command data 
-
 lotería? añadir juegos
